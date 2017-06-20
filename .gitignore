@@ -1,0 +1,13 @@
+*.jpg
+*.png
+*.tiff
+*.mov
+*.mp3
+.DS_Store
+
+*.jpg alias
+*.mp4
+*.gz
+*.m4a
+
+Renders
