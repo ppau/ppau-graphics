@@ -9,7 +9,7 @@ Colours:
 	- dark:		#001f30 [H143/360, S255/255, L24/255]
 - Pete:
 	- light-bg:	#2db6ff with black stroke (8px for 1200x1200)
-	- dark-bg: 	$005480 with white stroke (8px for 1200x1200)
+	- dark-bg: 	#005480 with white stroke (8px for 1200x1200)
 
 
 Font: 
