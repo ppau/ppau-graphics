@@ -12,6 +12,7 @@
 ################################################################################
 
 # You will almost definitely need to update this yourself
+RSVG = "/opt/local/bin/rsvg-convert"
 INKSCAPE = "/opt/local/bin/inkscape"
 
 # Paths are relative to the location of this file, which must be
@@ -137,11 +138,17 @@ for s in SVGs:
                         s],
                        stdout=tmpfp)
 
-        # and finally invoke Inkscape for the PDF
-        subprocess.run([INKSCAPE,
-                        "-z",               # silence
-                        "-f", tmpfp.name,    # input file
-                        "-A", rspdf])       # export PDF to output file
+##        # and finally invoke Inkscape for the PDF
+##        subprocess.run([INKSCAPE,
+##                        "-z",               # silence
+##                        "-f", tmpfp.name,    # input file
+##                        "-A", rspdf])       # export PDF to output file
+        
+        # Invoke rsvg-convert for the PDF
+        subprocess.run([RSVG,
+                       "-f", "pdf",             # export PDF format
+                        "-o", rspdf,            # to this filename
+                        tmpfp.name])            # from this file
         
 
 # revert cwd
