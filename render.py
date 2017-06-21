@@ -146,19 +146,22 @@ print_tag_full = ""
 
 try:
     with open(AUTH_TAG_FILE) as atfp:
-        auth_tag_full = shlex.quote(atfp.read())
+        auth_tag_full = atfp.read()
+        printv(auth_tag_full)
 except FileNotFoundError:
     print("Authorisation tag file not found!",
           "No substitution will be performed.")
-    auth_tag_full = shlex.quote(AUTH_TAG)
+    auth_tag_full = AUTH_TAG
 
 try:        
     with open(PRINT_TAG_FILE) as ptfp:
-        print_tag_full = shlex.quote(ptfp.read())
+        print_tag_full = ptfp.read()
+        printv(print_tag_full)
 except FileNotFoundError:
     print("Printing tag file not found!",
           "No substitution will be performed.")
-    print_tag_full = shlex.quote(PRINT_TAG)
+    print_tag_full = PRINT_TAG
+
         
 # Iterate over SVGs
 
