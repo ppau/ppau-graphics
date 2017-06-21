@@ -65,15 +65,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="587.23405"
-     inkscape:cy="680.56236"
+     inkscape:zoom="0.35"
+     inkscape:cx="1126.5098"
+     inkscape:cy="276.50134"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      units="px"
-     inkscape:window-width="1436"
-     inkscape:window-height="855"
+     inkscape:window-width="1356"
+     inkscape:window-height="723"
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
@@ -477,5 +477,18 @@
        id="path8169"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csc" />
+    <text
+       xml:space="preserve"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1000%;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#4094c0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       x="-923.34363"
+       y="1158.4619"
+       id="text17299"
+       sodipodi:linespacing="1000%"
+       transform="matrix(0,-1,1,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan17301"
+         x="-923.34363"
+         y="1158.4619"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#4094c0;fill-opacity:1">PPAU_AUTH_TAG</tspan></text>
   </g>
 </svg>

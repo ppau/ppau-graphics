@@ -29,11 +29,11 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="-110.88312"
-     inkscape:cy="207.99711"
+     inkscape:cx="810.54545"
+     inkscape:cy="287.99711"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      units="px"
      borderlayer="true"
      inkscape:showpageshadow="false"
@@ -44,7 +44,9 @@
      inkscape:window-height="723"
      inkscape:window-x="0"
      inkscape:window-y="1"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:snap-page="true"
+     inkscape:object-nodes="true">
     <inkscape:grid
        type="xygrid"
        id="grid5218" />
@@ -66,6 +68,13 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-552.36219)">
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:16;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect8177"
+       width="1500"
+       height="500"
+       x="0"
+       y="552.36218" />
     <text
        xml:space="preserve"
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:110.00000238%;font-family:Helvetica;-inkscape-font-specification:Helvetica;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"

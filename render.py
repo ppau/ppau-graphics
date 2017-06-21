@@ -49,6 +49,7 @@ import shlex
 import tempfile
 import time
 import argparse
+import filecmp
 
 # Parse arguments
 
@@ -85,7 +86,7 @@ parser.add_argument('--backend_path', dest='rsvg_path',
                             "usually your `rsvg-convert` install.")
 
 parser.add_argument('--output_format', dest='output',
-                    action='store', default='pdf',
+                    action='store', default=FORMAT,
                     choices=['png', 'pdf', 'ps', 'svg', 'xml', 'recording'],
                     help="Choose a file format for the render.")
 
@@ -168,48 +169,60 @@ except FileNotFoundError:
 for s in SVGs:
     if len(s) == 0:
         continue
-    printv(s)    
+##    printv(s)    
     (sdir, sbase) = os.path.split(s)
 
     # We shall first output the auth'd SVGs to RENDERDIR
 
     rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
-    (rsroot, rsext) = os.path.splitext(sbase)
-    rs = os.path.join(rdir, rsroot + "-tagged" + rsext)    
-    rspdf = os.path.join(rdir, rsroot) + "." + OUTPUT
+    (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
+    r_tag = os.path.join(rdir, r_tag_root + "-tagged" + r_tag_ext)    
+    r_out = os.path.join(rdir, r_tag_root) + "." + OUTPUT
 
-    # Check file modification dates and skip if 'no change':
-    # tagged SVG and output file both already exist, with
-    # the tagged SVG being older than the output file.
+    # On checking file modification dates and skipping if 'no change':
 
-    if os.path.exists(rspdf) and os.path.exists(rs):
-        rs_change = os.path.getmtime(rs)
-        rspdf_change = os.path.getmtime(rspdf)
+    # Ideally we could not update the tagged SVG if it wouldn't change,
+    # or at least not update its file modification date -- otherwise,
+    # toggling output formats forces a full re-rendering.
+    # We have to handle this case by just speculatively tagging and
+    # comparing to the existing file (if it exists)
 
-        if rs_change < rspdf_change:
-            printv("Skipping", rspdf)
-            continue
     
-    # create file and run sed into it for the auth
+    # create file and run sed into it for the tags
 
     if not os.path.exists(rdir):
         # print(rdir)
         os.makedirs(rdir)
 
-    with open(rs, "w") as tmpfp:
+    with tempfile.NamedTemporaryFile() as tmpfp:
         subprocess.run(["sed",
                         "-e", "s/"+AUTH_TAG+"/"+auth_tag_full+"/",
                         "-e", "s/"+PRINT_TAG+"/"+print_tag_full+"/",
                         s],
                        stdout=tmpfp)
-        
-        # Invoke rsvg-convert for the PDF
+
+        # Compare speculative and existing tagged SVGs
+        if os.path.exists(r_tag):
+            if filecmp.cmp(r_tag, tmpfp.name): # SVGs identical
+                printv("No change to", r_tag, sep="\t")
+
+                # Now check to see if output file is newer
+                if os.path.exists(r_out):
+                    if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
+                        printv("Skipping", r_out, sep="\t")
+                        continue
+                
+        # We're still here, so the SVG has changed: copy it over
+        printv("Updating", r_tag, sep="\t")
+        shutil.copy2(tmpfp.name, r_tag)            
+
+        printv("Rendering", r_out, sep="\t")
+        # Now invoke rsvg-convert for the PDF
         subprocess.run([RSVG_PATH,
-                       "-f", OUTPUT,            # export as OUTPUT format
-                        "-o", rspdf,            # to this filename
-                        tmpfp.name])            # from this file
-        
+                       "-f", OUTPUT,    # export as OUTPUT format
+                        "-o", r_out,    # to this filename
+                        r_tag])         # from this file        
 
 # this would've been a makefile,
 # but `make` really doesn't like filenames with spaces in them
-    
+
