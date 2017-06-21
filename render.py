@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ################################################################################
 #### ABOUT:                                                                 ####
 #### Render script for the SVGs in the SOURCE_DIR directory.                ####
@@ -133,7 +135,7 @@ def printv(*args, **kwargs):
         print(*args, **kwargs)
 
 
-# Recursively find all SVGs
+# Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
                        stdout=subprocess.PIPE,
                        universal_newlines=True) \
@@ -169,14 +171,15 @@ except FileNotFoundError:
 for s in SVGs:
     if len(s) == 0:
         continue
-##    printv(s)    
     (sdir, sbase) = os.path.split(s)
 
-    # We shall first output the auth'd SVGs to RENDERDIR
+    # We shall first output the auth'd SVGs to RENDER_DIR
 
     rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
     (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
+    # Pathname of tagged SVG    
     r_tag = os.path.join(rdir, r_tag_root + "-tagged" + r_tag_ext)    
+    # Pathname of output file
     r_out = os.path.join(rdir, r_tag_root) + "." + OUTPUT
 
     # On checking file modification dates and skipping if 'no change':
@@ -188,7 +191,7 @@ for s in SVGs:
     # comparing to the existing file (if it exists)
 
     
-    # create file and run sed into it for the tags
+    # OK. Create temp file and run sed into it for the tags
 
     if not os.path.exists(rdir):
         # print(rdir)
@@ -212,7 +215,7 @@ for s in SVGs:
                         printv("Skipping", r_out, sep="\t")
                         continue
                 
-        # We're still here, so the SVG has changed: copy it over
+        # We're still here, so the tagged SVG has changed: copy it over
         printv("Updating", r_tag, sep="\t")
         shutil.copy2(tmpfp.name, r_tag)            
 
