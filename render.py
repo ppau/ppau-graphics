@@ -24,8 +24,8 @@ RSVG_PATH = "/opt/local/bin/rsvg-convert"
 SOURCE_DIR = "Artwork"                  # default: "Artwork"
 RENDER_DIR = "Renders"                  # default: "Renders"
 
-AUTH_TAG_FILE = "ppau_auth_tag.txt"     # default: "ppau_auth_tag.txt"
-PRINT_TAG_FILE = "ppau_print_tag.txt"   # default: "ppau_auth_tag.txt"
+AUTH_TAG_FILE = "auth_tag.txt"          # default: "ppau_auth_tag.txt"
+PRINT_TAG_FILE = "print_tag.txt"        # default: "ppau_auth_tag.txt"
 
 # The text below is found, and replaced with the content of the respective
 # file listed above. Neither may be an SVG tag, for obvious reasons.
@@ -37,6 +37,7 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
 FORMAT = "pdf"
 VERBOSE = False
+NO_TAGS = False
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
@@ -82,6 +83,10 @@ parser.add_argument('--print_tag', dest='print_tag',
                     action='store', default=PRINT_TAG,
                     help="The placeholder printer text.")
 
+parser.add_argument('--no_tags', dest='no_tags',
+                    action='store_const', default=NO_TAGS, const=False,
+                    help="Leave tags out of the render entirely.")
+
 parser.add_argument('--backend_path', dest='rsvg_path',
                     action='store', default=RSVG_PATH,
                     help="The path to the backend renderer, " +
@@ -93,7 +98,8 @@ parser.add_argument('--output_format', dest='output',
                     help="Choose a file format for the render.")
 
 parser.add_argument('--verbose', dest='verbose',
-                    action='store_const', default=VERBOSE, const=True)
+                    action='store_const', default=VERBOSE, const=True,
+                    help="Be more verbose about file processing.")
 
 args = parser.parse_args()
 
@@ -106,6 +112,7 @@ AUTH_TAG_FILE = args.auth_tag_file
 PRINT_TAG_FILE = args.print_tag_file
 AUTH_TAG = args.auth_tag
 PRINT_TAG = args.print_tag
+NO_TAGS = args.no_tags
 RSVG = args.rsvg_path
 OUTPUT = args.output
 VERBOSE = args.verbose
@@ -147,23 +154,25 @@ SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
 auth_tag_full = ""    
 print_tag_full = ""
 
-try:
-    with open(AUTH_TAG_FILE) as atfp:
-        auth_tag_full = atfp.read()
-        printv(auth_tag_full)
-except FileNotFoundError:
-    print("Authorisation tag file not found!",
-          "No substitution will be performed.")
-    auth_tag_full = AUTH_TAG
+if not NO_TAGS:
 
-try:        
-    with open(PRINT_TAG_FILE) as ptfp:
-        print_tag_full = ptfp.read()
-        printv(print_tag_full)
-except FileNotFoundError:
-    print("Printing tag file not found!",
-          "No substitution will be performed.")
-    print_tag_full = PRINT_TAG
+    try:
+        with open(AUTH_TAG_FILE) as atfp:
+            auth_tag_full = atfp.read()
+            printv(auth_tag_full)
+    except FileNotFoundError:
+        print("Authorisation tag file not found!",
+              "No substitution will be performed.")
+        auth_tag_full = AUTH_TAG
+
+    try:        
+        with open(PRINT_TAG_FILE) as ptfp:
+            print_tag_full = ptfp.read()
+            printv(print_tag_full)
+    except FileNotFoundError:
+        print("Printing tag file not found!",
+              "No substitution will be performed.")
+        print_tag_full = PRINT_TAG
 
         
 # Iterate over SVGs
