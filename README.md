@@ -50,3 +50,10 @@ To not print any tags (equivalent to making `auth_tag.txt` and `print_tag.txt` e
 
 `python3 /path/to/render.py --no_tags` 
 
+The `rsvg-convert` tool is installed as part of `librsvg` on my machine.
+
+# License
+
+Artwork and text created by members of Pirate Party Australia is released under the Creative Commons [Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license (CC-BY 4.0), unless otherwise specified. 
+
+Code created by members of Pirate Party Australia is released under the [Free Software Foundation General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html), unless otherwise specified.
