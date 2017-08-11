@@ -1,0 +1,13 @@
+Usage of the logos contained in this directory is subject to the Identity Style Guide:
+
+https://pirateparty.org.au/wiki/Identity_Style_Guide#Logo
+
+Logos contained in this directory but not listed in the Identity Style Guide are not official party logos.
+
+In particular:
+
+- the 'tapebones' logo is appropriate for use in broader pirate movement things, e.g. a local discussion group;
+- those contained in the 'Experiments' subdirectory are experiments and should not be used without specific approval. 
+
+
+Yes, yes, this isn't very Creative Commons, I know. 

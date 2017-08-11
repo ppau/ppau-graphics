@@ -24,6 +24,8 @@ Additionally, most files in this repository are tracked using Git LFS. See the `
 
 The `rsvg-convert` tool is installed as part of `librsvg` on my machine. 
 
+You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. 
+
 # Usage 
 
 To render the SVGs to PDF, run the script `render.py` from the command line, probably with something like: 
