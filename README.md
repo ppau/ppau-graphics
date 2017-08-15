@@ -1,5 +1,6 @@
 # ppau-graphics
-Graphics for @ppau
+Graphics for Pirate Party Australia. 
+(@ppau on GitHub.)
 
 
 There are several purposes for this repository:
@@ -13,8 +14,8 @@ The system works by inserting placeholder text, such as `PPAU_AUTH_TAG`, in the 
 
 The following programs are required by the render script. 
 
-- a working Python 3.5 (or newer) install to run it. 
-- `rsvg-convert` (path defined in the script, you'll probably have to update this) 
+- a working Python 3.5 (or newer) install to run it.
+- `rsvg-convert` (path is defined in the script, *you'll probably have to update this*) 
 - `find(1)` 
 - `sed(1)` 
 

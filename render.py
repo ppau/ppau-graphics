@@ -117,7 +117,6 @@ RSVG = args.rsvg_path
 OUTPUT = args.output
 VERBOSE = args.verbose
 
-
 # Fix directory issues by using absolute pathnames (if possible).
 # (These come about because the current working directory is not
 #   necessarily the project root directory).
@@ -230,7 +229,7 @@ for s in SVGs:
 
         printv("Rendering", r_out, sep="\t")
         # Now invoke rsvg-convert for the PDF
-        subprocess.run([RSVG_PATH,
+        subprocess.run([RSVG,
                        "-f", OUTPUT,    # export as OUTPUT format
                         "-o", r_out,    # to this filename
                         r_tag])         # from this file        

@@ -15,11 +15,11 @@
    viewBox="0 0 317.49999 317.50001"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.0 r"
+   inkscape:version="0.92.2 (unknown)"
    sodipodi:docname="national-space-agency.svg"
-   inkscape:export-filename="/home/alex/Documents/PPAU/ppau-graphics/Artwork/__Unauthorised/space-agency/national-space-agency-preview.png"
-   inkscape:export-xdpi="40"
-   inkscape:export-ydpi="40">
+   inkscape:export-filename="/home/alex/Desktop/ppau-graphics/Artwork/__Unauthorised/space-agency/national-space-agency-english.png"
+   inkscape:export-xdpi="48"
+   inkscape:export-ydpi="48">
   <defs
      id="defs2">
     <linearGradient
@@ -462,29 +462,30 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.30043454"
-     inkscape:cx="396.60095"
-     inkscape:cy="354.37777"
+     inkscape:zoom="1.0033333"
+     inkscape:cx="496.9025"
+     inkscape:cy="299.15444"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer5"
-     showgrid="false"
+     inkscape:current-layer="layer8"
+     showgrid="true"
      units="px"
      inkscape:snap-page="true"
      inkscape:snap-grids="true"
      inkscape:snap-text-baseline="true"
-     inkscape:snap-bbox="false"
-     inkscape:snap-nodes="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="false"
      inkscape:bbox-nodes="true"
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="true"
-     inkscape:snap-bbox-midpoints="true"
+     inkscape:snap-bbox-midpoints="false"
      inkscape:window-width="1360"
-     inkscape:window-height="720"
+     inkscape:window-height="744"
      inkscape:window-x="0"
-     inkscape:window-y="20"
+     inkscape:window-y="24"
      inkscape:window-maximized="1"
      showguides="true"
-     inkscape:snap-object-midpoints="true">
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-others="false">
     <inkscape:grid
        type="xygrid"
        id="grid821" />
@@ -497,7 +498,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -843,12 +844,12 @@
          r="79.375" />
     </g>
     <circle
-       transform="translate(0,20.500017)"
        style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:new"
        id="circle5835"
        cx="277.97913"
        cy="152.08281"
-       r="79.375" />
+       r="79.375"
+       transform="translate(0,20.500017)" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -857,14 +858,13 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <circle
-       transform="translate(0,20.500017)"
        id="circle5773"
        style="display:inline;opacity:1;fill:url(#radialGradient5919);fill-opacity:1;stroke:none;stroke-width:1.58749998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:new"
        cx="277.97913"
        cy="152.08281"
-       r="79.375" />
+       r="79.375"
+       transform="translate(0,20.500017)" />
     <path
-       transform="translate(0,20.500017)"
        sodipodi:type="star"
        style="display:inline;opacity:0.5;fill:#fff6d5;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.385934;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path5889"
@@ -880,9 +880,9 @@
        inkscape:randomized="0"
        d="m 307.9099,188.67691 -0.56207,-0.57296 -0.61543,0.51521 0.0975,-0.79668 -0.78653,-0.15993 0.68367,-0.42049 -0.36535,-0.71465 0.755,0.27235 0.33095,-0.73122 0.25781,0.76009 0.77803,-0.19716 -0.43352,0.67547 0.63924,0.48536 -0.7984,0.0822 z"
        inkscape:transform-center-x="0.014812405"
-       inkscape:transform-center-y="-0.05275752" />
+       inkscape:transform-center-y="-0.05275752"
+       transform="translate(0,20.500017)" />
     <path
-       transform="translate(0,20.500017)"
        inkscape:transform-center-y="-0.05275752"
        inkscape:transform-center-x="0.014812405"
        d="m 297.36974,195.29846 -0.56207,-0.57296 -0.61544,0.51521 0.0975,-0.79668 -0.78653,-0.15993 0.68367,-0.42048 -0.36535,-0.71466 0.755,0.27235 0.33095,-0.73122 0.25781,0.76009 0.77803,-0.19716 -0.43353,0.67547 0.63925,0.48536 -0.7984,0.0822 z"
@@ -898,9 +898,9 @@
        sodipodi:sides="7"
        id="path5891"
        style="display:inline;opacity:0.5;fill:#fff6d5;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.385934;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       sodipodi:type="star" />
+       sodipodi:type="star"
+       transform="translate(0,20.500017)" />
     <path
-       transform="translate(0,20.500017)"
        sodipodi:type="star"
        style="display:inline;opacity:0.5;fill:#fff6d5;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.385934;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path5893"
@@ -916,9 +916,9 @@
        inkscape:randomized="0"
        d="m 312.98412,177.3508 -0.56207,-0.57297 -0.61544,0.51522 0.0975,-0.79668 -0.78653,-0.15993 0.68367,-0.42049 -0.36535,-0.71465 0.755,0.27235 0.33095,-0.73122 0.25781,0.76009 0.77803,-0.19717 -0.43353,0.67548 0.63925,0.48536 -0.7984,0.0822 z"
        inkscape:transform-center-x="0.014812405"
-       inkscape:transform-center-y="-0.05275752" />
+       inkscape:transform-center-y="-0.05275752"
+       transform="translate(0,20.500017)" />
     <path
-       transform="translate(0,20.500017)"
        sodipodi:type="star"
        style="display:inline;opacity:0.5;fill:#fff6d5;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.3087472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path5895"
@@ -934,9 +934,9 @@
        inkscape:randomized="0"
        d="m 299.06995,203.49733 -0.44966,-0.45837 -0.49234,0.41217 0.078,-0.63734 -0.62923,-0.12795 0.54694,-0.33638 -0.29228,-0.57173 0.604,0.21788 0.26476,-0.58498 0.20624,0.60808 0.62243,-0.15773 -0.34682,0.54038 0.5114,0.38828 -0.63873,0.0658 z"
        inkscape:transform-center-x="0.011848635"
-       inkscape:transform-center-y="-0.042214439" />
+       inkscape:transform-center-y="-0.042214439"
+       transform="translate(0,20.500017)" />
     <path
-       transform="translate(0,20.500017)"
        inkscape:transform-center-y="-0.042214439"
        inkscape:transform-center-x="0.011848635"
        d="m 303.27808,160.74298 -0.44966,-0.45837 -0.49234,0.41218 0.078,-0.63735 -0.62923,-0.12795 0.54694,-0.33638 -0.29228,-0.57172 0.604,0.21787 0.26476,-0.58497 0.20624,0.60807 0.62243,-0.15773 -0.34682,0.54038 0.5114,0.38828 -0.63873,0.0658 z"
@@ -952,7 +952,8 @@
        sodipodi:sides="7"
        id="path5915"
        style="display:inline;opacity:0.5;fill:#fff6d5;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.3087472;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       sodipodi:type="star" />
+       sodipodi:type="star"
+       transform="translate(0,20.500017)" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1143,19 +1144,44 @@
          id="tspan817"
          x="159.39493"
          y="11.249983"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.57777786px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332">A National Space Agency.</tspan></text>
-    <text
-       transform="translate(0,20.500017)"
-       id="text825"
-       y="42.999985"
-       x="158.75"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       xml:space="preserve"><tspan
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.57777786px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Italic';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.16666794px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332">An Australian Space Agency.</tspan></text>
+    <g
+       inkscape:groupmode="layer"
+       id="layer9"
+       inkscape:label="English"
+       sodipodi:insensitive="true">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         x="158.75"
+         y="42.999985"
+         id="text1117"
+         transform="translate(0,20.500017)"><tspan
+           sodipodi:role="line"
+           id="tspan1115"
+           x="158.75"
+           y="42.999985"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.16666794px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Italic';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332">From satellites to the stars!</tspan></text>
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer11"
+       inkscape:label="Latin"
+       style="display:none"
+       sodipodi:insensitive="true">
+      <text
+         transform="translate(0,20.500017)"
+         id="text825"
          y="42.999985"
          x="158.75"
-         id="tspan823"
-         sodipodi:role="line">Per aspera ad astra.</tspan></text>
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.16666794px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Italic';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332"
+           y="42.999985"
+           x="158.75"
+           id="tspan823"
+           sodipodi:role="line">Per aspera ad astra.</tspan></text>
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -1744,31 +1770,23 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#5d536c;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="158.67249"
-       y="306.91669"
+       y="308.58582"
        id="text5946"><tspan
          sodipodi:role="line"
          id="tspan5944"
          x="158.67249"
-         y="306.91669"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35000038px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#5d536c;stroke-width:0.26458332">PPAU_AUTH_TAG</tspan></text>
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer5"
-     inkscape:label="DRAFT"
-     style="display:inline;opacity:0.4"
-     sodipodi:insensitive="true">
+         y="308.58582"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35000038px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#5d536c;stroke-width:0.26458332">PPAU_PRINT_TAG</tspan></text>
     <text
-       transform="translate(0,20.500017)"
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="156.02148"
-       y="284.93118"
-       id="text7353"><tspan
-         sodipodi:role="line"
-         id="tspan7351"
-         x="156.02148"
-         y="284.93118"
-         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:70.55555725px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Light';text-align:center;text-anchor:middle;fill:#ff0000;stroke-width:0.26458332">DRAFT</tspan></text>
+       id="text1118"
+       y="300.64832"
+       x="158.67249"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#5d536c;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35000038px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#5d536c;stroke-width:0.26458332"
+         y="300.64832"
+         x="158.67249"
+         id="tspan1116"
+         sodipodi:role="line">PPAU_AUTH_TAG</tspan></text>
   </g>
 </svg>
