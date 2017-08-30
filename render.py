@@ -3,7 +3,7 @@
 ################################################################################
 #### ABOUT:                                                                 ####
 #### Render script for the SVGs in the SOURCE_DIR directory.                ####
-#### The renders will be placed in RENDER_DIR. 			            ####
+#### The renders will be placed in RENDER_DIR.                         ####
 #### If possible, SVGs containing AUTH_TAG or PRINT_TAG will have           ####
 #### the full tags inserted.                                                ####
 ####                                                                        ####
@@ -38,6 +38,8 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 FORMAT = "pdf"
 VERBOSE = False
 NO_TAGS = False
+NO_AUTH = False
+NO_PRINT = False
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
@@ -87,6 +89,14 @@ parser.add_argument('--no_tags', dest='no_tags',
                     action='store_const', default=NO_TAGS, const=False,
                     help="Leave tags out of the render entirely.")
 
+parser.add_argument('--no_auth', dest='no_auth',
+                    action='store_const', default=NO_AUTH, const=False,
+                    help="Leave the authorisation tag out of the render entirely.")
+
+parser.add_argument('--no_print', dest='no_print',
+                    action='store_const', default=NO_PRINT, const=False,
+                    help="Leave the print tag out of the render entirely.")
+
 parser.add_argument('--backend_path', dest='rsvg_path',
                     action='store', default=RSVG_PATH,
                     help="The path to the backend renderer, " +
@@ -106,13 +116,15 @@ args = parser.parse_args()
 
 # Update Flags
 
-SOURCE_DIR == args.source_dir
-RENDER_DIR == args.render_dir
+SOURCE_DIR = args.source_dir
+RENDER_DIR = args.render_dir
 AUTH_TAG_FILE = args.auth_tag_file
 PRINT_TAG_FILE = args.print_tag_file
 AUTH_TAG = args.auth_tag
 PRINT_TAG = args.print_tag
 NO_TAGS = args.no_tags
+NO_AUTH = args.no_auth
+NO_PRINT = args.no_print
 RSVG = args.rsvg_path
 OUTPUT = args.output
 VERBOSE = args.verbose
@@ -133,19 +145,36 @@ if sys.path[0]:
         AUTH_TAG_FILE = os.path.join(sys.path[0], AUTH_TAG_FILE)
 
     if not os.path.isabs(PRINT_TAG_FILE):
-        PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)
+        PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)    
+    
 
 # Just a little helper function
 def printv(*args, **kwargs):
     if VERBOSE:
         print(*args, **kwargs)
 
+# make rsvg-convert work (on posix systems)
+if not os.path.exists(RSVG):
+    printv("rsvg-convert not found at specified path " + RSVG)
+
+    if os.name == "posix":
+        rsvgtry = subprocess.run(["which", "rsvg-convert"],
+                stdout=subprocess.PIPE,
+                universal_newlines=True)\
+                .stdout.strip()
+        if rsvgtry:
+            printv("Using rsvg-convert at " + rsvgtry + " instead.")
+            RSVG = rsvgtry
+        else:
+            sys.exit(1)
+    else:
+        sys.exit(1)
 
 # Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
                        stdout=subprocess.PIPE,
-                       universal_newlines=True) \
-       .stdout.strip().split(sep="\n")
+                       universal_newlines=True)\
+        .stdout.strip().split(sep="\n")
 
 
 # Load printing tags
@@ -154,24 +183,24 @@ auth_tag_full = ""
 print_tag_full = ""
 
 if not NO_TAGS:
-
-    try:
-        with open(AUTH_TAG_FILE) as atfp:
-            auth_tag_full = atfp.read()
-            printv(auth_tag_full)
-    except FileNotFoundError:
-        print("Authorisation tag file not found!",
-              "No substitution will be performed.")
-        auth_tag_full = AUTH_TAG
-
-    try:        
-        with open(PRINT_TAG_FILE) as ptfp:
-            print_tag_full = ptfp.read()
-            printv(print_tag_full)
-    except FileNotFoundError:
-        print("Printing tag file not found!",
-              "No substitution will be performed.")
-        print_tag_full = PRINT_TAG
+    if not NO_AUTH:
+        try:
+            with open(AUTH_TAG_FILE) as atfp:
+                auth_tag_full = atfp.read()
+                printv(auth_tag_full)
+        except FileNotFoundError:
+            print("Authorisation tag file not found!",
+                  "No substitution will be performed.")
+            auth_tag_full = AUTH_TAG
+    if not NO_PRINT:
+        try:        
+            with open(PRINT_TAG_FILE) as ptfp:
+                print_tag_full = ptfp.read()
+                printv(print_tag_full)
+        except FileNotFoundError:
+            print("Printing tag file not found!",
+                  "No substitution will be performed.")
+            print_tag_full = PRINT_TAG
 
         
 # Iterate over SVGs
