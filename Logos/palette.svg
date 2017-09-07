@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (unknown)"
-   sodipodi:docname="pallette.svg">
+   sodipodi:docname="palette.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -23,10 +23,10 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="470"
+     inkscape:cx="206"
      inkscape:cy="485.19529"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -36,7 +36,7 @@
      inkscape:snap-bbox-edge-midpoints="true"
      inkscape:window-width="1108"
      inkscape:window-height="716"
-     inkscape:window-x="321"
+     inkscape:window-x="252"
      inkscape:window-y="24"
      inkscape:window-maximized="0">
     <inkscape:grid
@@ -349,8 +349,8 @@
          y="178.87285"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;stroke-width:0.26458332"
          id="tspan917"><tspan
-   id="tspan947"
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;stroke-width:0.26458332">Steel Blue</tspan></tspan><tspan
+           id="tspan947"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;stroke-width:0.26458332">Steel Blue</tspan></tspan><tspan
          sodipodi:role="line"
          x="33.605354"
          y="185.0528"

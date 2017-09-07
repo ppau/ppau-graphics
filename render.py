@@ -86,15 +86,15 @@ parser.add_argument('--print_tag', dest='print_tag',
                     help="The placeholder printer text.")
 
 parser.add_argument('--no_tags', dest='no_tags',
-                    action='store_const', default=NO_TAGS, const=False,
+                    action='store_const', default=NO_TAGS, const=True,
                     help="Leave tags out of the render entirely.")
 
 parser.add_argument('--no_auth', dest='no_auth',
-                    action='store_const', default=NO_AUTH, const=False,
+                    action='store_const', default=NO_AUTH, const=True,
                     help="Leave the authorisation tag out of the render entirely.")
 
 parser.add_argument('--no_print', dest='no_print',
-                    action='store_const', default=NO_PRINT, const=False,
+                    action='store_const', default=NO_PRINT, const=True,
                     help="Leave the print tag out of the render entirely.")
 
 parser.add_argument('--backend_path', dest='rsvg_path',
