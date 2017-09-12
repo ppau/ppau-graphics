@@ -33,19 +33,23 @@ PRINT_TAG_FILE = "print_tag.txt"        # default: "ppau_auth_tag.txt"
 AUTH_TAG = "PPAU_AUTH_TAG"              # default: "PPAU_AUTH_TAG"
 PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
-#### Other defaults                                                         ####
+#### Other settings                                                         ####
 
-FORMAT = "pdf"
 VERBOSE = False
-NO_TAGS = False
-NO_AUTH = False
-NO_PRINT = False
+
+#### You can't currently override these at run-time                         ####
+ 
+FORMATS = ["pdf", "png"]
+
+VARIANTS = [("auth", True, False),  # (name, include auth tag, include print tag)
+            ("both", True, True),
+            ("none", False, False)]
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.1"
+VERSION = "0.2"
 
 # import all the things
 import subprocess
@@ -87,27 +91,10 @@ parser.add_argument('--print_tag', dest='print_tag',
                     action='store', default=PRINT_TAG,
                     help="The placeholder printer text.")
 
-parser.add_argument('--no_tags', dest='no_tags',
-                    action='store_const', default=NO_TAGS, const=True,
-                    help="Leave tags out of the render entirely.")
-
-parser.add_argument('--no_auth', dest='no_auth',
-                    action='store_const', default=NO_AUTH, const=True,
-                    help="Leave the authorisation tag out of the render entirely.")
-
-parser.add_argument('--no_print', dest='no_print',
-                    action='store_const', default=NO_PRINT, const=True,
-                    help="Leave the print tag out of the render entirely.")
-
 parser.add_argument('--backend_path', dest='rsvg_path',
                     action='store', default=RSVG_PATH,
                     help="The path to the backend renderer, " +
                             "usually your `rsvg-convert` install.")
-
-parser.add_argument('--output_format', dest='output',
-                    action='store', default=FORMAT,
-                    choices=['png', 'pdf', 'ps', 'svg', 'xml', 'recording'],
-                    help="Choose a file format for the render.")
 
 parser.add_argument('--verbose', dest='verbose',
                     action='store_const', default=VERBOSE, const=True,
@@ -124,11 +111,7 @@ AUTH_TAG_FILE = args.auth_tag_file
 PRINT_TAG_FILE = args.print_tag_file
 AUTH_TAG = args.auth_tag
 PRINT_TAG = args.print_tag
-NO_TAGS = args.no_tags
-NO_AUTH = args.no_auth
-NO_PRINT = args.no_print
 RSVG = args.rsvg_path
-OUTPUT = args.output
 VERBOSE = args.verbose
 
 # Fix directory issues by using absolute pathnames (if possible).
@@ -186,28 +169,25 @@ SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
 auth_tag_full = ""    
 print_tag_full = ""
 
-if not NO_TAGS: # NO_TAGS is false by default, so this runs by default
-    if not NO_AUTH: # ditto
-        try:
-            with open(AUTH_TAG_FILE) as atfp:
-                auth_tag_full = atfp.read().strip()
-                printv(auth_tag_full)
-        except FileNotFoundError:
-            print("Authorisation tag file not found!",
-                  "No substitution will be performed.")
-            auth_tag_full = AUTH_TAG
-    if not NO_PRINT: # ditto
-        try:        
-            with open(PRINT_TAG_FILE) as ptfp:
-                print_tag_full = ptfp.read().strip()
-                printv(print_tag_full)
-        except FileNotFoundError:
-            print("Printing tag file not found!",
-                  "No substitution will be performed.")
-            print_tag_full = PRINT_TAG
+try:
+    with open(AUTH_TAG_FILE) as atfp:
+        auth_tag_full = atfp.read().strip()
+        printv(auth_tag_full)
+except FileNotFoundError:
+    print("Authorisation tag file not found!",
+          "No substitution will be performed.")
+    auth_tag_full = AUTH_TAG
+try:        
+    with open(PRINT_TAG_FILE) as ptfp:
+        print_tag_full = ptfp.read().strip()
+        printv(print_tag_full)
+except FileNotFoundError:
+    print("Printing tag file not found!",
+          "No substitution will be performed.")
+    print_tag_full = PRINT_TAG
 
         
-# Iterate over SVGs
+# Iterate over SVGs...
 
 for s in SVGs:
     if len(s) == 0:
@@ -216,58 +196,80 @@ for s in SVGs:
 
     printv(s)
 
-    # We shall first output the auth'd SVGs to RENDER_DIR
+    # Iterate over variants...
 
-    rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
-    (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
-    # Pathname of tagged SVG    
-    r_tag = os.path.join(rdir, r_tag_root + "-tagged" + r_tag_ext)    
-    # Pathname of output file
-    r_out = os.path.join(rdir, r_tag_root) + "." + OUTPUT
+    for variant in VARIANTS:
+        
+        auth_tag_var = ""
+        print_tag_var = ""
+        if variant[1]:
+            auth_tag_var = auth_tag_full
+        if variant[2]:
+            print_tag_var = print_tag_full
+        
+        # We shall first output the auth'd SVGs to RENDER_DIR
 
-    # On checking file modification dates and skipping if 'no change':
+        rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
+        (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
+        # Pathnames of tagged SVGs  
+        r_tag = os.path.join(rdir, r_tag_root + "-" + variant[0] + r_tag_ext)
 
-    # Ideally we could not update the tagged SVG if it wouldn't change,
-    # or at least not update its file modification date -- otherwise,
-    # toggling output formats forces a full re-rendering.
-    # We have to handle this case by just speculatively tagging and
-    # comparing to the existing file (if it exists)
+        # On checking file modification dates and skipping if 'no change':
 
-    
-    # OK. Create temp file and run sed into it for the tags
+        # Ideally we could not update the tagged SVG if it wouldn't change,
+        # or at least not update its file modification date -- otherwise,
+        # toggling output formats forces a full re-rendering.
+        # We have to handle this case by just speculatively tagging and
+        # comparing to the existing file (if it exists)
 
-    if not os.path.exists(rdir):
-        # print(rdir)
-        os.makedirs(rdir)
+        
+        # OK. Create temp file and run sed into it for the tags
+        # hmm. this runs once per output format right now.
 
-    with tempfile.NamedTemporaryFile() as tmpfp:
-        subprocess.run(["sed",
-                        "-e", "s/"+AUTH_TAG+"/"+auth_tag_full+"/g",
-                        "-e", "s/"+PRINT_TAG+"/"+print_tag_full+"/g",
-                        s],
-                       stdout=tmpfp)
+        if not os.path.exists(rdir):
+            # print(rdir)
+            os.makedirs(rdir)
 
-        # Compare speculative and existing tagged SVGs
-        if os.path.exists(r_tag):
-            if filecmp.cmp(r_tag, tmpfp.name): # SVGs identical
-                printv("No change to", r_tag, sep="\t")
+        with tempfile.NamedTemporaryFile() as tmpfp:
+            subprocess.run(["sed",
+                            "-e", "s/"+AUTH_TAG+"/"+auth_tag_var+"/g",
+                            "-e", "s/"+PRINT_TAG+"/"+print_tag_var+"/g",
+                            s],
+                           stdout=tmpfp)
 
-                # Now check to see if output file is newer
-                if os.path.exists(r_out):
-                    if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
-                        printv("Skipping", r_out, sep="\t")
-                        continue
-                
-        # We're still here, so the tagged SVG has changed: copy it over
-        printv("Updating", r_tag, sep="\t")
-        shutil.copy2(tmpfp.name, r_tag)            
+            # Compare speculative and existing tagged SVGs
+            if os.path.exists(r_tag):
+                if filecmp.cmp(r_tag, tmpfp.name): # SVGs identical
+                    printv("No change to", r_tag, sep="\t")
+                else:
+                    # The tagged SVG has changed: copy it over
+                    printv("Updating", r_tag, sep="\t")
+                    shutil.copy2(tmpfp.name, r_tag)            
+            else:
+                # The tagged SVG now exists: copy it over
+                printv("Updating", r_tag, sep="\t")
+                shutil.copy2(tmpfp.name, r_tag)            
 
-        printv("Rendering", r_out, sep="\t")
-        # Now invoke rsvg-convert for the PDF
-        subprocess.run([RSVG,
-                       "-f", OUTPUT,    # export as OUTPUT format
-                        "-o", r_out,    # to this filename
-                        r_tag])         # from this file        
+        # Iterate over output formats...
+
+        for ftype in FORMATS:
+            # Pathname of output file
+            r_out = os.path.join(rdir, r_tag_root + "-" + variant[0]) + "." + ftype
+
+
+            # Now check to see if output file is newer
+            if os.path.exists(r_out):
+                if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
+                    printv("Skipping", r_out, sep="\t")
+                    continue
+
+            printv("Rendering", r_out, sep="\t")
+            # Now invoke rsvg-convert for the PDF
+            subprocess.run([RSVG,
+                           "-f", ftype,     # export as OUTPUT format
+                            "-o", r_out,    # to this filename
+                            r_tag])         # from this file        
+
 
 # this would've been a makefile,
 # but `make` really doesn't like filenames with spaces in them

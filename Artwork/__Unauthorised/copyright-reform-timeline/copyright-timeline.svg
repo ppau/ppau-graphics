@@ -17,7 +17,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (unknown)"
-   sodipodi:docname="copyright-timeline.svg">
+   sodipodi:docname="copyright-timeline.svg"
+   inkscape:export-filename="/home/alex/Desktop/ppau-graphics/Artwork/__Unauthorised/copyright-reform-timeline/copyright-timeline.svg.png"
+   inkscape:export-xdpi="44.984512"
+   inkscape:export-ydpi="44.984512">
   <defs
      id="defs2">
     <linearGradient
@@ -37,10 +40,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.53629349"
-     inkscape:cx="491.94758"
-     inkscape:cy="486.67382"
+     inkscape:cx="472.46607"
+     inkscape:cy="561.25985"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer6"
      showgrid="false"
      inkscape:snap-page="true"
      inkscape:snap-object-midpoints="true"
@@ -68,7 +71,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -88,8 +91,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="graphics"
-     sodipodi:insensitive="true">
+     inkscape:label="graphics">
     <g
        id="g1191"
        transform="matrix(0.2892785,0,0,0.2892785,23.837452,212.02084)">
@@ -265,23 +267,23 @@
          id="Signet">
         <polygon
            id="polygon1068"
-           points="89.317,83.552 91.63,82.684 90.946,80.311 93.067,81.579 94.499,79.564 94.83,82.013 97.298,81.873 95.59,83.659 97.234,85.504 94.774,85.282 94.359,87.717 92.997,85.655 90.834,86.85 91.599,84.499 "
+           points="93.067,81.579 94.499,79.564 94.83,82.013 97.298,81.873 95.59,83.659 97.234,85.504 94.774,85.282 94.359,87.717 92.997,85.655 90.834,86.85 91.599,84.499 89.317,83.552 91.63,82.684 90.946,80.311 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1070"
-           points="100.542,58.737 102.855,57.87 102.173,55.494 104.294,56.762 105.725,54.748 106.056,57.196 108.524,57.061 106.815,58.845 108.46,60.689 106,60.465 105.585,62.9 104.224,60.838 102.062,62.033 102.825,59.684 "
+           points="104.294,56.762 105.725,54.748 106.056,57.196 108.524,57.061 106.815,58.845 108.46,60.689 106,60.465 105.585,62.9 104.224,60.838 102.062,62.033 102.825,59.684 100.542,58.737 102.855,57.87 102.173,55.494 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1072"
-           points="88.134,48.101 90.448,47.233 89.765,44.859 91.886,46.128 93.316,44.112 93.647,46.562 96.115,46.422 94.407,48.208 96.053,50.051 93.593,49.832 93.177,52.266 91.817,50.205 89.652,51.398 90.417,49.048 "
+           points="91.886,46.128 93.316,44.112 93.647,46.562 96.115,46.422 94.407,48.208 96.053,50.051 93.593,49.832 93.177,52.266 91.817,50.205 89.652,51.398 90.417,49.048 88.134,48.101 90.448,47.233 89.765,44.859 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1074"
-           points="75.135,62.874 77.45,62.004 76.766,59.63 78.887,60.899 80.318,58.884 80.649,61.333 83.118,61.193 81.408,62.979 83.055,64.826 80.594,64.603 80.178,67.037 78.818,64.976 76.654,66.169 77.418,63.819 "
+           points="78.887,60.899 80.318,58.884 80.649,61.333 83.118,61.193 81.408,62.979 83.055,64.826 80.594,64.603 80.178,67.037 78.818,64.976 76.654,66.169 77.418,63.819 75.135,62.874 77.45,62.004 76.766,59.63 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1076"
-           points="99.527,70.255 98.076,69.411 96.562,70.134 96.911,68.492 95.758,67.275 97.427,67.1 98.229,65.626 98.91,67.16 100.559,67.466 99.312,68.59 "
+           points="96.911,68.492 95.758,67.275 97.427,67.1 98.229,65.626 98.91,67.16 100.559,67.466 99.312,68.59 99.527,70.255 98.076,69.411 96.562,70.134 "
            style="fill:#ffffff" />
         <g
            id="g1092">
@@ -299,7 +301,7 @@
              id="g1090">
             <polygon
                id="polygon1082"
-               points="46.998,33.014 47.327,98.379 54.451,95.273 53.188,92.129 51.237,33.772 "
+               points="53.188,92.129 51.237,33.772 46.998,33.014 47.327,98.379 54.451,95.273 "
                style="stroke:#ffffff;stroke-width:5;stroke-miterlimit:10" />
             <path
                id="path1084"
@@ -332,7 +334,7 @@
              id="g1106">
             <polygon
                id="polygon1098"
-               points="46.998,33.014 47.327,98.379 54.451,95.273 53.188,92.129 51.237,33.772 " />
+               points="53.188,92.129 51.237,33.772 46.998,33.014 47.327,98.379 54.451,95.273 " />
             <path
                id="path1100"
                d="m 41.057,45.816 c 0,0 60.699,-23.026 69.619,18.67 0,0 5.716,19.558 -22.992,26.528 0,0 -19.617,4.877 -21.554,4.893 -1.947,0.02 -1.947,0.02 -1.947,0.02 0,0 -19.291,3.84 -14.798,27.627 0,0 -14.917,-21.275 12.979,-38.168 0,0 10.796,-9.016 7.42,-22.749 -0.001,0 -3.343,-16.313 -28.727,-16.821 z"
@@ -348,23 +350,23 @@
         </g>
         <polygon
            id="polygon1110"
-           points="72.836,64.629 74.682,62.996 73.194,61.03 75.622,61.449 76.23,59.064 77.416,61.223 79.662,60.211 78.711,62.486 80.903,63.611 78.534,64.283 79.021,66.699 77.016,65.269 75.431,67.153 75.301,64.695 "
+           points="75.622,61.449 76.23,59.064 77.416,61.223 79.662,60.211 78.711,62.486 80.903,63.611 78.534,64.283 79.021,66.699 77.016,65.269 75.431,67.153 75.301,64.695 72.836,64.629 74.682,62.996 73.194,61.03 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1112"
-           points="84.913,50.01 86.758,48.377 85.271,46.411 87.699,46.83 88.307,44.445 89.493,46.604 91.738,45.592 90.789,47.867 92.979,48.992 90.61,49.664 91.098,52.08 89.093,50.65 87.507,52.534 87.378,50.076 "
+           points="87.699,46.83 88.307,44.445 89.493,46.604 91.738,45.592 90.789,47.867 92.979,48.992 90.61,49.664 91.098,52.08 89.093,50.65 87.507,52.534 87.378,50.076 84.913,50.01 86.758,48.377 85.271,46.411 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1114"
-           points="98.261,60.815 100.106,59.183 98.619,57.217 101.047,57.635 101.655,55.25 102.841,57.409 105.086,56.397 104.136,58.672 106.328,59.798 103.958,60.47 104.446,62.885 102.441,61.455 100.855,63.34 100.726,60.881 "
+           points="101.047,57.635 101.655,55.25 102.841,57.409 105.086,56.397 104.136,58.672 106.328,59.798 103.958,60.47 104.446,62.885 102.441,61.455 100.855,63.34 100.726,60.881 98.261,60.815 100.106,59.183 98.619,57.217 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1116"
-           points="86.82,84.969 88.665,83.336 87.178,81.37 89.605,81.789 90.213,79.404 91.4,81.563 93.646,80.551 92.695,82.827 94.886,83.952 92.518,84.624 93.005,87.04 91,85.609 89.415,87.494 89.285,85.036 "
+           points="89.605,81.789 90.213,79.404 91.4,81.563 93.646,80.551 92.695,82.827 94.886,83.952 92.518,84.624 93.005,87.04 91,85.609 89.415,87.494 89.285,85.036 86.82,84.969 88.665,83.336 87.178,81.37 "
            style="fill:#ffffff" />
         <polygon
            id="polygon1118"
-           points="97.313,70.197 95.718,69.683 94.393,70.705 94.39,69.033 93.012,68.088 94.599,67.566 95.071,65.961 96.059,67.312 97.73,67.266 96.75,68.619 "
+           points="94.39,69.033 93.012,68.088 94.599,67.566 95.071,65.961 96.059,67.312 97.73,67.266 96.75,68.619 97.313,70.197 95.718,69.683 94.393,70.705 "
            style="fill:#ffffff" />
       </g>
     </g>
@@ -373,7 +375,8 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="text"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#cc4756;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        d="M 68,20.999995 V 205 l -8,-8 V 12.999995 Z"
@@ -420,7 +423,7 @@
        height="100%" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="52.470257"
        y="44.769791"
        id="text1211"><tspan
@@ -428,21 +431,21 @@
          id="tspan1209"
          x="52.470257"
          y="44.769791"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">1995</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">1995</tspan></text>
     <text
        id="text1215"
        y="80.769791"
        x="52.470257"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
          y="80.769791"
          x="52.470257"
          id="tspan1213"
          sodipodi:role="line">2004</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="52.160198"
        y="116.78529"
        id="text1219"><tspan
@@ -450,21 +453,21 @@
          id="tspan1217"
          x="52.160198"
          y="116.78529"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">2013</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">2013</tspan></text>
     <text
        id="text1223"
        y="148.78529"
        x="52.403076"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
          y="148.78529"
          x="52.403076"
          id="tspan1221"
          sodipodi:role="line">2014</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold Italic';letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="52.325562"
        y="175.22388"
        id="text1227"><tspan
@@ -472,15 +475,15 @@
          id="tspan1225"
          x="52.325562"
          y="175.22388"
-         style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;line-height:1.04999995;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">2016</tspan><tspan
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.04999995;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold Italic';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">2016</tspan><tspan
          sodipodi:role="line"
          x="52.325562"
          y="186.33638"
-         style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;line-height:1.04999995;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.04999995;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold Italic';text-align:end;text-anchor:end;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332"
          id="tspan938">- 2017</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="75.751953"
        y="32.515572"
        id="text1231"><tspan
@@ -488,132 +491,132 @@
          id="tspan1229"
          x="75.751953"
          y="32.515572"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332">Copyright Review Committee</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332">Copyright Review Committee</tspan><tspan
          sodipodi:role="line"
          x="75.751953"
-         y="39.578373"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="39.571129"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1233">recommends simplifying Australia's</tspan><tspan
          sodipodi:role="line"
          x="75.751953"
-         y="46.641171"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="46.626682"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1235">copyright laws.</tspan><tspan
          sodipodi:role="line"
          x="75.751953"
-         y="53.703972"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="53.68224"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1237">Status: <tspan
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#cc4756;fill-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#cc4756;fill-opacity:1"
    id="tspan1239">IGNORED</tspan></tspan></text>
     <text
        id="text1251"
        y="68.515572"
        x="75.751953"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          y="68.515572"
          x="75.751953"
          id="tspan1241"
          sodipodi:role="line">Joint Standing Committee on Treaties</tspan><tspan
          id="tspan1243"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
-         y="75.578369"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="75.571129"
          x="75.751953"
          sodipodi:role="line">recommends introducing fair use to</tspan><tspan
          id="tspan1245"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
-         y="82.641174"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="82.626686"
          x="75.751953"
          sodipodi:role="line">offset copyright extensions.</tspan><tspan
          id="tspan1249"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#ffffff;stroke-width:0.26458332"
-         y="89.703972"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="89.682236"
          x="75.751953"
          sodipodi:role="line">Status: <tspan
    id="tspan1247"
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#cc4756;fill-opacity:1">IGNORED</tspan></tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#cc4756;fill-opacity:1">IGNORED</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="75.751953"
        y="108.04696"
        id="text1275"><tspan
          sodipodi:role="line"
          x="75.751953"
          y="108.04696"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1269">IT Pricing Inqury recommends</tspan><tspan
          sodipodi:role="line"
          x="75.751953"
-         y="115.10975"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="115.10252"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1282">consumer-friendly copyright reforms.</tspan><tspan
          sodipodi:role="line"
          x="75.751953"
-         y="122.17256"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="122.15807"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1273">Status: <tspan
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#cc4756;fill-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#cc4756;fill-opacity:1"
    id="tspan1271">IGNORED</tspan></tspan></text>
     <text
        id="text1292"
        y="140.04698"
        x="75.751953"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
          id="tspan1284"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          y="140.04698"
          x="75.751953"
          sodipodi:role="line">Australian Law Reform Commission</tspan><tspan
          id="tspan1286"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
-         y="147.10979"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="147.10254"
          x="75.751953"
          sodipodi:role="line">recommends introducing fair use.</tspan><tspan
          id="tspan1290"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#ffffff;stroke-width:0.26458332"
-         y="154.17258"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="154.1581"
          x="75.751953"
          sodipodi:role="line">Status: <tspan
    id="tspan1288"
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#cc4756;fill-opacity:1">IGNORED</tspan></tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#cc4756;fill-opacity:1">IGNORED</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="76"
        y="172.06213"
        id="text1306"><tspan
          sodipodi:role="line"
          x="76"
          y="172.06213"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1300">Productivity Commission recommends </tspan><tspan
          sodipodi:role="line"
          x="76"
-         y="179.12494"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="179.11769"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1310">introducing fair use.</tspan><tspan
          sodipodi:role="line"
          x="76"
-         y="186.18773"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="186.17325"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#ffffff;stroke-width:0.26458332"
          id="tspan1440">Status: <tspan
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Ultra-Bold';fill:#cc4756;fill-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#cc4756;fill-opacity:1"
    id="tspan1442">You guessed it, IGNORED</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:11.28888893px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="104.84756"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.28888893px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="105.09956"
        y="273.09769"
        id="text1314"><tspan
          sodipodi:role="line"
          id="tspan1312"
-         x="104.84756"
+         x="105.09956"
          y="273.09769"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Semi-Bold';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332">For simple, fair copyright reform.</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.28889084px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.26458332">Simple, fair copyright reform.</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -630,14 +633,14 @@
          id="tspan1316"
          x="104.9957"
          y="283.76126"
-         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Light';text-align:center;text-anchor:middle;fill:#808080;stroke-width:0.26458332">PPAU_AUTH_TAG</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Open Sans Condensed';-inkscape-font-specification:'Open Sans Condensed, ';text-align:center;text-anchor:middle;fill:#808080;stroke-width:0.26458332">PPAU_AUTH_TAG</tspan></text>
     <text
        id="text1322"
        y="288.54181"
        x="104.9957"
        style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Light';text-align:center;text-anchor:middle;fill:#808080;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Open Sans Condensed';-inkscape-font-specification:'Open Sans Condensed, ';text-align:center;text-anchor:middle;fill:#808080;stroke-width:0.26458332"
          y="288.54181"
          x="104.9957"
          id="tspan1320"
@@ -651,12 +654,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:42.33333206px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#cc4756;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="104.02848"
+       x="107.88354"
        y="248.57339"
        id="text1449"><tspan
          sodipodi:role="line"
          id="tspan1447"
-         x="104.02848"
+         x="107.88354"
          y="248.57339"
          style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Light';text-align:center;text-anchor:middle;fill:#cc4756;fill-opacity:1;stroke-width:0.26458332">DRAFT v1</tspan></text>
   </g>
