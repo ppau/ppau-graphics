@@ -37,6 +37,8 @@ Add the help flag: `python3 /path/to/render.py --help` for a list of options.
 
 Replacement tags are specified in `auth_tag.txt` (authoriser) and `print_tag.txt` (printer). 
 
+To render all sane variants and formats simultaneously, run `renderall.py` instead. 
+
 ## Examples 
 
 To render the artworks as PNGs rather than PDF, we'd use the following:
