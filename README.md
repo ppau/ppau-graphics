@@ -8,7 +8,7 @@ There are several purposes for this repository:
 1. Version control and general ability for collaboration with source documents.
 2. Build an infrastructure that allows us to seamlessly update authorisation tags and, if necessary, printing tags.
 
-The system works by inserting placeholder text, such as `PPAU_AUTH_TAG`, in the artworks instead of something like `Authorised by Name, Address`. The script will perform a textual find-and-replace and then render the artwork to a format more suitable for distribution. 
+The system works by having the artist insert placeholder text, such as `PPAU_AUTH_TAG`, in the artworks instead of something like `Authorised by Name, Address`. The script will perform a textual find-and-replace and then render the artwork to a format more suitable for distribution. 
 
 # Requirements 
 

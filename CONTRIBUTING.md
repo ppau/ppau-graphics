@@ -1,5 +1,7 @@
 # CONTRIBUTING 
 
+All contributed artwork should be in Scalable Vector Graphics (SVG) format. 
+
 Please endeavour to follow the [Identity Style Guide](https://pirateparty.org.au/wiki/Identity_Style_Guide) where possible, especially for standalone artwork. 
 
 Please go through the usual [Authorisation Processes](https://pirateparty.org.au/wiki/Authorisation_processes) too before uploading. There are already enough items in the unauthorised section!
