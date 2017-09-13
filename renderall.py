@@ -15,7 +15,7 @@
 
 #### You can override these defaults at run-time via command-line flags.    ####
 
-# You will almost definitely need to update this yourself
+# You will almost definitely want to update this yourself
 RSVG_PATH = "/opt/local/bin/rsvg-convert"
 
 # If the paths below are relative, this file is assumed to be in the
@@ -41,15 +41,17 @@ VERBOSE = False
  
 FORMATS = ["pdf", "png"]
 
-VARIANTS = [("auth", True, False),  # (name, include auth tag, include print tag)
+        #   (name, include auth tag, include print tag)
+VARIANTS = [("auth", True, False),  
             ("both", True, True),
             ("none", False, False)]
+        # NB: it's absurd to include a print tag but not an auth tag.
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.2"
+VERSION = "0.2.1"
 
 # import all the things
 import subprocess
@@ -64,7 +66,7 @@ import filecmp
 
 # Parse arguments
 
-parser = argparse.ArgumentParser(description="Render the source files.")
+parser = argparse.ArgumentParser(description="Render the source files.", prog="PPAU-Graphics Renderscript")
 
 parser.add_argument('--source_dir', dest='source_dir',
                     action='store', default=SOURCE_DIR,
@@ -99,6 +101,8 @@ parser.add_argument('--backend_path', dest='rsvg_path',
 parser.add_argument('--verbose', dest='verbose',
                     action='store_const', default=VERBOSE, const=True,
                     help="Be more verbose about file processing.")
+
+parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
 args = parser.parse_args()
 
@@ -219,6 +223,7 @@ for s in SVGs:
         # Ideally we could not update the tagged SVG if it wouldn't change,
         # or at least not update its file modification date -- otherwise,
         # toggling output formats forces a full re-rendering.
+        # Switching to/from alternate tags might also cause issues.
         # We have to handle this case by just speculatively tagging and
         # comparing to the existing file (if it exists)
 
@@ -229,6 +234,26 @@ for s in SVGs:
         if not os.path.exists(rdir):
             # print(rdir)
             os.makedirs(rdir)
+
+        # We should search the relevant file for the tag and skip
+        # if we would normally substitute, but it doesn't exist
+
+        if variant[1] and \
+           int(subprocess.run(["grep", "-cF", AUTH_TAG, s],
+                                             stdout=subprocess.PIPE)
+                              .stdout) < 1:
+            printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
+            continue
+            
+        if variant[2] and \
+           int(subprocess.run(["grep", "-cF", PRINT_TAG, s],
+                                             stdout=subprocess.PIPE)
+                              .stdout) < 1:
+            printv("No Print Tag: skipping what would be", r_tag, sep='\t')
+            continue
+
+                
+        # Now it's sed time    
 
         with tempfile.NamedTemporaryFile() as tmpfp:
             subprocess.run(["sed",
@@ -260,11 +285,11 @@ for s in SVGs:
             # Now check to see if output file is newer
             if os.path.exists(r_out):
                 if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
-                    printv("Skipping", r_out, sep="\t")
+                    printv("No change: skipping", r_out, sep="\t")
                     continue
 
             printv("Rendering", r_out, sep="\t")
-            # Now invoke rsvg-convert for the PDF
+            # Now invoke rsvg-convert
             subprocess.run([RSVG,
                            "-f", ftype,     # export as OUTPUT format
                             "-o", r_out,    # to this filename

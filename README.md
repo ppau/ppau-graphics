@@ -19,6 +19,10 @@ The following programs are required by the render script.
 - `find(1)` 
 - `sed(1)` 
 
+If you do not specify a correct path to `rsvg-convert`, the script will attempt to find it with `which(1)`.
+
+The `renderall.py` script additionally requires `grep(1)` to avoid rendering files without tags as though they had tags.
+
 Additionally, most files in this repository are tracked using Git LFS. See the `.gitattributes` file for a detailed list. An example line: 
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text` 
@@ -37,7 +41,10 @@ Add the help flag: `python3 /path/to/render.py --help` for a list of options.
 
 Replacement tags are specified in `auth_tag.txt` (authoriser) and `print_tag.txt` (printer). 
 
+## Recommended usage
+
 To render all sane variants and formats simultaneously, run `renderall.py` instead. 
+This version of the script doesn't recognise `--no_tags`, `--no_auth` or `--no_print`. 
 
 ## Examples 
 
@@ -54,6 +61,8 @@ Be careful using the `--auth_tag` and `--print_tag` flags: remember that they de
 To not print any tags (equivalent to making `auth_tag.txt` and `print_tag.txt` empty files): 
 
 `python3 /path/to/render.py --no_tags` 
+
+To turn off either the authorisation or printing tags individually, you can use `--no_auth` and `--no_print`.
 
 # License
 
