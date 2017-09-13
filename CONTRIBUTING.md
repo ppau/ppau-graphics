@@ -14,13 +14,13 @@ Authorisation and Printing Tags need to be legible! As such, they should be no l
 
 In general, use Open Sans Condensed for tag-text. 
 
-If you use fonts other than those listed in the Identity Style Guide, please make a note of them. Better yet, run `sh list_fonts.sh` in the project root before committing. This will automatically update `fontlist.txt`. 
+If you use fonts other than those listed in the Identity Style Guide, please make a note of them. Better yet, run `sh list_fonts.sh` in the project root before committing. This will automatically update `FONTLIST.txt`. 
 
-The Authorisation Tag is as follows (remove leading/trailing whitespace): 
+The Authorisation Tag placeholder is as follows (remove leading/trailing whitespace): 
 
     PPAU_AUTH_TAG
     
-The Printing Tag is as follows (remove leading/trailing whitespace):
+The Printing Tag placeholder is as follows (remove leading/trailing whitespace):
 
     PPAU_PRINT_TAG
 
