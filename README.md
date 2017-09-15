@@ -48,15 +48,15 @@ Each variant will be rendered as a PNG and as a PDF. An SVG with text replacemen
 
 So the single source `Artwork/marriage/cmon-aussie.svg` will result in the following files being generated:
 
-- `Renders/mariage/cmon-aussie-auth.pdf`
-- `Renders/mariage/cmon-aussie-auth.png`
-- `Renders/mariage/cmon-aussie-auth.svg`
-- `Renders/mariage/cmon-aussie-both.pdf`
-- `Renders/mariage/cmon-aussie-both.png`
-- `Renders/mariage/cmon-aussie-both.svg`
-- `Renders/mariage/cmon-aussie-none.pdf`
-- `Renders/mariage/cmon-aussie-none.png`
-- `Renders/mariage/cmon-aussie-none.svg`
+- `Renders/marriage/cmon-aussie-auth.pdf`
+- `Renders/marriage/cmon-aussie-auth.png`
+- `Renders/marriage/cmon-aussie-auth.svg`
+- `Renders/marriage/cmon-aussie-both.pdf`
+- `Renders/marriage/cmon-aussie-both.png`
+- `Renders/marriage/cmon-aussie-both.svg`
+- `Renders/marriage/cmon-aussie-none.pdf`
+- `Renders/marriage/cmon-aussie-none.png`
+- `Renders/marriage/cmon-aussie-none.svg`
 
 ## Examples 
 

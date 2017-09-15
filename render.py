@@ -310,11 +310,13 @@ for s in SVGs:
         if len(renderargs): # this line is quite an important optimisation!
             inky = subprocess.run([BACKEND_PATH, "-z"]
                                   + renderargs
-                                  + ["-f", r_tag])
-            printv(inky.stdout)
-            printv(inky.stderr)
+                                  + ["-f", r_tag],
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            printv(inky.stdout.decode())
+            printv(inky.stderr.decode())
         
-print("{} new renders performed. {} renders already up-to-date."
+print("render.py:\t{} new renders performed.\t{} renders already up-to-date."
        .format(updatecount, skipcount), file=sys.stderr)
 
 # this would've been a makefile,
