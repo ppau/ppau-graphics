@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+<!-- Fixed with oXygenXML Editor (https://wwww.oxygenxml.com/) -->
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -156,7 +157,7 @@
          x="55.5625"
          y="227.48239"
          style="stroke-width:0.26458332" /></text>
-    <g
+    <!--<g
        transform="translate(-286.25987,8.288893)"
        id="g80298">
       <text
@@ -214,7 +215,7 @@
            x="116.41666"
            y="225.56248"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.11111069px;font-family:'Open Sans Condensed';-inkscape-font-specification:'Open Sans Condensed, Bold';stroke-width:0.26458332">rhubarb</tspan></text>
-    </g>
+    </g>-->
     <g
        inkscape:groupmode="layer"
        id="layer6"
@@ -2391,7 +2392,7 @@
       </g>
     </g>
   </g>
-  <g
+  <!--<g
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Tags"
@@ -2407,5 +2408,5 @@
          x="168.20851"
          y="117.28139"
          style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:2.82222223px;font-family:'Open Sans Condensed';-inkscape-font-specification:'Open Sans Condensed, Light';text-align:end;text-anchor:end;fill:#999999;stroke-width:0.26458332">PPAU_AUTH_TAG</tspan></text>
-  </g>
+  </g>-->
 </svg>
