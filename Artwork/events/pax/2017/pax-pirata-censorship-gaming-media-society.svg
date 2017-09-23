@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -156,7 +154,7 @@
          x="55.5625"
          y="227.48239"
          style="stroke-width:0.26458332" /></text>
-    <g
+    <!--<g
        transform="translate(-286.25987,8.288893)"
        id="g80298">
       <text
@@ -214,7 +212,7 @@
            x="116.41666"
            y="225.56248"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.11111069px;font-family:'Open Sans Condensed';-inkscape-font-specification:'Open Sans Condensed, Bold';stroke-width:0.26458332">rhubarb</tspan></text>
-    </g>
+    </g>-->
     <g
        inkscape:groupmode="layer"
        id="layer6"
