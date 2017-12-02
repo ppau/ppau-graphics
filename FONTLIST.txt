@@ -1,6 +1,8 @@
 'Alte DIN 1451 Mittelschrift gepraegt'
 'Bebas Neue'
+'Courier New'
 'Deftone Stylus'
+'Gehen Sans Condensed'
 'Gehen Sans'
 'Liberation Sans Narrow'
 'Open Sans Condensed'
@@ -11,6 +13,7 @@ Airstream
 Consolas
 Eurostile
 Helvetica
+Impact
 Jazz LET
 Minecraft
 Showtime
@@ -19,3 +22,4 @@ Source Serif Pro
 Stencil
 Stone Sans ITC TT
 sans-serif
+sans-serif"> </tspan></text>
