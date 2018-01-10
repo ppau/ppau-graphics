@@ -16,7 +16,8 @@
 #### You can override these defaults at run-time via command-line flags.    ####
 
 # You will almost definitely want to update this yourself
-BACKEND_PATH = "/usr/bin/inkscape"
+BACKEND_PATH = "/Applications/Inkscape.app/Contents/Resources/bin/inkscape" 
+# "/usr/bin/inkscape"
 
 # If the paths below are relative, this file is assumed to be in the
 # project's root directory.
