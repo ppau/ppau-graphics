@@ -1,3 +1,5 @@
+
+"Open Sans"
 'Alte DIN 1451 Mittelschrift gepraegt'
 'Bebas Neue'
 'Courier New'
@@ -10,16 +12,26 @@
 'Source Serif Pro'
 'VIDEO PIRATE'
 Airstream
+Arial
 Consolas
 Eurostile
+Gehen Sans
 Helvetica
 Impact
 Jazz LET
 Minecraft
+Open Sans
+Sans
+Sans"
 Showtime
 Source Sans Pro
 Source Serif Pro
 Stencil
 Stone Sans ITC TT
+Utopia
 sans-serif
-sans-serif"> </tspan></text>
+sans-serif"
+sans-serif" /
+
+"Open Sans Bold"
+"Open Sans"
