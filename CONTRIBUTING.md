@@ -12,9 +12,9 @@ Artwork intended to be printed should avoid the use of partial transparency.
 
 Authorisation and Printing Tags need to be legible! As such, they should be no less than half the height of the next smallest piece of text in the artwork (typically the lower line in the party logo). Further, there needs to be sufficient contrast between the tag-text and the background. Setting the tag-text to be the same colour as the background, and then adjusting the brightness by 128 is a simple way to achieve this. 
 
-In general, use Open Sans Condensed for tag-text. 
+In general, use Open Sans for general text and Open Sans Condensed for tag-text. 
 
-If you use fonts other than those listed in the Identity Style Guide, please make a note of them. Better yet, run `sh list_fonts.sh` in the project root before committing. This will automatically update `FONTLIST.txt`. 
+If you use fonts other than those listed in the Identity Style Guide, run `python3 list_fonts.py` in the project root before committing. This will automatically update `FONTLIST.json`. Please only use fonts which are available under permissive licenses.
 
 The Authorisation Tag placeholder is as follows (remove leading/trailing whitespace): 
 
