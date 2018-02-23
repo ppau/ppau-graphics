@@ -48,11 +48,15 @@ VARIANTS = [("auth", True, False),
             ("none", False, False)]
         # NB: it's absurd to include a print tag but not an auth tag.
 
+# Manifest output file
+
+MANIFEST_FILE = "MANIFEST.json"
+
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 
 BACKEND = "inkscape"
 
@@ -66,6 +70,7 @@ import tempfile
 import time
 import argparse
 import filecmp
+import json
 
 # Parse arguments
 
@@ -195,6 +200,13 @@ except FileNotFoundError:
     print_tag_full = PRINT_TAG
 
 
+# We also want to keep a manifest of what we've done.
+# {file basename, [paths to renders...]}
+# but we don't actually want absolute pathnames for that
+# we want them relative to the Source and Render dirs
+manifest = {}
+
+
 skipcount = 0
 updatecount = 0
 notagcount = 0
@@ -206,7 +218,12 @@ for s in SVGs:
         continue
     (sdir, sbase) = os.path.split(s)
 
-    printv(s)
+    key = os.path.splitext(s[(len(SOURCE_DIR)+1):])[0]
+
+    printv('1:\t', key)
+
+    # initialise
+    manifest[key] = []
 
     # Iterate over variants...
 
@@ -292,6 +309,9 @@ for s in SVGs:
             # Pathname of output file
             r_out = os.path.join(rdir, r_tag_root + "-" + variant[0])  + "." + ftype
 
+            manifest[key].append(r_out[(len(RENDER_DIR)+1):])
+            printv("2:\t", r_out[(len(RENDER_DIR)+1):])
+
             # Now check to see if output file is newer
             if os.path.exists(r_out):
                 if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
@@ -316,7 +336,14 @@ for s in SVGs:
                                   stderr=subprocess.PIPE)
             printv(inky.stdout.decode())
             printv(inky.stderr.decode())
-        
+
+
+
+with open(MANIFEST_FILE, 'w') as mf:
+    keys = sorted(manifest.keys())
+    print(json.dumps([{k : manifest[k]} for k in keys]), file=mf)
+    
+    
 print("render.py:\t{} new renders performed.\t{} renders already up-to-date."
        .format(updatecount, skipcount), file=sys.stderr)
 
