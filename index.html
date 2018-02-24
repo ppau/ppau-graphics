@@ -29,6 +29,9 @@
        
 	function clickHandler(name){
 		var printer = window.prompt("Insert printer name and address:", "");
+		if ((printer == null) || (printer == "null")){
+			return;
+		}
 		
 		window.open(dlsource + "?name=" + encodeURIComponent(name) + "&printer=" + encodeURIComponent(printer) + "&format=pdf")
 				
