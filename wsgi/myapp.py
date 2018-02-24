@@ -1,5 +1,5 @@
-# Python 2.7 not 3.5!
-import urlparse
+# Python 3 not 2!  :)
+import urllib.parse
 import subprocess
 import os.path
 
@@ -21,7 +21,7 @@ def application(env, start_response):
 
     # do intelligent things based on env['QUERY_STRING']
 
-    query_dict = urlparse.parse_qs(env['QUERY_STRING'])
+    query_dict = urllib.parse.parse_qs(env['QUERY_STRING'])
 
     # do appropriate things
     # we expect keys for name (a path fragment), printer tag and format
@@ -30,7 +30,7 @@ def application(env, start_response):
     qfile = ""
     qformat = ""    
 
-    qkeys = query_dict.keys()
+    qkeys = list(query_dict.keys())
 
     if "printer" in qkeys:
         if query_dict["printer"]:
@@ -58,7 +58,7 @@ def application(env, start_response):
             qformat = "-e" 
  
         qfile = os.path.join(SOURCE_DIR, query_dict["name"][0] + ".svg")        
-        print qfile
+        print(qfile)
         # sed
         sed = subprocess.Popen([seddy,
                                 "-e", "s/"+AUTH_TAG+"/"+auth_repl+"/g", 
@@ -75,7 +75,7 @@ def application(env, start_response):
         sed.stdout.close() # as per docs for SIGPIPE
         body = inkscape.communicate()[0]
 
-        print type(body)
+        print(type(body))
 
 
     if not (head[0][0:3] == '200'):
