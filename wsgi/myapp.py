@@ -2,6 +2,7 @@
 import urlparse
 import subprocess
 import os.path
+import re
 
 AUTH_TAG = "PPAU_AUTH_TAG"
 PRINT_TAG = "PPAU_PRINT_TAG"
@@ -61,8 +62,8 @@ def application(env, start_response):
         print qfile
         # sed
         sed = subprocess.Popen([seddy,
-                                "-e", "s/"+AUTH_TAG+"/"+auth_repl+"/g", 
-                                "-e", "s/"+PRINT_TAG+"/"+qprint_tag+"/g", 
+                                "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_repl) + "/g", 
+                                "-e", "s/" + re.escape(PRINT_TAG) + "/" + re.escape(qprint_tag) +"/g", 
                                 qfile], 
                                 stdout=subprocess.PIPE)
         # inkscape

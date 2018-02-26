@@ -18,6 +18,7 @@ VERSION = "0.0.1"
 import subprocess
 import argparse
 import re
+import json
 
 # Parse Arguments
 
@@ -59,7 +60,7 @@ for s in SVGs:
 
     results = set([])
 
-    with open(s, 'r') as s_file:
+    with open(s, 'r', encoding="utf-8") as s_file:
 
         for line in s_file:
             match = pattern.search(line)
@@ -74,31 +75,16 @@ for s in SVGs:
             allnames.add(n)
 
 
-def pretty(key, values, sep=''):
-    """Returns a string representing the JSON representation of a {key : [values...]}
-       Mostly this just sanitises the string quotes to doubles."""
-    
-    keyret = '"' + key.strip('"') + '"'
-
-    valuesret = '['
-    for i in sorted(list(values)):
-        valuesret += '"'+i+'",'
-    valuesret.rstrip(',')
-    valuesret += ']'
-
-    return '{' + keyret + ':' + valuesret + '}'
 
 with open(OUTPUT_FILE, 'w') as fontlist_file:
     # pretty print
 
-    print("[", file=fontlist_file)
-
-    print(pretty('all', allnames), file=fontlist_file)
-
     keys = sorted(combo.keys())
-    
-    for k in keys:
-        print(",", file=fontlist_file)
-        print(pretty(k, combo[k]), file=fontlist_file)
-    print("]", file=fontlist_file)
+
+    allfonts = [{'all' : sorted(list(allnames))}]
+
+    tree = [{i : list(combo[i])} for i in keys]
+
+    print(json.dumps(allfonts + tree), file=fontlist_file)
+
 

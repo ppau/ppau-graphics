@@ -71,6 +71,7 @@ import time
 import argparse
 import filecmp
 import json
+import re
 
 # Parse arguments
 
@@ -284,8 +285,8 @@ for s in SVGs:
 
         with tempfile.NamedTemporaryFile() as tmpfp:
             subprocess.run(["sed",
-                            "-e", "s/"+AUTH_TAG+"/"+auth_tag_var+"/g",
-                            "-e", "s/"+PRINT_TAG+"/"+print_tag_var+"/g",
+                            "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_tag_var) + "/g",
+                            "-e", "s/" + re.escape(PRINT_TAG) + "/" + re.escape(print_tag_var) + "/g",
                             s],
                            stdout=tmpfp)
 
