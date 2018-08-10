@@ -22,7 +22,7 @@ The following programs are required by the render script.
 If you do not specify a correct path to `inkscape`, the script will attempt to find it with `which(1)`.
 
 
-Additionally, most files in this repository are tracked using Git LFS. See the `.gitattributes` file for a detailed list. An example line: 
+**Additionally, most files in this repository are tracked using Git LFS.** See the `.gitattributes` file for a detailed list. An example line: 
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text` 
 
