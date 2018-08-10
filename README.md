@@ -22,9 +22,11 @@ The following programs are required by the render script.
 If you do not specify a correct path to `inkscape`, the script will attempt to find it with `which(1)`.
 
 
-**Additionally, most files in this repository are tracked using Git LFS.** See the `.gitattributes` file for a detailed list. An example line: 
+**Additionally, most files in this repository are tracked using [Git LFS.](https://git-lfs.github.com/)** See the `.gitattributes` file for a detailed list. An example line: 
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text` 
+
+Git LFS isn't usually installed by default. You'll need to run `git lfs install` *before* cloning. Otherwise most of the files will be broken.
 
 You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. 
 
