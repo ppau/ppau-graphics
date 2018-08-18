@@ -12,6 +12,7 @@ TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
+SITE_ROOT = "./"    # you might need to put something here
 
 REPLACE_TAG = "PPAU_ITEMS_HERE"
 
@@ -21,7 +22,7 @@ CONVERT_PATH = ""
 preconvargs = []
 convargs = ["-background", "white", "-flatten", "-resize", "x400", "-quality", "80"]
 
-VERBOSE = True
+VERBOSE = False
 
 import json
 import os.path
@@ -93,8 +94,8 @@ with open(MANIFEST_FILE, 'r') as mani_fp:
         printv(flippy.stderr.decode())
 
         replacement_str += '      <hr>\r\n      <div>\r\n        '+\
-        '<img src="'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-        '<p class="caption"><a href="'+r_in+'">'+k+'</a></p>\r\n      </div>\r\n'
+        '<img src="'+SITE_ROOT+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
+        '<p class="caption"><a href="'+SITE_ROOT+'/'+r_in+'">'+k+'</a></p>\r\n      </div>\r\n'
 
 
 printv(replacement_str)
