@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>PPAU-Graphics index</title>
+    <style media="screen" type="text/css">
+	img {height : 400px}
+	.caption {font-size : x-small}  
+
+  </style>
+  </head>
+  <body>
+    <h1>Click on an image to add a printing tag and get a PDF!</h1>
+    <p>Under Australian electoral law, <a href="https://pirateparty.org.au/wiki/Authorisation_processes#Printed_materials.2C_videos_and_paid_Internet_advertisements">almost all printed political material</a> must identify the printer, as well as identifiying the authorising person. This page serves as a mechanism to keep authorisation tags current, and to easily insert printing tags.</p> 
+    <p>To download a PDF with the printing tag, simply click on an image and insert the name and full address of the printer when prompted.</p>
+    <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
+    <p>If you want image to share online, just save it as a PNG from this page - the correct authorisation tag is already in place!</p>
+    
+
+    <div id="itemsGoHere"></div>
+    <script>
+
+	let dlsource = "https://abjago.net/wsgi";
+	let manifestsource = 'https://abjago.net/ppau-graphics/MANIFEST.json'
+
+        // hax
+	var manifest;
+	// download the manifest
+        var httpRequest = new XMLHttpRequest();
+       
+	function clickHandler(name){
+		var printer = window.prompt("Insert printer name and address:", "");
+		if ((printer == null) || (printer == "null")){
+			return;
+		}
+		
+		window.open(dlsource + "?name=" + encodeURIComponent(name) + "&printer=" + encodeURIComponent(printer) + "&format=pdf")
+				
+	}
+ 
+        httpRequest.onreadystatechange = function(){
+		if (!(httpRequest.readyState === XMLHttpRequest.DONE)) {
+			return;
+		}
+
+		// handle the response	
+
+		manifest = JSON.parse(httpRequest.responseText);
+   		window.console.log(manifest);
+		
+		var containerDiv = document.getElementById("itemsGoHere");
+		for(var i=0; i < manifest.length; i++){
+			window.console.log(manifest[i]);
+			window.console.log(typeof manifest[i]);
+			thiskey = Object.keys(manifest[i])[0];
+			
+			if(manifest[i][thiskey].length < 6){
+				continue;
+			} 
+			if(thiskey.startsWith("_")){
+				continue;
+			}
+
+			var imgcont = document.createElement("div");
+			var imgy = document.createElement("img");
+			imgy.setAttribute("src", "/ppau-graphics/Renders/"+ manifest[i][thiskey][1]);
+			imgy.setAttribute("alt", thiskey);
+			imgy.id = "manifest-" + String(i);
+	
+			imgy.onclick = function(event){
+				// window.console.log(event);
+				clickHandler(event.target.alt);
+			}
+			imgcont.id = "container-" + String(i);
+			imgcont.appendChild(imgy);
+
+			var caption = document.createElement("p");
+			caption.innerHTML = thiskey;
+			caption.className = "caption";
+			imgcont.appendChild(caption);
+			containerDiv.appendChild(imgcont);
+				
+		}	
+
+
+        };
+
+        httpRequest.open('GET', manifestsource, true);
+        httpRequest.send(); // well, I see why people offload this boilerplate to jQuery!
+
+    </script>
+  </body>
+</html>

@@ -79,6 +79,10 @@ To specify an alternate file containing the authorisation tag:
 
 There's a semi-experimental WSGI implementation in the subdirectory of that name.
 
+Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs. 
+
+The old approach (which downloaded a manifest JSON and then loaded the PNGs) is still present as `index_old.html`. It's just slower and more server load.
+
 # License
 
 Artwork and text created by members of Pirate Party Australia is released under the Creative Commons [Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license (CC-BY 4.0), unless otherwise specified.

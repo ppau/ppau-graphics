@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>PPAU-Graphics index</title>
+    <style media="screen" type="text/css">
+      body {font-family: "Open Sans", sans-serif;
+              width: 90vw; min-width: 600px; margin:auto;}
+      img {height : 400px; border: 1px solid #eee; border-radius: 4px}
+      .caption {font-size : small; font-weight: bolder;}
+      #itemsGoHere {text-align: center;}
+      hr {color: #0073AE; background-color: #0073AE; height : 2px; border: 0;}
+      a {color: #0073AE;}
+      h1 {color: #fff; background-color: #0073AE; border-radius: 4px; text-align:center}
+    </style>
+  </head>
+  <body>
+    <h1>Click on an image to add a printing tag and get a PDF!</h1>
+    <p>Under Australian electoral law, <a href="https://pirateparty.org.au/wiki/Authorisation_processes#Printed_materials.2C_videos_and_paid_Internet_advertisements">almost all printed political material</a> must identify the printer, as well as identifiying the authorising person. This page serves as a mechanism to keep authorisation tags current, and to easily insert printing tags.</p>
+    <p>To download a PDF with the printing tag, simply click on an image and insert the name and full address of the printer when prompted.</p>
+    <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
+    <p>If you want image to share online, just click the caption to save it as a PNG from this page - the correct authorisation tag is already in place!</p>
+
+
+    <div id="itemsGoHere" onclick="clickHandler(event)">
+      PPAU_ITEMS_HERE
+    </div>
+    <hr>
+    <script>
+
+      let dlsource = "https://abjago.net/wsgi";
+
+      function clickHandler(event){
+        var name = event.target.alt;
+
+        //console.log(event)
+
+        if(event.target.tagName != "IMG"){
+          return;
+        }
+
+        if(name==""){
+          return;
+        }
+
+      	var printer = window.prompt("Insert printer name and address:", "");
+      	if ((printer == null) || (printer == "null")){
+      		return;
+      	}
+      	window.open(dlsource + "?name=" + encodeURIComponent(name) + "&printer=" + encodeURIComponent(printer) + "&format=pdf");
+      }
+    </script>
+  </body>
+</html>
