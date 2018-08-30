@@ -13,6 +13,7 @@ INDEX_FILE = "index.html"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = "./"    # you might need to put something here
+# a `.` or `./` for local testing, something more substantial for on-server
 
 REPLACE_TAG = "PPAU_ITEMS_HERE"
 
