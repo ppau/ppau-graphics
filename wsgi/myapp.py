@@ -13,12 +13,12 @@ seddy = "/bin/sed"
 inky = "/usr/bin/inkscape"
 
 def application(env, start_response):
-    head = ['', [()]]	
+    head = ['', [()]]
     body = b""
 
     auth_repl = ""
     with open(auth_file, 'r') as af:
-	auth_repl = af.read().replace('\n', " ")   
+	auth_repl = af.read().replace('\n', " ")
 
     # do intelligent things based on env['QUERY_STRING']
 
@@ -29,7 +29,7 @@ def application(env, start_response):
 
     qprint_tag = ""
     qfile = ""
-    qformat = ""    
+    qformat = ""
 
     qkeys = query_dict.keys()
 
@@ -56,10 +56,10 @@ def application(env, start_response):
         elif query_dict["format"][0].upper() == "PNG":
             # handle PNG
             head = ['200 OK', [('Content-Type', 'image/png')]]
-            qformat = "-e" 
- 
+            qformat = "-e"
+
         qfile = os.path.join(SOURCE_DIR, query_dict["name"][0] + ".svg")        
-        print qfile
+        ##print qfile
         # sed
         sed = subprocess.Popen([seddy,
                                 "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_repl) + "/g", 
@@ -76,7 +76,9 @@ def application(env, start_response):
         sed.stdout.close() # as per docs for SIGPIPE
         body = inkscape.communicate()[0]
 
-        print type(body)
+        head[1].append(('Content-Disposition', 'inline; filename="' + re.sub('[^0-9a-zA-Z-_\.]+', '-', query_dict['name'][0] + '.' + query_dict["format"][0].lower() ) + '"'))
+
+        ##print type(body)
 
 
     if not (head[0][0:3] == '200'):
