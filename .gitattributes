@@ -5,3 +5,4 @@
 *.svg filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
 *.eps filter=lfs diff=lfs merge=lfs -text
+*.sla filter=lfs diff=lfs merge-lfs -text

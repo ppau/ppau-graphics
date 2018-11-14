@@ -12,7 +12,7 @@ TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
-SITE_ROOT = "./"    # you might need to put something here
+SITE_ROOT = "."    # you might need to put something here
 # a `.` or `./` for local testing, something more substantial for on-server
 
 REPLACE_TAG = "PPAU_ITEMS_HERE"
@@ -30,16 +30,32 @@ import os.path
 import sys
 import subprocess
 import re
+import argparse
 
+
+# Handle our very minimal set of CL Args
+
+argparser = argparse.ArgumentParser(description="Generate a static index page from a template, with JPEGs for the thumbnails.")
+argparser.add_argument('--manifest-file', default=MANIFEST_FILE, help="Path to the manifest JSON file")
+argparser.add_argument('--template-file', default=TEMPLATE_FILE, help="Path to the template HTML file")
+argparser.add_argument('--index-file', default=INDEX_FILE, help="Path to put the generated index HTML file")
+argparser.add_argument('--render-dir', default=RENDER_DIR, help="Path to the render directory")
+argparser.add_argument('--site-root', default=SITE_ROOT, help="Path for the root of the index page; default is `"+SITE_ROOT+"`")
+argparser.add_argument('--replace-tag', default=REPLACE_TAG, help="The string in the template to be replaced by the content")
+argparser.add_argument('--verbose', default=VERBOSE, action='store_true', help="Show ALL the debugging output!")
+
+arguments = argparser.parse_args()
 
 # Just a little helper function
 def printv(*args, **kwargs):
-    if VERBOSE:
+    if arguments.verbose:
         print(*args, **kwargs, file=sys.stderr)
+
+printv("Command line arguments:", arguments)
 
 # make `convert` work (on posix systems)
 if not os.path.exists(CONVERT_PATH):
-    printv(CONVERT + " not found at specified path " + CONVERT_PATH)
+    printv("`"+ CONVERT + "` not found at specified path `" + CONVERT_PATH + "`.")
 
     if os.name == "posix":
         converttry = subprocess.run(["which", CONVERT],
@@ -47,13 +63,13 @@ if not os.path.exists(CONVERT_PATH):
                 universal_newlines=True)\
                 .stdout.strip()
         if converttry:
-            printv("Using "+ CONVERT +" at " + converttry + " instead.")
+            printv("Using `"+ CONVERT +"` at `" + converttry + "` instead.")
             CONVERT_PATH = converttry
         else:
-            print("ERROR: could not find "+ CONVERT +"!", file=sys.stderr)
+            print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
             sys.exit(1)
     else:
-        print("ERROR: could not find "+ CONVERT +"!", file=sys.stderr)
+        print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
         sys.exit(1)
 
 
@@ -66,7 +82,9 @@ replacement_str = ""
 src_str = ""
 out_str = ""
 
-with open(MANIFEST_FILE, 'r') as mani_fp:
+printv("\ntitle", "count", "thumbnail path", sep="\t")
+
+with open(arguments.manifest_file, 'r') as mani_fp:
     manifest = json.load(mani_fp)
 
     for m in manifest:
@@ -80,31 +98,31 @@ with open(MANIFEST_FILE, 'r') as mani_fp:
 
         ourfile = m[k][1]
 
-        r_in = os.path.join(RENDER_DIR, ourfile)
-        r_out = os.path.join(RENDER_DIR, ourfile[0:-4] + "_preview" + "." + "jpg")
+        r_in = os.path.join(arguments.render_dir, ourfile)
+        r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + "." + "jpg")
 
 
-        printv(k, len(m[k]), r_out) # [1] is *-auth.png
+        printv(k, len(m[k]), r_out, sep="\t") # [1] is *-auth.png
 
         flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
                               + convargs
                               + [r_out],
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
-        printv(flippy.stdout.decode())
-        printv(flippy.stderr.decode())
+        printv("stdout from ^^^:", flippy.stdout.decode())
+        printv("stderr from ^^^:", flippy.stderr.decode())
 
         replacement_str += '      <hr>\r\n      <div>\r\n        '+\
-        '<img src="'+SITE_ROOT+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-        '<p class="caption"><a href="'+SITE_ROOT+'/'+r_in+'">'+k+'</a></p>\r\n      </div>\r\n'
+        '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
+        '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'">'+k+'</a></p>\r\n      </div>\r\n'
 
 
-printv(replacement_str)
+printv("\nReplacement String:\n", replacement_str)
 
 
-with open(TEMPLATE_FILE) as templatefp:
-    out_str = templatefp.read().replace(REPLACE_TAG, replacement_str)
+with open(arguments.template_file) as templatefp:
+    out_str = templatefp.read().replace(arguments.replace_tag, replacement_str)
 
 
-with open(INDEX_FILE, 'w') as indexfp:
+with open(arguments.index_file, 'w') as indexfp:
     print(out_str, file=indexfp)

@@ -31,7 +31,8 @@ Git LFS isn't usually installed by default. You'll need to run `git lfs install`
 
 ## Fonts
 
-You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. You can run `python3 list_fonts.py` to get a JSON of all the fonts used in the project and what files use them.
+You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. You can run `python3 list_fonts.py` to get a JSON of all the fonts used in the project and what files use them. This will be found in `FONTLIST.json`; it is recommended to run `list_fonts` yourself rather than relying on the JSON being up to date.
+
 
 # Usage
 
@@ -81,7 +82,6 @@ There's a semi-experimental WSGI implementation in the subdirectory of that name
 
 Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs. 
 
-The old approach (which downloaded a manifest JSON and then loaded the PNGs) is still present as `index_old.html`. It's just slower and more server load.
 
 # License
 
