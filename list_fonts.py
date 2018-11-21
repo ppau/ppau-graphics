@@ -34,12 +34,12 @@ parser.add_argument('--output_file', dest='output_file',
 
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
-args = parser.parse_args()
+arguments = parser.parse_args()
 
 # Update Flags
 
-SOURCE_DIR = args.source_dir
-OUTPUT_FILE = args.output_file
+SOURCE_DIR = arguments.source_dir
+OUTPUT_FILE = arguments.output_file
 
 combo = {}
 
@@ -76,7 +76,7 @@ for s in SVGs:
 
 
 
-with open(OUTPUT_FILE, 'w') as fontlist_file:
+with open(arguments.output_file, 'w') as fontlist_file:
     # pretty print
 
     keys = sorted(combo.keys())
@@ -85,6 +85,8 @@ with open(OUTPUT_FILE, 'w') as fontlist_file:
 
     tree = [{i : list(combo[i])} for i in keys]
 
-    print(json.dumps(allfonts + tree), file=fontlist_file)
+    print(json.dumps(allfonts+tree), file=fontlist_file)
+
+    
 
 
