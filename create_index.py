@@ -115,8 +115,9 @@ with open(arguments.manifest_file, 'r') as mani_fp:
         r_in = os.path.join(arguments.render_dir, ourfile)
         r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + "." + "jpg")
 
+        dlname = os.path.splitext(os.path.basename(ourfile))[0][0:-5]
 
-        printv(k, len(m[k]), r_out, sep="\t") # [1] is *-auth.png
+        printv(k, len(m[k]), r_in, r_out, ourfile, sep="\t") # [1] is *-auth.png
 
         flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
                               + convargs
@@ -129,11 +130,11 @@ with open(arguments.manifest_file, 'r') as mani_fp:
         if not onlineOnlyFlag:
             poster_replacement_str += '      <hr>\r\n      <div>\r\n        '+\
             '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+ourfile+'">'+k+'</a></p>\r\n      </div>\r\n'
+            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+k+'</a></p>\r\n      </div>\r\n'
         else:
             online_replacement_str += '      <hr>\r\n      <div>\r\n        '+\
             '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+ourfile+'">'+k+'</a></p>\r\n      </div>\r\n'
+            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+k+'</a></p>\r\n      </div>\r\n'
 
 # Close off the two `<div>`s
 
