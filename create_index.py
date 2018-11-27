@@ -15,15 +15,19 @@ RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = "."    # you might need to put something here
 # a `.` or `./` for local testing, something more substantial for on-server
 
-REPLACE_TAG = "PPAU_ITEMS_HERE"
+POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
+ONLINE_REPLACE_TAG = "PPAU_ONLINES_HERE"
+
 
 CONVERT = "convert"
 CONVERT_PATH = ""
 
 preconvargs = []
 convargs = ["-background", "white", "-flatten", "-resize", "x400", "-quality", "80"]
+# ^^^ give it a white bg if needed, maintain aspect ratio but make it 400px high
 
 VERBOSE = False
+VERSION = 0.3
 
 import json
 import os.path
@@ -41,8 +45,10 @@ argparser.add_argument('--template-file', default=TEMPLATE_FILE, help="Path to t
 argparser.add_argument('--index-file', default=INDEX_FILE, help="Path to put the generated index HTML file")
 argparser.add_argument('--render-dir', default=RENDER_DIR, help="Path to the render directory")
 argparser.add_argument('--site-root', default=SITE_ROOT, help="Path for the root of the index page; default is `"+SITE_ROOT+"`")
-argparser.add_argument('--replace-tag', default=REPLACE_TAG, help="The string in the template to be replaced by the content")
+argparser.add_argument('--poster-replace-tag', default=POSTER_REPLACE_TAG, help="The string in the template to be replaced by the poster content")
+argparser.add_argument('--online-replace-tag', default=ONLINE_REPLACE_TAG, help="The string in the template to be replaced by the online-only content")
 argparser.add_argument('--verbose', default=VERBOSE, action='store_true', help="Show ALL the debugging output!")
+argparser.add_argument('--version', action='version', version=VERSION)
 
 arguments = argparser.parse_args()
 
@@ -78,26 +84,34 @@ if not os.path.exists(CONVERT_PATH):
 #   <div><img><p>caption</p></div>'s.
 
 
-replacement_str = ""
+poster_replacement_str = ''
+online_replacement_str = ''
 src_str = ""
 out_str = ""
 
 printv("\ntitle", "count", "thumbnail path", sep="\t")
 
+# Collate posters.
 with open(arguments.manifest_file, 'r') as mani_fp:
     manifest = json.load(mani_fp)
 
     for m in manifest:
         k = list(m.keys())[0]
 
-        if len(m[k]) < 6:
+        onlineOnlyFlag = False
+
+        if len(m[k]) == 6:
+            pass
+        elif len(m[k]) == 4:
+            # do something interesting
+            onlineOnlyFlag = True
+        else:
             continue
 
         if m[k][0].startswith('_'):
             continue
 
         ourfile = m[k][1]
-
         r_in = os.path.join(arguments.render_dir, ourfile)
         r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + "." + "jpg")
 
@@ -112,16 +126,24 @@ with open(arguments.manifest_file, 'r') as mani_fp:
         printv("stdout from ^^^:", flippy.stdout.decode())
         printv("stderr from ^^^:", flippy.stderr.decode())
 
-        replacement_str += '      <hr>\r\n      <div>\r\n        '+\
-        '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-        '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'">'+k+'</a></p>\r\n      </div>\r\n'
+        if not onlineOnlyFlag:
+            poster_replacement_str += '      <hr>\r\n      <div>\r\n        '+\
+            '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
+            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+ourfile+'">'+k+'</a></p>\r\n      </div>\r\n'
+        else:
+            online_replacement_str += '      <hr>\r\n      <div>\r\n        '+\
+            '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
+            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+ourfile+'">'+k+'</a></p>\r\n      </div>\r\n'
+
+# Close off the two `<div>`s
 
 
-printv("\nReplacement String:\n", replacement_str)
+printv("\nPoster Replacement String:\n", poster_replacement_str)
 
 
 with open(arguments.template_file) as templatefp:
-    out_str = templatefp.read().replace(arguments.replace_tag, replacement_str)
+    out_str = templatefp.read().replace(arguments.poster_replace_tag, poster_replacement_str)
+    out_str = out_str.replace(arguments.online_replace_tag, online_replacement_str)
 
 
 with open(arguments.index_file, 'w') as indexfp:

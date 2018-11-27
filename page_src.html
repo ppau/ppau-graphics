@@ -8,13 +8,15 @@
     <meta name="theme-color" content="#0073AE">
     <meta name="Description" content="Pirate Poster Generator">
     <title>Pirate Poster Generator | PPAU-Graphics</title>
+    <base target="_blank">
     <style media="screen" type="text/css">
       body {font-family: "Open Sans", sans-serif;
               width: 90vw; /*min-width: 600px;*/ margin:auto;}
-      img {height : 400px; border: 1px solid #eee; border-radius: 1vw}
+      img {max-height:400px; max-width: 40vw;
+              border: 1px solid #eee; border-radius: 1vw}
       .caption {font-size : small; font-weight: bolder;}
-      #itemsGoHere {text-align: center;flex-wrap: wrap;display: flex;}
-      #itemsGoHere > div {margin-bottom: 5vw; margin-right: 2vw}
+      #postersGoHere, #onlinesGoHere {text-align: center;flex-wrap: wrap;display: flex;}
+      #postersGoHere, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw}
       hr {color: #0073AE; background-color: #0073AE; height : 2px; border: 0;}
       a {color: #0073AE;}
       h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
@@ -30,8 +32,15 @@
     <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
 
 
-    <div id="itemsGoHere" onclick="clickHandler(event)">
-      PPAU_ITEMS_HERE
+    <div id="postersGoHere" onclick="clickHandler(event)">
+      PPAU_POSTERS_HERE
+    </div>
+    <hr>
+
+    <h1>The below images are just for online...</h1>
+    <p>Click the image caption to download the PNG &mdash; the correct authorisation tag is already in place!</p>
+    <div id="onlinesGoHere"> <!--- No onClick for this one --->
+        PPAU_ONLINES_HERE
     </div>
     <hr>
     <script>
