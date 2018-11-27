@@ -14,6 +14,7 @@ INDEX_FILE = "index.html"
 RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = "."    # you might need to put something here
 # a `.` or `./` for local testing, something more substantial for on-server
+# such as `./ppau-graphics`
 
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
 ONLINE_REPLACE_TAG = "PPAU_ONLINES_HERE"
