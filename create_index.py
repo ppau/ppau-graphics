@@ -134,8 +134,9 @@ with open(arguments.manifest_file, 'r') as mani_fp:
             '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+k+'</a></p>\r\n      </div>\r\n'
         else:
             online_replacement_str += '      <hr>\r\n      <div>\r\n        '+\
+            '<a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+\
             '<img src="'+arguments.site_root+'/'+r_out+'" alt="'+k+'">'+'\r\n        '+ \
-            '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+k+'</a></p>\r\n      </div>\r\n'
+            '<p class="caption">'+k+'</p></a>\r\n      </div>\r\n'
 
 # Close off the two `<div>`s
 
