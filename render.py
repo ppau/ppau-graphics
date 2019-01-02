@@ -16,8 +16,9 @@
 #### You can override these defaults at run-time via command-line flags.    ####
 
 # You will almost definitely want to update this yourself
-BACKEND_PATH = "/Applications/Inkscape.app/Contents/Resources/bin/inkscape" 
+BACKEND_PATH = "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
 # "/usr/bin/inkscape"
+COLLATER_PATH = "/usr/bin/pdfunite"
 
 # If the paths below are relative, this file is assumed to be in the
 # project's root directory.
@@ -38,12 +39,22 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
 VERBOSE = False
 
+NO_COLLATE = False
+COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
+# Collation format regex spec: four groups, consisting of...
+# 1. the primary file name,
+# 2. an underscore and a P,
+# 3. digit[s] specifying the page order
+# 4. optional alphanumeric description starting with a hyphen
+# [the extension follows and is handled separately]
+# example: `relative/path/to/filename_p1.svg`
+
 #### You can't currently override these at run-time                         ####
- 
+
 FORMATS = ["pdf", "png"]
 
         #   (name, include auth tag, include print tag)
-VARIANTS = [("auth", True, False),  
+VARIANTS = [("auth", True, False),
             ("both", True, True),
             ("none", False, False)]
         # NB: it's absurd to include a print tag but not an auth tag.
@@ -53,12 +64,13 @@ VARIANTS = [("auth", True, False),
 MANIFEST_FILE = "MANIFEST.json"
 
 ################################################################################
-#### You shouldn't need to ever edit anything below this comment.           ####
+#### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.3.1"
+VERSION = "0.4.0a"
 
 BACKEND = "inkscape"
+COLLATER = "pdfunite"
 
 # import all the things
 import subprocess
@@ -85,7 +97,7 @@ parser.add_argument('--render_dir', dest='render_dir',
                     action='store', default=RENDER_DIR,
                     help="Where to put the rendered files. " +
                         "It will be created if necessary.")
-                   
+
 parser.add_argument('--auth_tag_file', dest='auth_tag_file',
                     action='store', default=AUTH_TAG_FILE,
                     help="The file containing the authorisation text.")
@@ -107,6 +119,14 @@ parser.add_argument('--backend_path', dest='backend_path',
                     help="The path to the backend renderer, " +
                             "by default your "+ BACKEND + " install.")
 
+parser.add_argument('--no-collate', dest='no_collate',
+                    action='store_const', default=NO_COLLATE, const=True,
+                    help="Don't collate multi-page files.")
+
+parser.add_argument('--collate-fmt', dest='collate_fmt',
+                    action='store', default=COLLATE_FMT,
+                    help="A regex string that matches your filename numbering pattern.")
+
 parser.add_argument('--verbose', dest='verbose',
                     action='store_const', default=VERBOSE, const=True,
                     help="Be more verbose about file processing.")
@@ -125,6 +145,8 @@ PRINT_TAG_FILE = args.print_tag_file
 AUTH_TAG = args.auth_tag
 PRINT_TAG = args.print_tag
 BACKEND_PATH = args.backend_path
+NO_COLLATE = args.no_collate
+COLLATE_FMT = args.collate_fmt
 VERBOSE = args.verbose
 
 # Fix directory issues by using absolute pathnames (if possible).
@@ -143,8 +165,8 @@ if sys.path[0]:
         AUTH_TAG_FILE = os.path.join(sys.path[0], AUTH_TAG_FILE)
 
     if not os.path.isabs(PRINT_TAG_FILE):
-        PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)    
-    
+        PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)
+
 
 # Just a little helper function
 def printv(*args, **kwargs):
@@ -153,7 +175,7 @@ def printv(*args, **kwargs):
 
 printv("Version:", VERSION)
 
-# make BACKEND-convert work (on posix systems)
+# make BACKEND work (on posix systems)
 if not os.path.exists(BACKEND_PATH):
     printv(BACKEND + " not found at specified path " + BACKEND_PATH)
 
@@ -172,15 +194,34 @@ if not os.path.exists(BACKEND_PATH):
         print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
         sys.exit(1)
 
+# Go find COLLATER if we haven't already
+if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
+    printv("{} not found at specified path {}".format(COLLATER, COLLATER_PATH))
+
+    if os.name == "posix":
+        collatertry = subprocess.run(["which", COLLATER],
+                stdout=subprocess.PIPE,
+                universal_newlines=True)\
+                .stdout.strip()
+        if backendtry:
+            printv("Using "+ COLLATER +" at " + collatertry + " instead.")
+            COLLATER_PATH = collatertry
+        else:
+            print("ERROR: could not find "+ COLLATER +"!", file=sys.stderr)
+            sys.exit(1)
+    else:
+        print("ERROR: could not find "+ COLLATER +"!", file=sys.stderr)
+        sys.exit(1)
+
 # Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
                        stdout=subprocess.PIPE,
                        universal_newlines=True)\
         .stdout.strip().split(sep="\n")
 
-# Load printing tags
+# Load authorisation and printing tags
 
-auth_tag_full = ""    
+auth_tag_full = ""
 print_tag_full = ""
 
 try:
@@ -191,7 +232,7 @@ except FileNotFoundError:
     print("Authorisation tag file not found!",
           "No substitution will be performed.")
     auth_tag_full = AUTH_TAG
-try:        
+try:
     with open(PRINT_TAG_FILE) as ptfp:
         print_tag_full = ptfp.read().strip()
         printv(print_tag_full)
@@ -207,11 +248,12 @@ except FileNotFoundError:
 # we want them relative to the Source and Render dirs
 manifest = {}
 
+multipagers = {}
 
 skipcount = 0
 updatecount = 0
 notagcount = 0
-        
+
 # Iterate over SVGs...
 
 for s in SVGs:
@@ -219,29 +261,47 @@ for s in SVGs:
         continue
     (sdir, sbase) = os.path.split(s)
 
+    # actually use relative path
     key = os.path.splitext(s[(len(SOURCE_DIR)+1):])[0]
 
     printv('1:\t', key)
 
+    # figure out here if we're actually in a multi-pager
+    page_num = 1
+    re_match = re.search(COLLATE_FMT, key)
+    newkey = key # updated if multipager
+    if re_match:
+        newkey = re_match.group(1)
+        if newkey not in multipagers:
+            multipagers[newkey] = []
+        multipagers[newkey].append((re_match.group(2),re_match.group(3)))
+        printv("*** Found a multi-pager: {}, page {}".format(re_match.group(1), re_match.group(3)))
+        page_num = int(re_match.group(3))
+
+
     # initialise
-    manifest[key] = []
+#    manifest[key] = []
+    if not newkey in manifest:
+        manifest[newkey] = {}
+
+    submanifest = [] # pop variants in here instead
 
     # Iterate over variants...
 
     for variant in VARIANTS:
-        
+
         auth_tag_var = ""
         print_tag_var = ""
         if variant[1]:
             auth_tag_var = auth_tag_full
         if variant[2]:
             print_tag_var = print_tag_full
-        
+
         # We shall first output the auth'd SVGs to RENDER_DIR
 
         rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
         (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
-        # Pathnames of tagged SVGs  
+        # Pathnames of tagged SVGs
         r_tag = os.path.join(rdir, r_tag_root + "-" + variant[0] + r_tag_ext)
 
         # On checking file modification dates and skipping if 'no change':
@@ -253,7 +313,7 @@ for s in SVGs:
         # We have to handle this case by just speculatively tagging and
         # comparing to the existing file (if it exists)
 
-        
+
         # OK. Create temp file and run sed into it for the tags
         # hmm. this runs once per output format right now.
 
@@ -271,7 +331,7 @@ for s in SVGs:
             printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
             notagcount += 1
             continue
-            
+
         if variant[2] and \
            int(subprocess.run(["grep", "-cF", PRINT_TAG, s],
                                              stdout=subprocess.PIPE)
@@ -280,8 +340,8 @@ for s in SVGs:
             notagcount += 1
             continue
 
-                
-        # Now it's sed time    
+
+        # Now it's sed time
 
         with tempfile.NamedTemporaryFile() as tmpfp:
             subprocess.run(["sed",
@@ -297,20 +357,20 @@ for s in SVGs:
                 else:
                     # The tagged SVG has changed: copy it over
                     printv("Updating", r_tag, sep="\t")
-                    shutil.copy2(tmpfp.name, r_tag)            
+                    shutil.copy2(tmpfp.name, r_tag)
             else:
                 # The tagged SVG now exists: copy it over
                 printv("Updating", r_tag, sep="\t")
-                shutil.copy2(tmpfp.name, r_tag)            
+                shutil.copy2(tmpfp.name, r_tag)
 
         renderargs = []
-        
+
         # Iterate over output formats...
         for ftype in FORMATS:
             # Pathname of output file
             r_out = os.path.join(rdir, r_tag_root + "-" + variant[0])  + "." + ftype
 
-            manifest[key].append(r_out[(len(RENDER_DIR)+1):])
+            submanifest.append(r_out[(len(RENDER_DIR)+1):])
             printv("2:\t", r_out[(len(RENDER_DIR)+1):])
 
             # Now check to see if output file is newer
@@ -322,32 +382,84 @@ for s in SVGs:
             # (else:)
             updatecount += 1
             printv("Rendering", r_out, sep="\t")
-            
-            if ftype == "png":
-                renderargs += ["-e", r_out]
-            elif ftype == "pdf":
-                renderargs += ["-A", r_out]
 
-        # output ALL the things
-        if len(renderargs): # this line is quite an important optimisation!
-            inky = subprocess.run([BACKEND_PATH, "-z"]
-                                  + renderargs
-                                  + ["-f", r_tag],
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE)
-            printv(inky.stdout.decode())
-            printv(inky.stderr.decode())
+            if ftype == "png":
+                renderargs = ["-e", r_out]
+            elif ftype == "pdf":
+                renderargs = ["--export-dpi=300", "-A", r_out]
+
+            # output ALL the things
+            if len(renderargs): # this line is quite an important optimisation!
+                inky = subprocess.run([BACKEND_PATH, "-z"]
+                                      + renderargs
+                                      + ["-f", r_tag],
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+                printv(inky.stdout.decode())
+                printv(inky.stderr.decode())
+
+    # Finally, now that we're done with variants...
+    manifest[newkey][page_num] = submanifest
+
+# Here. we collate rendered PDFs.
+
+printv(multipagers)
+
+for mpkey in multipagers:
+    # list of filenames to collate
+
+    printv(mpkey)
+
+    (mpkeyroot, mpkeyname) = os.path.split(mpkey)
+
+    R_SUBDIR = os.path.join(RENDER_DIR, mpkeyroot)
+
+    PDFs = subprocess.run(["find", R_SUBDIR, "-type", "f", "-name", mpkeyname+"*.pdf"],
+                           stdout=subprocess.PIPE,
+                           universal_newlines=True)\
+            .stdout.strip().split(sep="\n")
+
+    # We need a coherent ordering
+    # keeping in mind that we probably have multiple tag variants to deal with
+
+    tagset = {}
+
+    for p in PDFs:
+        proot = os.path.splitext(p)[0]
+        #printv(proot)
+        re_match = re.search(COLLATE_FMT, proot)
+        # Note that this won't match the finished product
+        if re_match:
+            #printv((re_match.group(1), re_match.group(2), re_match.group(3), re_match.group(4)))
+            tk = (re_match.group(1), re_match.group(4))
+            if not tk in tagset:
+                tagset[tk] = []
+            tagset[tk].append((re_match.group(2), re_match.group(3)))
+            # NB the int() cast above!
+        else:
+            #printv("no match here")
+            pass
+
+    for t in tagset:
+        tagset[t] = sorted(tagset[t], key=lambda x: int(x[1]))
+        # this little lambda trick sorts by the integer value of the digits
+        # doubly tricky because they're normally strings (i.e. '11' before '2')
+        # and because they're the second item in the tuples...
+        paths = [''.join([t[0], i[0], i[1], t[1], ".pdf"]) for i in tagset[t]]
+        printv(t, tagset[t], paths)
+
+        res = subprocess.run([COLLATER, *paths, ''.join([*t, ".pdf"])])
+
 
 
 
 with open(MANIFEST_FILE, 'w') as mf:
-    keys = sorted(manifest.keys())
-    print(json.dumps([{k : manifest[k]} for k in keys]), file=mf)
-    
-    
+#    keys = sorted(manifest.keys())
+    print(json.dumps(manifest), file=mf)
+
+
 print("render.py:\t{} new renders performed.\t{} renders already up-to-date."
        .format(updatecount, skipcount), file=sys.stderr)
 
 # this would've been a makefile,
 # but `make` really doesn't like filenames with spaces in them
-

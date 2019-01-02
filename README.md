@@ -18,8 +18,11 @@ The following programs are required by the render script.
 - `find(1)`
 - `sed(1)`
 - `grep(1)`
+- `pdfunite`
 
 If you do not specify a correct path to `inkscape`, the script will attempt to find it with `which(1)`.
+
+`pdfunite` is usually installed as part of `poppler-tools`.
 
 ## Git LFS
 
@@ -64,6 +67,8 @@ So the single source `Artwork/marriage/cmon-aussie.svg` will result in the follo
 - `Renders/marriage/cmon-aussie-none.png`
 - `Renders/marriage/cmon-aussie-none.svg`
 
+(If a print tag or an authorisation tag is omitted in a source file, corresponding files will not be rendered.)
+
 ## Examples
 
 To temporarily override the placeholder authorisation tag text:
@@ -76,11 +81,15 @@ To specify an alternate file containing the authorisation tag:
 
 `python3 /path/to/render.py --auth_tag_file /path/to/file`
 
+## Multi-page documents
+
+SVG doesn't support multi-page documents, but it is now possible to collate SVGs into a PDF.  
+
 ## WSGI
 
 There's a semi-experimental WSGI implementation in the subdirectory of that name.
 
-Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs. 
+Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs.
 
 
 # License
