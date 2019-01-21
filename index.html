@@ -13,14 +13,16 @@
       body {font-family: "Open Sans", sans-serif;
               width: 90vw; /*min-width: 600px;*/ margin:auto;}
       img {max-height:400px; max-width: 40vw;
-              border: 1px solid #eee; border-radius: 1vw}
+              border: 2px solid #ddd; border-radius: 6px;
+          }
       .caption {font-size : small; font-weight: bolder;}
       #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align: center;flex-wrap: wrap;display: flex;}
-      #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw}
+      #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw;}
       hr {color: #0073AE; background-color: #0073AE; border: solid;}
       a {color: #0073AE;}
       h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
             padding: 1vw; text-align:center}
+      h2 {padding: 1vw; text-align:center}
       ::selection {color: #fff; background-color: #0073AE;}
     </style>
   </head>
@@ -31,43 +33,15 @@
     <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
     <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
 
-    <h2>Posters</h2>
+    <h2 id="posters">Posters</h2>
     <div id="postersGoHere" onclick="clickHandler(event)">
       <div>
-        <img src="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg-auth_preview.jpg" alt="Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg">
-        <p class="caption"><a href="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg-auth.png" download="give-centrelink-the-boot-A4-whitebg">give-centrelink-the-boot-A4-whitebg</a></p>
-      </div>
-<div>
         <img src="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-bluebg-auth_preview.jpg" alt="Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-bluebg">
         <p class="caption"><a href="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-bluebg-auth.png" download="give-centrelink-the-boot-A4-bluebg">give-centrelink-the-boot-A4-bluebg</a></p>
       </div>
 <div>
-        <img src="./Renders/space-agency/national-space-agency-auth_preview.jpg" alt="space-agency/national-space-agency">
-        <p class="caption"><a href="./Renders/space-agency/national-space-agency-auth.png" download="national-space-agency">national-space-agency</a></p>
-      </div>
-<div>
-        <img src="./Renders/love-your-govt/love-your-govt-auth_preview.jpg" alt="love-your-govt/love-your-govt">
-        <p class="caption"><a href="./Renders/love-your-govt/love-your-govt-auth.png" download="love-your-govt">love-your-govt</a></p>
-      </div>
-<div>
-        <img src="./Renders/pirate-poster/Pirate Poster-auth_preview.jpg" alt="pirate-poster/Pirate Poster">
-        <p class="caption"><a href="./Renders/pirate-poster/Pirate Poster-auth.png" download="Pirate Poster">Pirate Poster</a></p>
-      </div>
-<div>
-        <img src="./Renders/metadata/you-are-the-metadata-auth_preview.jpg" alt="metadata/you-are-the-metadata">
-        <p class="caption"><a href="./Renders/metadata/you-are-the-metadata-auth.png" download="you-are-the-metadata">you-are-the-metadata</a></p>
-      </div>
-<div>
-        <img src="./Renders/good-ideas/good-ideas-auth_preview.jpg" alt="good-ideas/good-ideas">
-        <p class="caption"><a href="./Renders/good-ideas/good-ideas-auth.png" download="good-ideas">good-ideas</a></p>
-      </div>
-<div>
-        <img src="./Renders/youtube/youtube-auth_preview.jpg" alt="youtube/youtube">
-        <p class="caption"><a href="./Renders/youtube/youtube-auth.png" download="youtube">youtube</a></p>
-      </div>
-<div>
-        <img src="./Renders/crypto-backdoor/crypto-backdoor-auth_preview.jpg" alt="crypto-backdoor/crypto-backdoor">
-        <p class="caption"><a href="./Renders/crypto-backdoor/crypto-backdoor-auth.png" download="crypto-backdoor">crypto-backdoor</a></p>
+        <img src="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg-auth_preview.jpg" alt="Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg">
+        <p class="caption"><a href="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-A4-whitebg-auth.png" download="give-centrelink-the-boot-A4-whitebg">give-centrelink-the-boot-A4-whitebg</a></p>
       </div>
 <div>
         <img src="./Renders/cant-download-planet/can't-download-planet-auth_preview.jpg" alt="cant-download-planet/can't-download-planet">
@@ -78,41 +52,69 @@
         <p class="caption"><a href="./Renders/copyright-reform-timeline/copyright-timeline-auth.png" download="copyright-timeline">copyright-timeline</a></p>
       </div>
 <div>
-        <img src="./Renders/thats-transparency/thats-transparency-auth_preview.jpg" alt="thats-transparency/thats-transparency">
-        <p class="caption"><a href="./Renders/thats-transparency/thats-transparency-auth.png" download="thats-transparency">thats-transparency</a></p>
-      </div>
-<div>
-        <img src="./Renders/marriage/cmon-aussie-auth_preview.jpg" alt="marriage/cmon-aussie">
-        <p class="caption"><a href="./Renders/marriage/cmon-aussie-auth.png" download="cmon-aussie">cmon-aussie</a></p>
-      </div>
-<div>
-        <img src="./Renders/jg-and-ces/trial-jg-bring-back-ces-auth_preview.jpg" alt="jg-and-ces/trial-jg-bring-back-ces">
-        <p class="caption"><a href="./Renders/jg-and-ces/trial-jg-bring-back-ces-auth.png" download="trial-jg-bring-back-ces">trial-jg-bring-back-ces</a></p>
-      </div>
-<div>
-        <img src="./Renders/nothing-to-hide/nothing-to-hide-auth_preview.jpg" alt="nothing-to-hide/nothing-to-hide">
-        <p class="caption"><a href="./Renders/nothing-to-hide/nothing-to-hide-auth.png" download="nothing-to-hide">nothing-to-hide</a></p>
-      </div>
-<div>
-        <img src="./Renders/corflute-covers/TLDR-auth_preview.jpg" alt="corflute-covers/TLDR">
-        <p class="caption"><a href="./Renders/corflute-covers/TLDR-auth.png" download="TLDR">TLDR</a></p>
+        <img src="./Renders/corflute-covers/Freedom-Democracy-Science-auth_preview.jpg" alt="corflute-covers/Freedom-Democracy-Science">
+        <p class="caption"><a href="./Renders/corflute-covers/Freedom-Democracy-Science-auth.png" download="Freedom-Democracy-Science">Freedom-Democracy-Science</a></p>
       </div>
 <div>
         <img src="./Renders/corflute-covers/Fun-Name-Fantastic-Policies-auth_preview.jpg" alt="corflute-covers/Fun-Name-Fantastic-Policies">
         <p class="caption"><a href="./Renders/corflute-covers/Fun-Name-Fantastic-Policies-auth.png" download="Fun-Name-Fantastic-Policies">Fun-Name-Fantastic-Policies</a></p>
       </div>
 <div>
-        <img src="./Renders/corflute-covers/Freedom-Democracy-Science-auth_preview.jpg" alt="corflute-covers/Freedom-Democracy-Science">
-        <p class="caption"><a href="./Renders/corflute-covers/Freedom-Democracy-Science-auth.png" download="Freedom-Democracy-Science">Freedom-Democracy-Science</a></p>
+        <img src="./Renders/corflute-covers/TLDR-auth_preview.jpg" alt="corflute-covers/TLDR">
+        <p class="caption"><a href="./Renders/corflute-covers/TLDR-auth.png" download="TLDR">TLDR</a></p>
+      </div>
+<div>
+        <img src="./Renders/crypto-backdoor/crypto-backdoor-auth_preview.jpg" alt="crypto-backdoor/crypto-backdoor">
+        <p class="caption"><a href="./Renders/crypto-backdoor/crypto-backdoor-auth.png" download="crypto-backdoor">crypto-backdoor</a></p>
       </div>
 <div>
         <img src="./Renders/download-a-car/download-a-car-auth_preview.jpg" alt="download-a-car/download-a-car">
         <p class="caption"><a href="./Renders/download-a-car/download-a-car-auth.png" download="download-a-car">download-a-car</a></p>
       </div>
+<div>
+        <img src="./Renders/good-ideas/good-ideas-auth_preview.jpg" alt="good-ideas/good-ideas">
+        <p class="caption"><a href="./Renders/good-ideas/good-ideas-auth.png" download="good-ideas">good-ideas</a></p>
+      </div>
+<div>
+        <img src="./Renders/jg-and-ces/trial-jg-bring-back-ces-auth_preview.jpg" alt="jg-and-ces/trial-jg-bring-back-ces">
+        <p class="caption"><a href="./Renders/jg-and-ces/trial-jg-bring-back-ces-auth.png" download="trial-jg-bring-back-ces">trial-jg-bring-back-ces</a></p>
+      </div>
+<div>
+        <img src="./Renders/love-your-govt/love-your-govt-auth_preview.jpg" alt="love-your-govt/love-your-govt">
+        <p class="caption"><a href="./Renders/love-your-govt/love-your-govt-auth.png" download="love-your-govt">love-your-govt</a></p>
+      </div>
+<div>
+        <img src="./Renders/marriage/cmon-aussie-auth_preview.jpg" alt="marriage/cmon-aussie">
+        <p class="caption"><a href="./Renders/marriage/cmon-aussie-auth.png" download="cmon-aussie">cmon-aussie</a></p>
+      </div>
+<div>
+        <img src="./Renders/metadata/you-are-the-metadata-auth_preview.jpg" alt="metadata/you-are-the-metadata">
+        <p class="caption"><a href="./Renders/metadata/you-are-the-metadata-auth.png" download="you-are-the-metadata">you-are-the-metadata</a></p>
+      </div>
+<div>
+        <img src="./Renders/nothing-to-hide/nothing-to-hide-auth_preview.jpg" alt="nothing-to-hide/nothing-to-hide">
+        <p class="caption"><a href="./Renders/nothing-to-hide/nothing-to-hide-auth.png" download="nothing-to-hide">nothing-to-hide</a></p>
+      </div>
+<div>
+        <img src="./Renders/pirate-poster/Pirate Poster-auth_preview.jpg" alt="pirate-poster/Pirate Poster">
+        <p class="caption"><a href="./Renders/pirate-poster/Pirate Poster-auth.png" download="Pirate Poster">Pirate Poster</a></p>
+      </div>
+<div>
+        <img src="./Renders/space-agency/national-space-agency-auth_preview.jpg" alt="space-agency/national-space-agency">
+        <p class="caption"><a href="./Renders/space-agency/national-space-agency-auth.png" download="national-space-agency">national-space-agency</a></p>
+      </div>
+<div>
+        <img src="./Renders/thats-transparency/thats-transparency-auth_preview.jpg" alt="thats-transparency/thats-transparency">
+        <p class="caption"><a href="./Renders/thats-transparency/thats-transparency-auth.png" download="thats-transparency">thats-transparency</a></p>
+      </div>
+<div>
+        <img src="./Renders/youtube/youtube-auth_preview.jpg" alt="youtube/youtube">
+        <p class="caption"><a href="./Renders/youtube/youtube-auth.png" download="youtube">youtube</a></p>
+      </div>
 
     </div>
     <hr>
-    <h2>Pamphlets</h2>
+    <h2 id="pamphlets">Pamphlets</h2>
     <p><em>(And other multi-page documents...)</em></p>
     <div id="pamphletsGoHere" onclick="clickHandler(event)">
         <div>
@@ -122,8 +124,8 @@
 
     </div>
     <hr>
-    <h1>The below images are just for online...</h1>
-    <p>Click the image caption to download the PNG &mdash; the correct authorisation tag is already in place!</p>
+    <h1 id="onlines">The below images are just for online...</h1>
+    <p>Click the image (or caption) to download the PNG &mdash; the correct authorisation tag is already in place!</p>
     <div id="onlinesGoHere"> <!--- No onClick for this one --->
         <div>
         <a href="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-auth.png" download="give-centrelink-the-boot"><img src="./Renders/Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot-auth_preview.jpg" alt="Pete-the-pirate/give-centrelink-the-boot/give-centrelink-the-boot">
@@ -132,14 +134,6 @@
 <div>
         <a href="./Renders/Pete-the-pirate/sharing-turns-content-into-culture/sharing-turns-content-into-culture-auth.png" download="sharing-turns-content-into-culture"><img src="./Renders/Pete-the-pirate/sharing-turns-content-into-culture/sharing-turns-content-into-culture-auth_preview.jpg" alt="Pete-the-pirate/sharing-turns-content-into-culture/sharing-turns-content-into-culture">
         <p class="caption">sharing-turns-content-into-culture</p></a>
-      </div>
-<div>
-        <a href="./Renders/cant-download-planet/cant-download-planet-twitter-auth.png" download="cant-download-planet-twitter"><img src="./Renders/cant-download-planet/cant-download-planet-twitter-auth_preview.jpg" alt="cant-download-planet/cant-download-planet-twitter">
-        <p class="caption">cant-download-planet-twitter</p></a>
-      </div>
-<div>
-        <a href="./Renders/cant-download-planet/cant-download-planet-fb-auth.png" download="cant-download-planet-fb"><img src="./Renders/cant-download-planet/cant-download-planet-fb-auth_preview.jpg" alt="cant-download-planet/cant-download-planet-fb">
-        <p class="caption">cant-download-planet-fb</p></a>
       </div>
 <div>
         <a href="./Renders/SocMed/2018/happy-new-year-auth.png" download="happy-new-year"><img src="./Renders/SocMed/2018/happy-new-year-auth_preview.jpg" alt="SocMed/2018/happy-new-year">
@@ -154,6 +148,14 @@
         <p class="caption">MEq-is-law</p></a>
       </div>
 <div>
+        <a href="./Renders/cant-download-planet/cant-download-planet-fb-auth.png" download="cant-download-planet-fb"><img src="./Renders/cant-download-planet/cant-download-planet-fb-auth_preview.jpg" alt="cant-download-planet/cant-download-planet-fb">
+        <p class="caption">cant-download-planet-fb</p></a>
+      </div>
+<div>
+        <a href="./Renders/cant-download-planet/cant-download-planet-twitter-auth.png" download="cant-download-planet-twitter"><img src="./Renders/cant-download-planet/cant-download-planet-twitter-auth_preview.jpg" alt="cant-download-planet/cant-download-planet-twitter">
+        <p class="caption">cant-download-planet-twitter</p></a>
+      </div>
+<div>
         <a href="./Renders/events/pax/2017/pax-pirata-censorship-gaming-media-society-auth.png" download="pax-pirata-censorship-gaming-media-society"><img src="./Renders/events/pax/2017/pax-pirata-censorship-gaming-media-society-auth_preview.jpg" alt="events/pax/2017/pax-pirata-censorship-gaming-media-society">
         <p class="caption">pax-pirata-censorship-gaming-media-society</p></a>
       </div>
@@ -162,16 +164,16 @@
         <p class="caption">jtf-basic-income</p></a>
       </div>
 <div>
+        <a href="./Renders/join-the-fight/jtf-civil-liberties-auth.png" download="jtf-civil-liberties"><img src="./Renders/join-the-fight/jtf-civil-liberties-auth_preview.jpg" alt="join-the-fight/jtf-civil-liberties">
+        <p class="caption">jtf-civil-liberties</p></a>
+      </div>
+<div>
         <a href="./Renders/join-the-fight/jtf-copyright-reform-auth.png" download="jtf-copyright-reform"><img src="./Renders/join-the-fight/jtf-copyright-reform-auth_preview.jpg" alt="join-the-fight/jtf-copyright-reform">
         <p class="caption">jtf-copyright-reform</p></a>
       </div>
 <div>
         <a href="./Renders/join-the-fight/jtf-fairer-aus-auth.png" download="jtf-fairer-aus"><img src="./Renders/join-the-fight/jtf-fairer-aus-auth_preview.jpg" alt="join-the-fight/jtf-fairer-aus">
         <p class="caption">jtf-fairer-aus</p></a>
-      </div>
-<div>
-        <a href="./Renders/join-the-fight/jtf-civil-liberties-auth.png" download="jtf-civil-liberties"><img src="./Renders/join-the-fight/jtf-civil-liberties-auth_preview.jpg" alt="join-the-fight/jtf-civil-liberties">
-        <p class="caption">jtf-civil-liberties</p></a>
       </div>
 <div>
         <a href="./Renders/press-release-posters/security-state-makes-australia-insecure/security-state-makes-australia-insecure_p1-auth.png" download="security-state-makes-australia-insecure_p1"><img src="./Renders/press-release-posters/security-state-makes-australia-insecure/security-state-makes-australia-insecure_p1-auth_preview.jpg" alt="press-release-posters/security-state-makes-australia-insecure/security-state-makes-australia-insecure">

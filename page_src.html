@@ -13,14 +13,16 @@
       body {font-family: "Open Sans", sans-serif;
               width: 90vw; /*min-width: 600px;*/ margin:auto;}
       img {max-height:400px; max-width: 40vw;
-              border: 1px solid #eee; border-radius: 1vw}
+              border: 2px solid #ddd; border-radius: 6px;
+          }
       .caption {font-size : small; font-weight: bolder;}
       #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align: center;flex-wrap: wrap;display: flex;}
-      #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw}
+      #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw;}
       hr {color: #0073AE; background-color: #0073AE; border: solid;}
       a {color: #0073AE;}
       h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
             padding: 1vw; text-align:center}
+      h2 {padding: 1vw; text-align:center}
       ::selection {color: #fff; background-color: #0073AE;}
     </style>
   </head>
@@ -31,19 +33,19 @@
     <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
     <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
 
-    <h2>Posters</h2>
+    <h2 id="posters">Posters</h2>
     <div id="postersGoHere" onclick="clickHandler(event)">
       PPAU_POSTERS_HERE
     </div>
     <hr>
-    <h2>Pamphlets</h2>
+    <h2 id="pamphlets">Pamphlets</h2>
     <p><em>(And other multi-page documents...)</em></p>
     <div id="pamphletsGoHere" onclick="clickHandler(event)">
         PPAU_PAMPHLETS_HERE
     </div>
     <hr>
-    <h1>The below images are just for online...</h1>
-    <p>Click the image caption to download the PNG &mdash; the correct authorisation tag is already in place!</p>
+    <h1 id="onlines">The below images are just for online...</h1>
+    <p>Click the image (or caption) to download the PNG &mdash; the correct authorisation tag is already in place!</p>
     <div id="onlinesGoHere"> <!--- No onClick for this one --->
         PPAU_ONLINES_HERE
     </div>

@@ -145,9 +145,9 @@ with open(arguments.manifest_file, 'r') as mani_fp:
         onlineFlag = authFlagged and not printFlagged
 
 
-        ourfile = item['1'][1]
+        ourfile = item['1'][1] # this is always `*-auth.png` (and P1 thereof)
         r_in = os.path.join(arguments.render_dir, ourfile)
-        r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + "." + "jpg")
+        r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + ".jpg")
 
         dlname = os.path.splitext(os.path.basename(ourfile))[0][0:-5]
         caption = os.path.split(mkey)[1]

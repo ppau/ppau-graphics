@@ -386,7 +386,7 @@ for s in SVGs:
             if ftype == "png":
                 renderargs = ["-e", r_out]
             elif ftype == "pdf":
-                renderargs = ["--export-dpi=300", "-A", r_out]
+                renderargs = ["--export-dpi=300", "--export-text-to-path", "-A", r_out]
 
             # output ALL the things
             if len(renderargs): # this line is quite an important optimisation!
