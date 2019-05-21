@@ -98,6 +98,3 @@ Artwork and text created by members of Pirate Party Australia is released under 
 
 Code created by members of Pirate Party Australia is released under the [Free Software Foundation General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html), unless otherwise specified.
 
-#Discord Webhook
-
-Test commit #1 just to make sure it's all working
