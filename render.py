@@ -27,7 +27,7 @@ SOURCE_DIR = "Artwork"                  # default: "Artwork"
 RENDER_DIR = "Renders"                  # default: "Renders"
 
 AUTH_TAG_FILE = "auth_tag.txt"          # default: "ppau_auth_tag.txt"
-PRINT_TAG_FILE = "print_tag.txt"        # default: "ppau_auth_tag.txt"
+PRINT_TAG_FILE = "print_tag.txt"        # default: "ppau_print_tag.txt"
 
 # The text below is found, and replaced with the content of the respective
 # file listed above. Neither may be an SVG tag, for obvious reasons.
@@ -67,7 +67,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.4.0a"
+VERSION = "0.4.0b"
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -299,11 +299,16 @@ for s in SVGs:
 
         # We shall first output the auth'd SVGs to RENDER_DIR
 
-        rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, ""))
+        #rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, "")) 
+        # there's a bug about where outputs go and I suspect it's this line ^^
+        ## sometimes SOURCE_DIR already has a trailing path separator and sdir doesn't
+        sfrag = sdir.replace(SOURCE_DIR.strip(os.path.sep), "").strip(os.path.sep)
+        rdir = os.path.normpath(os.path.join(RENDER_DIR, sfrag))
         (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
         # Pathnames of tagged SVGs
         r_tag = os.path.join(rdir, r_tag_root + "-" + variant[0] + r_tag_ext)
-
+        printv("sdir:", sdir, "sfrag:", sfrag, "rdir:", rdir, "r_tag", r_tag)
+        #exit()
         # On checking file modification dates and skipping if 'no change':
 
         # Ideally we could not update the tagged SVG if it wouldn't change,
