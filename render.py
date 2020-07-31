@@ -26,11 +26,14 @@ COLLATER_PATH = "/usr/bin/pdfunite"
 SOURCE_DIR = "Artwork"                  # default: "Artwork"
 RENDER_DIR = "Renders"                  # default: "Renders"
 
-AUTH_TAG_FILE = "auth_tag.txt"          # default: "ppau_auth_tag.txt"
-PRINT_TAG_FILE = "print_tag.txt"        # default: "ppau_print_tag.txt"
+AUTH_TAG_FILE = "auth_tag.txt"          # default: "auth_tag.txt"
+PRINT_TAG_FILE = "print_tag.txt"        # default: "print_tag.txt"
 
-# The text below is found, and replaced with the content of the respective
-# file listed above. Neither may be an SVG tag, for obvious reasons.
+AUTH_TAG_FILE_BASIC = "auth_tag_basic.txt"    # default: "auth_tag_basic.txt"
+
+
+# The text below is found, and replaced with the content of the relevant
+# file listed above. Neither replaced text may be an SVG tag, for obvious reasons.
 
 AUTH_TAG = "PPAU_AUTH_TAG"              # default: "PPAU_AUTH_TAG"
 PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
@@ -67,7 +70,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.4.0b"
+VERSION = "0.5.0" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -101,6 +104,11 @@ parser.add_argument('--render_dir', dest='render_dir',
 parser.add_argument('--auth_tag_file', dest='auth_tag_file',
                     action='store', default=AUTH_TAG_FILE,
                     help="The file containing the authorisation text.")
+
+parser.add_argument('--auth_tag_file_basic', dest='auth_tag_file_basic',
+                    action='store', default=AUTH_TAG_FILE_BASIC,
+                    help="The file containing the authorisation text\
+                    specifying only a town/city (for digital material).")
 
 parser.add_argument('--print_tag_file', dest='print_tag_file',
                     action='store', default=PRINT_TAG_FILE,
@@ -141,6 +149,7 @@ args = parser.parse_args()
 SOURCE_DIR = args.source_dir
 RENDER_DIR = args.render_dir
 AUTH_TAG_FILE = args.auth_tag_file
+AUTH_TAG_FILE_BASIC = args.auth_tag_file_basic
 PRINT_TAG_FILE = args.print_tag_file
 AUTH_TAG = args.auth_tag
 PRINT_TAG = args.print_tag
@@ -163,6 +172,9 @@ if sys.path[0]:
 
     if not os.path.isabs(AUTH_TAG_FILE):
         AUTH_TAG_FILE = os.path.join(sys.path[0], AUTH_TAG_FILE)
+
+    if not os.path.isabs(AUTH_TAG_FILE_BASIC):
+        AUTH_TAG_FILE_BASIC = os.path.join(sys.path[0], AUTH_TAG_FILE_BASIC)
 
     if not os.path.isabs(PRINT_TAG_FILE):
         PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)
@@ -219,19 +231,33 @@ SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
                        universal_newlines=True)\
         .stdout.strip().split(sep="\n")
 
+
 # Load authorisation and printing tags
 
+
 auth_tag_full = ""
+auth_tag_basic = ""
 print_tag_full = ""
+
+# basic can fall back on full if it exists
 
 try:
     with open(AUTH_TAG_FILE) as atfp:
         auth_tag_full = atfp.read().strip()
-        printv(auth_tag_full)
+        printv("full", auth_tag_full)
 except FileNotFoundError:
     print("Authorisation tag file not found!",
           "No substitution will be performed.")
     auth_tag_full = AUTH_TAG
+
+try:
+    with open(AUTH_TAG_FILE_BASIC) as atfp:
+        auth_tag_basic = atfp.read().strip()
+except FileNotFoundError:
+    print("Basic auth tag file not found! Falling back on", 
+          AUTH_TAG_FILE)
+    auth_tag_basic = auth_tag_full
+    
 try:
     with open(PRINT_TAG_FILE) as ptfp:
         print_tag_full = ptfp.read().strip()
@@ -292,10 +318,11 @@ for s in SVGs:
 
         auth_tag_var = ""
         print_tag_var = ""
-        if variant[1]:
-            auth_tag_var = auth_tag_full
-        if variant[2]:
+        if variant[1]: # default to basic
+            auth_tag_var = auth_tag_basic
+        if variant[2]: # if we need a print tag, we need a full auth tag
             print_tag_var = print_tag_full
+            auth_tag_var = auth_tag_full # override
 
         # We shall first output the auth'd SVGs to RENDER_DIR
 

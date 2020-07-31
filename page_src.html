@@ -23,28 +23,33 @@
       h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
             padding: 1vw; text-align:center}
       h2 {padding: 1vw; text-align:center}
+      .jump {text-align:center}
       ::selection {color: #fff; background-color: #0073AE;}
     </style>
   </head>
   <body>
     <h1>Click on an image to add a printing tag and get a PDF!</h1>
+    <p class="jump"><b>Posters</b> &bullet; <a href="#pamphlets" target="_self">Pamphlets</a> &bullet; <a href="#onlines" target="_self">Pictures</a></p>
     <p>Under Australian electoral law, <a href="https://pirateparty.org.au/wiki/Authorisation_processes#Printed_materials.2C_videos_and_paid_Internet_advertisements">almost all printed political material</a> must identify the printer, as well as identifiying the authorising person. This page serves as a mechanism to keep authorisation tags current, and to easily insert printing tags.</p>
     <p>To download a PDF with the printing tag, simply click on an image and insert the name and full address of the printer when prompted.</p>
     <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
     <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
-
+    <p><a href="Logos/index.html">There are logos too!</a></p>
+    
     <h2 id="posters">Posters</h2>
     <div id="postersGoHere" onclick="clickHandler(event)">
       PPAU_POSTERS_HERE
     </div>
     <hr>
     <h2 id="pamphlets">Pamphlets</h2>
+    <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <b>Pamphlets</b> &bullet; <a href="#onlines" target="_self">Pictures</a></p>
     <p><em>(And other multi-page documents...)</em></p>
     <div id="pamphletsGoHere" onclick="clickHandler(event)">
         PPAU_PAMPHLETS_HERE
     </div>
     <hr>
     <h1 id="onlines">The below images are just for online...</h1>
+    <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <a href="#pamphlets" target="_self">Pamphlets</a> &bullet; <b>Pictures</b></p>
     <p>Click the image (or caption) to download the PNG &mdash; the correct authorisation tag is already in place!</p>
     <div id="onlinesGoHere"> <!--- No onClick for this one --->
         PPAU_ONLINES_HERE

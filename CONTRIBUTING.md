@@ -25,3 +25,16 @@ The Printing Tag placeholder is as follows (remove leading/trailing whitespace):
     PPAU_PRINT_TAG
 
 
+# Font Sources 
+
+You will need these fonts at a minimum:
+
+* Gehen Sans: https://github.com/ppau/gehen-fonts
+* Open Sans (including Condensed): Google Fonts
+* Fira Sans (all widths): download that 94MB zip from https://bboxtype.com/typefaces/FiraSans/
+* The various Microsoft Core Fonts (for Arial etc)
+* VIDEO PIRATE: it's on so many free font sites
+* Jost*: https://github.com/indestructible-type/Jost
+* The various Liberation fonts: https://github.com/liberationfonts/liberation-fonts
+
+If it's in `__Unauthorised` don't worry about it

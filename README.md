@@ -69,6 +69,32 @@ So the single source `Artwork/marriage/cmon-aussie.svg` will result in the follo
 
 (If a print tag or an authorisation tag is omitted in a source file, corresponding files will not be rendered.)
 
+## Kinds of tags
+
+As of 2020, there are two levels of *authorisation* requirements, as well as *printer* identification requirements. 
+
+Both kinds of authorisation tags require: 
+
+* the name of the "disclosure entity" (e.g. "Pirate Party Australia")
+* the name of the person authorising it (generally the current Secretary; first initial and last name suffice)
+
+"Basic" requirements for PPAU comms apply generally to non-printed material such as :
+
+* the *town or city* of the disclosure entity, or else the town or city of the authorising person
+
+"Full" requirements generally apply to physical material such as posters, stickers or how-to-vote cards: 
+
+* the *full street address* or the disclosure entity, or else one where the authorising person can be contacted
+
+There's only one kind of printer tag:
+
+* The name of the printer (or more likely, company name)
+* The full street address of the printer (it might be necessary in some cases to use head-office location)
+
+
+The render script will by default output the basic auth tag in auth-only files, and the full auth tag in files that also contain a print tag. 
+
+
 ## Examples
 
 To temporarily override the placeholder authorisation tag text:

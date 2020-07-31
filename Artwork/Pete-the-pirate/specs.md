@@ -14,7 +14,7 @@ Colours:
 
 Font: 
 
-- Title:	Open Sans Bold
+- Title:	Open Sans
 - Slogan:	Open Sans Italic (possibly bolded)
 - all: aligned centre and centred on page 
 
