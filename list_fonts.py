@@ -13,12 +13,13 @@ OUTPUT_FILE = "FONTLIST.json"            # default: "FONTLIST.txt"
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 import subprocess
 import argparse
 import re
 import json
+import sys
 
 # Parse Arguments
 
@@ -31,6 +32,14 @@ parser.add_argument('--source_dir', dest='source_dir',
 parser.add_argument('--output_file', dest='output_file',
                     action='store', default=OUTPUT_FILE,
                     help="The file listing the fonts.")
+
+parser.add_argument('--list', dest='list_too',
+                     action='store_const', default=False, const=True,
+                     help="List all font names to standard output")
+
+parser.add_argument('--show-missing', dest='show_missing',
+                     action='store_const', default=False, const=True,
+                     help="List all missing font names to standard output")
 
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
@@ -75,18 +84,49 @@ for s in SVGs:
             allnames.add(n)
 
 
+listnames = sorted(list(allnames))
 
 with open(arguments.output_file, 'w') as fontlist_file:
     # pretty print
 
     keys = sorted(combo.keys())
 
-    allfonts = [{'all' : sorted(list(allnames))}]
+    allfonts = [{'all' : listnames}]
 
     tree = [{i : list(combo[i])} for i in keys]
 
     print(json.dumps(allfonts+tree), file=fontlist_file)
-
     
+if arguments.list_too:
+    print(*listnames, sep='\n')
+
+
+if arguments.show_missing:
+    installed_fonts = None
+
+    fcl_try = subprocess.run(["which", "fc-list"],
+                stdout=subprocess.PIPE,
+                universal_newlines=True)\
+                .stdout.strip()
+    
+    
+    if fcl_try:
+        installed_fonts = set(subprocess.run([fcl_try, ':', 'family'],
+                   stdout=subprocess.PIPE,
+                   universal_newlines=True)\
+        .stdout.strip().split(sep="\n"))
+    elif sys.platform == 'darwin':
+        installed_fonts = subprocess.run(['system_profiler', 'SPFontsDataType'],
+           stdout=subprocess.PIPE,
+           stderr=subprocess.STDOUT,
+           universal_newlines=True)\
+        .stdout.strip()
+    else:
+        print("Could not list system fonts. (Windows is currently not supported.)")
+        exit(1)
+    
+    for font in listnames:
+        if font not in installed_fonts:
+            print(font)
 
 

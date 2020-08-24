@@ -37,4 +37,10 @@ You will need these fonts at a minimum:
 * Jost*: https://github.com/indestructible-type/Jost
 * The various Liberation fonts: https://github.com/liberationfonts/liberation-fonts
 
-If it's in `__Unauthorised` don't worry about it
+If it's in `__Unauthorised` don't worry about it. 
+
+If you're on Linux or Mac, you should be able to run 
+    
+    python3 list_fonts.py --show-missing
+    
+For a list of font families that are referenced by one or more files, but that you don't have installed on your system. 
