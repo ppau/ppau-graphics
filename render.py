@@ -59,7 +59,7 @@ PRINT_FORMATS = ["pdf"]
         #   (name, include auth tag, include print tag, formats)
 VARIANTS = [("auth", True, False, SCREEN_FORMATS),
             ("both", True, True, PRINT_FORMATS),
-            ("none", False, False, [])]
+            ("none", False, False, SCREEN_FORMATS+PRINT_FORMATS)]
         # NB: it's absurd to include a print tag but not an auth tag.
 
 
@@ -71,7 +71,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.2" 
+VERSION = "0.5.3" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -315,6 +315,12 @@ for s in SVGs:
         page_num = int(re_match.group(3))
 
 
+    # Quickly figure out some things
+    has_auth_tag = int(subprocess.run(["grep", "-cF", AUTH_TAG, s],
+                                             stdout=subprocess.PIPE).stdout) >= 1
+    has_print_tag = int(subprocess.run(["grep", "-cF", PRINT_TAG, s],
+                                             stdout=subprocess.PIPE).stdout) >= 1
+
     # initialise
 #    manifest[key] = []
     if not newkey in manifest:
@@ -367,22 +373,20 @@ for s in SVGs:
         # We should search the relevant file for the tag and skip
         # if we would normally substitute, but it doesn't exist
 
-        if variant[1] and \
-           int(subprocess.run(["grep", "-cF", AUTH_TAG, s],
-                                             stdout=subprocess.PIPE)
-                              .stdout) < 1:
+		
+        if variant[1] and not has_auth_tag:
             printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
             notagcount += 1
             continue
 
-        if variant[2] and \
-           int(subprocess.run(["grep", "-cF", PRINT_TAG, s],
-                                             stdout=subprocess.PIPE)
-                              .stdout) < 1:
+        if variant[2] and not has_print_tag:
             printv("No Print Tag: skipping what would be", r_tag, sep='\t')
             notagcount += 1
             continue
-
+				
+        if (not (variant[1] or variant[2])) and (has_auth_tag or has_print_tag):
+            printv("No need for 'None' variant: skipping", r_tag, sep='\t')
+            continue
 
         # Now it's sed time
 
@@ -438,7 +442,7 @@ for s in SVGs:
     manifest[newkey][page_num] = submanifest
 
 # Actually render things!
-
+printv("Rendering everything...")
 inky = subprocess.run([BACKEND_PATH, "--shell"],
                       input=commands.getvalue(),
                       text=True,

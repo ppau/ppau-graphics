@@ -30,7 +30,7 @@ convargs = ["-background", "white", "-flatten", "-resize", "x400", "-quality", "
 # ^^^ give it a white bg if needed, maintain aspect ratio but make it 400px high
 
 VERBOSE = False
-VERSION = 0.4
+VERSION = '0.5.3'
 
 import json
 import os.path
@@ -124,16 +124,19 @@ with open(arguments.manifest_file, 'r') as mani_fp:
 
         item = manifest[mkey]
 
-        #printv("Item", mkey, ":\n", item)
+        printv("Item", mkey, ":\n", item)
 
         authFlagged = False
         printFlagged = False
+        ourfile = None
 
         ## Iterate over the items (of the first page, anyway)
         ## to determine what tags it has.
         for i in item['1']:
             authFlagged |= ("-auth.png" in os.path.split(i)[1])
-            printFlagged |= ("-both.png" in os.path.split(i)[1])
+            printFlagged |= ("-both.pdf" in os.path.split(i)[1])
+            if authFlagged and not ourfile: # special sauce
+                ourfile = i            
 
         if mkey.startswith("__") or not (authFlagged or printFlagged):
             printv("Skipping", mkey, "due to being unauthorised.")
@@ -145,8 +148,9 @@ with open(arguments.manifest_file, 'r') as mani_fp:
         pamphletFlag = printFlagged and len(item) > 1
         onlineFlag = authFlagged and not printFlagged
 
-
-        ourfile = item['1'][1] # this is always `*-auth.png` (and P1 thereof)
+        #continue
+        if not ourfile:
+            ourfile = item['1'][0]
         r_in = os.path.join(arguments.render_dir, ourfile)
         r_out = os.path.join(arguments.render_dir, ourfile[0:-4] + "_preview" + ".jpg")
 
@@ -173,7 +177,7 @@ with open(arguments.manifest_file, 'r') as mani_fp:
             '<p class="caption"><a href="'+arguments.site_root+'/'+r_in+'" download="'+dlname+'">'+caption+'</a></p>\r\n' + \
             '<p class="caption">Page:&nbsp;&nbsp;'
             for p in sorted(item, key=lambda x: int(x)):
-                link = os.path.join(arguments.render_dir, item[str(p)][1])
+                link = os.path.join(arguments.render_dir, item[str(p)][0])
                 dl = os.path.splitext(os.path.basename(link))[0][0:-5]
                 pamphlet_replacement_str += '<a href="'+arguments.site_root+'/'+link+'" download="'+dl+'">'+str(p)+'</a>&nbsp;&nbsp;'
             pamphlet_replacement_str += '</p>      </div>\r\n'
@@ -185,7 +189,7 @@ with open(arguments.manifest_file, 'r') as mani_fp:
             if len(item) > 1:
                 online_replacement_str += '<p class="caption">Page:&nbsp;&nbsp;'
                 for p in sorted(item, key=lambda x: int(x)):
-                    link = os.path.join(arguments.render_dir, item[str(p)][1])
+                    link = os.path.join(arguments.render_dir, item[str(p)][0])
                     dl = os.path.splitext(os.path.basename(link))[0][0:-5]
                     online_replacement_str += '<a href="'+arguments.site_root+'/'+link+'" download="'+dl+'">'+str(p)+'</a>&nbsp;&nbsp;'
                 online_replacement_str += '</p>'
