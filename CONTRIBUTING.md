@@ -33,7 +33,7 @@ You will need these fonts at a minimum:
 * Open Sans (including Condensed): Google Fonts
 * Fira Sans (all widths): download that 94MB zip from https://bboxtype.com/typefaces/FiraSans/
 * The various Microsoft Core Fonts (for Arial etc)
-* VIDEO PIRATE: it's on so many free font sites
+* VIDEO PIRATE: it's on so many free font sites. (The one by "spideray")
 * Jost*: https://github.com/indestructible-type/Jost
 * The various Liberation fonts: https://github.com/liberationfonts/liberation-fonts
 

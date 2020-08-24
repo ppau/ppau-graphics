@@ -15,6 +15,7 @@ RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = "."    # you might need to put something here
 # a `.` or `./` for local testing, something more substantial for on-server
 # such as `./ppau-graphics`
+#SITE_ROOT = './ppau-graphics'
 
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
 PAMPHLET_REPLACE_TAG = "PPAU_PAMPHLETS_HERE"
