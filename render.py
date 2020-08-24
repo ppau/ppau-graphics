@@ -51,15 +51,17 @@ COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
 # [the extension follows and is handled separately]
 # example: `relative/path/to/filename_p1.svg`
 
-#### You can't currently override these at run-time                         ####
+#### Currently only PNG (screen) and PDF (print) supported                  ####
 
-FORMATS = ["pdf", "png"]
+SCREEN_FORMATS = ["png"]
+PRINT_FORMATS = ["pdf"]
 
-        #   (name, include auth tag, include print tag)
-VARIANTS = [("auth", True, False),
-            ("both", True, True),
-            ("none", False, False)]
+        #   (name, include auth tag, include print tag, formats)
+VARIANTS = [("auth", True, False, SCREEN_FORMATS),
+            ("both", True, True, PRINT_FORMATS),
+            ("none", False, False, [])]
         # NB: it's absurd to include a print tag but not an auth tag.
+
 
 # Manifest output file
 
@@ -69,7 +71,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.1" 
+VERSION = "0.5.2" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -324,6 +326,7 @@ for s in SVGs:
 
     for variant in VARIANTS:
 
+        FORMATS = variant[3]
         auth_tag_var = ""
         print_tag_var = ""
         if variant[1]: # default to basic
@@ -424,7 +427,7 @@ for s in SVGs:
             #printv("Rendering", r_out, sep="\t")
 
             if ftype == "png":
-                renderargs.append("export-type:png;")
+                renderargs.append("export-type:png; export-background-opacity:255;")
             if ftype == "pdf":
                 renderargs.append("export-dpi:300; export-text-to-path:true; export-type:pdf;")
             
