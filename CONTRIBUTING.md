@@ -44,3 +44,10 @@ If you're on Linux or Mac, you should be able to run
     python3 list_fonts.py --show-missing
     
 For a list of font families that are referenced by one or more files, but that you don't have installed on your system. 
+
+You might also find `--invert` to be useful if you're trying to figure out which files use a particular font. 
+
+    python3 list_fonts.py --invert
+
+
+

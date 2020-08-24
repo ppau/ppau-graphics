@@ -41,6 +41,11 @@ parser.add_argument('--show-missing', dest='show_missing',
                      action='store_const', default=False, const=True,
                      help="List all missing font names to standard output")
 
+parser.add_argument('--invert', dest='invert',
+                     action='store_const', default=False, const=True,
+                     help="Invert output too, indexed by font")
+
+
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
 arguments = parser.parse_args()
@@ -52,7 +57,7 @@ OUTPUT_FILE = arguments.output_file
 
 combo = {}
 
-allnames = set([])
+allnames = {}
 
 pattern = re.compile(r"font-family(:|=)['\"]?([^;>'\"]*)")
 
@@ -81,7 +86,10 @@ for s in SVGs:
         combo[s] = results
 
         for n in results:
-            allnames.add(n)
+            if n not in allnames:
+                allnames[n] = [s]
+            else:
+                allnames[n] += [s]
 
 
 listnames = sorted(list(allnames))
@@ -92,10 +100,14 @@ with open(arguments.output_file, 'w') as fontlist_file:
     keys = sorted(combo.keys())
 
     allfonts = [{'all' : listnames}]
-
     tree = [{i : list(combo[i])} for i in keys]
-
     print(json.dumps(allfonts+tree), file=fontlist_file)
+
+if arguments.invert:
+    ofbits = arguments.output_file.split('.')
+    invname = '.'.join(ofbits[:-1]) + "_inverted." + ofbits[-1]
+    with open(invname, 'w') as inv_file:
+        print(json.dumps(allnames), file=inv_file)
     
 if arguments.list_too:
     print(*listnames, sep='\n')
