@@ -16,8 +16,7 @@
 #### You can override these defaults at run-time via command-line flags.    ####
 
 # You will almost definitely want to update this yourself
-BACKEND_PATH = "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
-# "/usr/bin/inkscape"
+BACKEND_PATHS = ["/Applications/Inkscape.app/Contents/Resources/bin/inkscape", "/Applications/Inkscape.app/Contents/MacOS/inkscape", "/usr/bin/inkscape"]
 COLLATER_PATH = "/usr/bin/pdfunite"
 
 # If the paths below are relative, this file is assumed to be in the
@@ -70,10 +69,11 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.0" 
+VERSION = "0.5.1" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
+BACKEND_PATH = ""
 
 # import all the things
 import subprocess
@@ -87,6 +87,7 @@ import argparse
 import filecmp
 import json
 import re
+import io
 
 # Parse arguments
 
@@ -187,10 +188,12 @@ def printv(*args, **kwargs):
 
 printv("Version:", VERSION)
 
-# make BACKEND work (on posix systems)
-if not os.path.exists(BACKEND_PATH):
-    printv(BACKEND + " not found at specified path " + BACKEND_PATH)
-
+# make BACKEND work (on posix systems, anyway)
+for bp in BACKEND_PATHS:
+    if os.path.exists(bp):
+        BACKEND_PATH = bp
+        break
+else:
     if os.name == "posix":
         backendtry = subprocess.run(["which", BACKEND],
                 stdout=subprocess.PIPE,
@@ -215,7 +218,7 @@ if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
                 stdout=subprocess.PIPE,
                 universal_newlines=True)\
                 .stdout.strip()
-        if backendtry:
+        if collatertry:
             printv("Using "+ COLLATER +" at " + collatertry + " instead.")
             COLLATER_PATH = collatertry
         else:
@@ -279,6 +282,11 @@ multipagers = {}
 skipcount = 0
 updatecount = 0
 notagcount = 0
+
+# Small amount of Inkscape funzies. 
+# Make shell mode work, part 1
+commands = io.StringIO()
+
 
 # Iterate over SVGs...
 
@@ -408,30 +416,37 @@ for s in SVGs:
             # Now check to see if output file is newer
             if os.path.exists(r_out):
                 if os.path.getmtime(r_tag) <= os.path.getmtime(r_out):
-                    printv("No change: skipping", r_out, sep="\t")
+                    #printv("No change: skipping", r_out, sep="\t")
                     skipcount += 1
                     continue
             # (else:)
             updatecount += 1
-            printv("Rendering", r_out, sep="\t")
+            #printv("Rendering", r_out, sep="\t")
 
             if ftype == "png":
-                renderargs = ["-e", r_out]
-            elif ftype == "pdf":
-                renderargs = ["--export-dpi=300", "--export-text-to-path", "-A", r_out]
+                renderargs.append("export-type:png;")
+            if ftype == "pdf":
+                renderargs.append("export-dpi:300; export-text-to-path:true; export-type:pdf;")
+            
+            print("file-open:"+r_tag+"; "+" ".join(renderargs)+" export-do; file-close;", file=commands)
 
-            # output ALL the things
-            if len(renderargs): # this line is quite an important optimisation!
-                inky = subprocess.run([BACKEND_PATH, "-z"]
-                                      + renderargs
-                                      + ["-f", r_tag],
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-                printv(inky.stdout.decode())
-                printv(inky.stderr.decode())
 
     # Finally, now that we're done with variants...
     manifest[newkey][page_num] = submanifest
+
+# Actually render things!
+
+inky = subprocess.run([BACKEND_PATH, "--shell"],
+                      input=commands.getvalue(),
+                      text=True,
+					  capture_output=True)  
+	
+# if we don't capture output, it gets printed to CLI
+if inky.returncode != 0:	  
+    printv(inky.stdout)
+    printv(inky.stderr)
+
+
 
 # Here. we collate rendered PDFs.
 
