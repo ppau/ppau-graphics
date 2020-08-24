@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="theme-color" content="#0073AE">
+    <meta name="Description" content="Pirate Poster Generator">
+    <title>Pirate Poster Generator | PPAU-Graphics</title>
+    <base target="_blank">
+    <style media="screen" type="text/css">
+      body {font-family: "Open Sans", sans-serif;
+              width: 90vw; /*min-width: 600px;*/ margin:auto;}
+      img {max-height:400px; max-width: 40vw;
+              border: 2px solid #ddd; border-radius: 6px;
+          }
+      .caption {font-size : small; font-weight: bolder;}
+      #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align: center;flex-wrap: wrap;display: flex;}
+      #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw;}
+      hr {color: #0073AE; background-color: #0073AE; border: solid;}
+      a {color: #0073AE;}
+      h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
+            padding: 1vw; text-align:center}
+      h2 {padding: 1vw; text-align:center}
+      .jump {text-align:center}
+      ::selection {color: #fff; background-color: #0073AE;}
+    </style>
+  </head>
+  <body>
+    <h1>Click on an image to add a printing tag and get a PDF!</h1>
+    <p class="jump"><b>Posters</b> &bullet; <a href="#pamphlets" target="_self">Pamphlets</a> &bullet; <a href="#onlines" target="_self">Pictures</a></p>
+    <p>Under Australian electoral law, <a href="https://pirateparty.org.au/wiki/Authorisation_processes#Printed_materials.2C_videos_and_paid_Internet_advertisements">almost all printed political material</a> must identify the printer, as well as identifiying the authorising person. This page serves as a mechanism to keep authorisation tags current, and to easily insert printing tags.</p>
+    <p>To download a PDF with the printing tag, simply click on an image and insert the name and full address of the printer when prompted.</p>
+    <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
+    <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
+    <p><a href="Logos/index.html">There are logos too!</a></p>
+    
+    <h2 id="posters">Posters</h2>
+    <div id="postersGoHere" onclick="clickHandler(event)">
+      PPAU_POSTERS_HERE
+    </div>
+    <hr>
+    <h2 id="pamphlets">Pamphlets</h2>
+    <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <b>Pamphlets</b> &bullet; <a href="#onlines" target="_self">Pictures</a></p>
+    <p><em>(And other multi-page documents...)</em></p>
+    <div id="pamphletsGoHere" onclick="clickHandler(event)">
+        PPAU_PAMPHLETS_HERE
+    </div>
+    <hr>
+    <h1 id="onlines">The below images are just for online...</h1>
+    <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <a href="#pamphlets" target="_self">Pamphlets</a> &bullet; <b>Pictures</b></p>
+    <p>Click the image (or caption) to download the PNG &mdash; the correct authorisation tag is already in place!</p>
+    <div id="onlinesGoHere"> <!--- No onClick for this one --->
+        PPAU_ONLINES_HERE
+    </div>
+    <hr style="height: 1vh">
+    <p><a href="https://github.com/ppau/ppau-graphics/archive/master.zip">Click here to download the entire repository as a ZIP from GitHub.</a></p>
+    <script>
+
+      let dlsource = "https://abjago.net/wsgi";
+
+      function clickHandler(event){
+        var name = event.target.alt;
+
+        //console.log(event)
+
+        if(event.target.tagName != "IMG"){
+          return;
+        }
+
+        if(name==""){
+          return;
+        }
+
+      	var printer = window.prompt("Insert printer name and address:", "");
+      	if ((printer == null) || (printer == "null")){
+      		return;
+      	}
+      	window.open(dlsource + "?name=" + encodeURIComponent(name) + "&printer=" + encodeURIComponent(printer) + "&format=pdf");
+      }
+    </script>
+  </body>
+</html>
