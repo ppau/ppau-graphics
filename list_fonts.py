@@ -7,13 +7,13 @@
 ################################################################################
 
 SOURCE_DIR = "Artwork"                  # default: "Artwork"
-OUTPUT_FILE = "FONTLIST.json"            # default: "FONTLIST.txt"
+OUTPUT_FILE = "FONTLIST.json"            # default: "FONTLIST.json"
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 import subprocess
 import argparse
@@ -25,25 +25,29 @@ import sys
 
 parser = argparse.ArgumentParser(description="Collate the fonts used.", prog="PPAU-Graphics Font Lister")
 
-parser.add_argument('--source_dir', dest='source_dir',
+parser.add_argument('-s', '--source_dir', dest='source_dir',
                     action='store', default=SOURCE_DIR,
-                    help="The directory containing the source files.")
+                    help="the directory containing the source files")
 
-parser.add_argument('--output_file', dest='output_file',
+parser.add_argument('-o', '--output_file', dest='output_file',
                     action='store', default=OUTPUT_FILE,
-                    help="The file listing the fonts.")
+                    help="the file listing the font families")
 
-parser.add_argument('--list', dest='list_too',
+parser.add_argument('-i', '--invert', dest='invert',
                      action='store_const', default=False, const=True,
-                     help="List all font names to standard output")
+                     help="output an inverted file too, indexed by font")
 
-parser.add_argument('--show-missing', dest='show_missing',
+parser.add_argument('-l', '--list', dest='list_too',
                      action='store_const', default=False, const=True,
-                     help="List all missing font names to standard output")
+                     help="also list all font families used, to standard output")
 
-parser.add_argument('--invert', dest='invert',
+parser.add_argument('-m', '--missing', dest='show_missing',
                      action='store_const', default=False, const=True,
-                     help="Invert output too, indexed by font")
+                     help="list missing font families instead")
+
+parser.add_argument('-u', '--unusual', dest='unusual', 
+                     nargs='?', const=5, type=int, metavar="COUNT",
+                     help="list font families used by only a few files instead")
 
 
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
@@ -56,7 +60,6 @@ SOURCE_DIR = arguments.source_dir
 OUTPUT_FILE = arguments.output_file
 
 combo = {}
-
 allnames = {}
 
 pattern = re.compile(r"font-family(:|=)['\"]?([^;>'\"]*)")
@@ -109,11 +112,16 @@ if arguments.invert:
     with open(invname, 'w') as inv_file:
         print(json.dumps(allnames), file=inv_file)
     
-if arguments.list_too:
+### The fancy listing ###
+if arguments.list_too and not (arguments.show_missing or arguments.unusual):
     print(*listnames, sep='\n')
+    
+elif arguments.unusual and not arguments.show_missing:
+    for k, v in allnames.items():
+        if len(v) <= arguments.unusual:
+            print(k, ' [', len(v), ']' '\n\t', '\n\t'.join(v), sep='')
 
-
-if arguments.show_missing:
+elif arguments.show_missing:
     installed_fonts = None
 
     fcl_try = subprocess.run(["which", "fc-list"],
@@ -139,6 +147,11 @@ if arguments.show_missing:
     
     for font in listnames:
         if font not in installed_fonts:
-            print(font)
-
+            if arguments.unusual: # basically embedded 'unusual' in 'missing'
+                if len(allnames[font]) > arguments.unusual:
+                    continue
+                else:
+                    print(font, ' [', len(allnames[font]), ']' '\n\t', '\n\t'.join(allnames[font]), sep='')
+            else:
+                print(font)
 

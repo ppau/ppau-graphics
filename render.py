@@ -442,6 +442,7 @@ for s in SVGs:
     manifest[newkey][page_num] = submanifest
 
 # Actually render things!
+print('quit', file=commands)
 printv("Rendering everything...")
 inky = subprocess.run([BACKEND_PATH, "--shell"],
                       input=commands.getvalue(),
