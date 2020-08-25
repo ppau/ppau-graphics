@@ -446,8 +446,9 @@ print('quit', file=commands)
 printv("Rendering everything...")
 inky = subprocess.run([BACKEND_PATH, "--shell"],
                       input=commands.getvalue(),
-                      text=True,
-					  capture_output=True)  
+                      stdout=subprocess.PIPE,
+                      stderr=subprocess.PIPE,
+                      universal_newlines=True)  
 	
 # if we don't capture output, it gets printed to CLI
 if inky.returncode != 0:	  

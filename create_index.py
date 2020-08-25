@@ -159,13 +159,15 @@ with open(arguments.manifest_file, 'r') as mani_fp:
 
 #        printv(k, len(m[k]), r_in, r_out, ourfile, sep="\t") # [1] is *-auth.png
 
-        flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
-                              + convargs
-                              + [r_out],
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
-        printv("stdout from ^^^:", flippy.stdout.decode())
-        printv("stderr from ^^^:", flippy.stderr.decode())
+        
+        if not (os.path.exists(r_out) and (os.path.getmtime(r_in) <=  os.path.getmtime(r_out))):
+            flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
+                                  + convargs
+                                  + [r_out],
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            printv("stdout from ^^^:", flippy.stdout.decode())
+            printv("stderr from ^^^:", flippy.stderr.decode())
 
         if posterFlag:
             poster_replacement_str += '<div>\r\n        '+\
