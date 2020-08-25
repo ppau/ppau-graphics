@@ -63,11 +63,11 @@ def application(env, start_response):
         if query_dict["format"][0].upper() == "PDF":
             # handle PDF
             head = ['200 OK', [('Content-Type', 'application/pdf')]]
-            qformat = "-A"
+            qformat = "--export-type=pdf"
         elif query_dict["format"][0].upper() == "PNG":
             # handle PNG
             head = ['200 OK', [('Content-Type', 'image/png')]]
-            qformat = "-e"
+            qformat = "--export-type=png"
 
         # This is the un-fun part where we need multiple things rendered
 
@@ -98,9 +98,8 @@ def application(env, start_response):
                                     qfile],
                                     stdout=subprocess.PIPE)
             # inkscape
-            inkscape = subprocess.Popen([inky, "-z", "--export-dpi=300",
-                                         qformat, "/dev/stdout",
-                                         "-f", "/dev/stdin"],
+            inkscape = subprocess.Popen([inky, "--export-dpi=300",   # if on inkscape < 1.0 you'll likely want -z
+                                         qformat, "--pipe", "-o", "-"]
                                          stdout=subprocess.PIPE,
                                          stdin=sed.stdout)
 
