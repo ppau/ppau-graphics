@@ -41,7 +41,7 @@ If it's in `__Unauthorised` don't worry about it.
 
 If you're on Linux or Mac, you should be able to run 
     
-    python3 list_fonts.py --show-missing
+    python3 list_fonts.py --missing
     
 For a list of font families that are referenced by one or more files, but that you don't have installed on your system. 
 
