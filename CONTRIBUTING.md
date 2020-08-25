@@ -36,6 +36,7 @@ You will need these fonts at a minimum:
 * VIDEO PIRATE: it's on so many free font sites. (The one by "spideray")
 * Jost*: https://github.com/indestructible-type/Jost
 * The various Liberation fonts: https://github.com/liberationfonts/liberation-fonts
+* The various DejaVu fonts: https://dejavu-fonts.github.io/Download.html
 
 If it's in `__Unauthorised` don't worry about it. 
 
