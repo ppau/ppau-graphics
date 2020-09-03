@@ -188,7 +188,7 @@ def printv(*args, **kwargs):
     if VERBOSE:
         print(*args, **kwargs, file=sys.stderr)
 
-printv("Version:", VERSION)
+printv("ppau-graphics, render script version:", VERSION)
 
 # make BACKEND work (on posix systems, anyway)
 for bp in BACKEND_PATHS:
@@ -210,6 +210,15 @@ else:
     else:
         print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
         sys.exit(1)
+
+# Ensure Inkscape 1.0 
+if 'inkscape' in BACKEND_PATH:
+	vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
+	if b"Inkscape 0." in vtext:
+		print("ERROR: requires Inkscape 1.0 or higher", file=sys.stderr)
+		sys.exit(1)
+	elif b"Inkscape 1." in vtext:
+		print("SUCCESS: Inkscape 1.0 or higher", file=sys.stderr)
 
 # Go find COLLATER if we haven't already
 if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:

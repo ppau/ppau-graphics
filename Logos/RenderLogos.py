@@ -4,6 +4,7 @@
 
 ## Settings ##
 
+BACKEND_PATHS = ["/Applications/Inkscape.app/Contents/Resources/bin/inkscape", "/Applications/Inkscape.app/Contents/MacOS/inkscape", "/usr/bin/inkscape"]
 BACKEND_PATH = "/usr/bin/inkscape"
 BACKEND = "inkscape"
 
@@ -14,7 +15,7 @@ VERBOSE = False
 
 FORMATS = ["pdf", "png"]
 
-VERSION = "0.1.0a"
+VERSION = "0.2.0a"
 
 TEMPLATE_FILE = "logo_src.html"
 LOGOS_REPLACE_TAG = "PPAU_LOGOS_HERE"
@@ -58,10 +59,13 @@ printv("Source Dir:", SOURCE_DIR, "Render Dir:", RENDER_DIR)
 printv("Version:", VERSION)
 
 
-# make BACKEND work (on posix systems)
-if not os.path.exists(BACKEND_PATH):
-    printv(BACKEND + " not found at specified path " + BACKEND_PATH)
 
+# make BACKEND work (on posix systems, anyway)
+for bp in BACKEND_PATHS:
+    if os.path.exists(bp):
+        BACKEND_PATH = bp
+        break
+else:
     if os.name == "posix":
         backendtry = subprocess.run(["which", BACKEND],
                 stdout=subprocess.PIPE,
@@ -76,6 +80,19 @@ if not os.path.exists(BACKEND_PATH):
     else:
         print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
         sys.exit(1)
+
+# Establish Inkscape version
+inkv = "1.0"
+if 'inkscape' in BACKEND_PATH:
+    vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
+    if b"Inkscape 0.9" in vtext:
+        inkv = "0.9"
+    elif b"Inkscape 1." in vtext:
+	    pass
+    else:
+        print("Unknown Inkscape version!")
+        exit(1)
+
 
 
 # make `convert` work (on posix systems)
@@ -155,16 +172,22 @@ for s in SVGs:
         # (else:)
         printv("Rendering", r_out, sep="\t")
 
-        if ftype == "png":
-            renderargs = ["--export-dpi=300", "-e", r_out]
-        elif ftype == "pdf":
-            renderargs = ["--export-dpi=300", "--export-text-to-path", "-A", r_out]
+        if inkv == "0.9":
+            if ftype == "png":
+                renderargs = ["-z", "--export-dpi=300", "-e", r_out, "-f"]
+            elif ftype == "pdf":
+                renderargs = ["-z", "--export-dpi=300", "--export-text-to-path", "-A", r_out, "-f"]
+        elif inkv == "1.0":
+            if ftype == "png":
+                renderargs = ["--export-dpi=300", "--export-type=png", "-o", r_out]
+            elif ftype == "pdf":
+                renderargs = ["--export-dpi=300", "--export-text-to-path", "--export-type=pdf", "-o", r_out]
+
 
         # output ALL the things
         if len(renderargs): # this line is quite an important optimisation!
-            inky = subprocess.run([BACKEND_PATH, "-z"]
-                                  + renderargs
-                                  + ["-f", s],
+            inky = subprocess.run([BACKEND_PATH]
+                                  + renderargs + [s],
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             printv(inky.stdout.decode())
@@ -206,16 +229,16 @@ for okey in sorted(outputs.keys(), key=sk):
         convargs[1] = "white"
 
     # Now check to see if output file is newer
-        if os.path.exists(r_out) and os.path.getmtime(r_in) <= os.path.getmtime(r_out):
-                printv("No change: skipping", r_out, sep="\t")
-        else:
-            flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
-                                  + convargs
-                                  + [r_out],
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE)
-            printv("stdout from ^^^:", flippy.stdout.decode())
-            printv("stderr from ^^^:", flippy.stderr.decode())
+    if os.path.exists(r_out) and os.path.getmtime(r_in) <= os.path.getmtime(r_out):
+            printv("No change: skipping", r_out, sep="\t")
+    else:
+        flippy = subprocess.run([CONVERT_PATH] + preconvargs + [r_in]
+                              + convargs
+                              + [r_out],
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
+        printv("stdout from ^^^:", flippy.stdout.decode())
+        printv("stderr from ^^^:", flippy.stderr.decode())
 
     pr_abs = os.path.abspath(PAGE_ROOT)
 

@@ -14,7 +14,7 @@ The system works by having the artist insert placeholder text, such as `PPAU_AUT
 The following programs are required by the render script.
 
 - a working Python 3.5 (or newer) install to run it.
-- `inkscape`
+- Inkscape **(version 1.0 required)**
 - `find(1)`
 - `sed(1)`
 - `grep(1)`

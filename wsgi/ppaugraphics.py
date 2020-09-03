@@ -1,5 +1,4 @@
-# Python 2.7 not 3.5!
-import urlparse
+import urllib.parse
 import subprocess
 import os.path
 import re
@@ -32,7 +31,7 @@ def application(env, start_response):
 
     # do intelligent things based on env['QUERY_STRING']
 
-    query_dict = urlparse.parse_qs(env['QUERY_STRING'])
+    query_dict = urllib.parse.parse_qs(env['QUERY_STRING'])
 
     # do appropriate things
     # we expect keys for name (a path fragment), printer tag and format
@@ -60,14 +59,28 @@ def application(env, start_response):
     elif (query_dict["format"][0].upper() == "PDF") and not qprint_tag:
          head = ['400 Bad Query', [('Content-Type','text/html')]]
     else:
+        # first see if we have a usable inkscape
+        inkv = subprocess.Popen([inky, "-V", "--no-gui"],
+                                 stdout=subprocess.PIPE
+                                 ).stdout
+        inkscape_version = "1.0"
+        if "Inkscape 0.9" in inkv:
+            inkscape_version = "0.9"
+         
         if query_dict["format"][0].upper() == "PDF":
             # handle PDF
             head = ['200 OK', [('Content-Type', 'application/pdf')]]
-            qformat = "--export-type=pdf"
+            if inkscape_version == "1.0":
+                qformat = "--export-type=pdf"
+            else:
+                qformat = "-A"
         elif query_dict["format"][0].upper() == "PNG":
             # handle PNG
             head = ['200 OK', [('Content-Type', 'image/png')]]
-            qformat = "--export-type=png"
+            if inkscape_version == "1.0":
+                qformat = "--export-type=png"
+            else:
+                qformat = "-A"
 
         # This is the un-fun part where we need multiple things rendered
 
@@ -79,7 +92,7 @@ def application(env, start_response):
         if qformat == "-e":
             pagenums = [1]
 
-	print "pagenums", pagenums
+    #print("pagenums", pagenums)
 
         merger = PyPDF2.PdfFileMerger()
         bodyIO = io.BytesIO()
@@ -98,11 +111,19 @@ def application(env, start_response):
                                     qfile],
                                     stdout=subprocess.PIPE)
             # inkscape
-            inkscape = subprocess.Popen([inky, "--export-dpi=300",   # if on inkscape < 1.0 you'll likely want -z
-                                         qformat, "--pipe", "-o", "-"]
-                                         stdout=subprocess.PIPE,
-                                         stdin=sed.stdout)
+            inkscape_args = []
+            if inkscape_version == "1.0":
+                inkscape_args = [inky, "--export-dpi=300",   # if on inkscape < 1.0 you'll likely want -z
+                                 qformat, "--pipe", "-o", "-"]
+            else if inkscape_version = "0.9":
+                inkscape_args = [inky, "-z", "--export-dpi=300",
+                                 qformat, "/dev/stdout",
+                                 "-f", "/dev/stdin"]
+            #####
 
+            inkscape = subprocess.Popen(inkscape_args,
+                             stdout=subprocess.PIPE,
+                             stdin=sed.stdout)
             sed.stdout.close() # as per docs for SIGPIPE
             this_page = io.BytesIO(inkscape.communicate()[0])
 
@@ -117,7 +138,7 @@ def application(env, start_response):
         head[1].append(('Content-Disposition', 'inline; filename="' + re.sub('[^0-9a-zA-Z-_\.]+', '-', query_dict["name"][0] + '.' + query_dict["format"][0].lower() ) + '"'))
 
         ##print type(body)
-	print "body length", len(body)
+        #print("body length", len(body))
 
     if not (head[0][0:3] == '200'):
         body = head[0] + " " + repr(query_dict).encode('utf8')
