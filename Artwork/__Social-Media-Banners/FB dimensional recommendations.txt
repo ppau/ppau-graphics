@@ -1,3 +1,4 @@
 # Early 2020 
 
 4:3 landscape (recommend 1200x900), but all content within a central square. 
+See dank-memes/telework-is-coming for an example.
