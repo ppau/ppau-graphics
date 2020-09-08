@@ -12,10 +12,10 @@ TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
-SITE_ROOT = "."    # you might need to put something here
-# a `.` or `./` for local testing, something more substantial for on-server
-# such as `./ppau-graphics`
-#SITE_ROOT = './ppau-graphics'
+SITE_ROOT = './ppau-graphics'           # default: './ppau-graphics'
+# for local development you might wish to instead put
+# SITE_ROOT = "."   # but please don't commit this to the repo 
+# Using --site-root "." is also a good move. 
 
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
 PAMPHLET_REPLACE_TAG = "PPAU_PAMPHLETS_HERE"
@@ -38,6 +38,7 @@ import sys
 import subprocess
 import re
 import argparse
+import datetime
 
 
 # Handle our very minimal set of CL Args
@@ -208,6 +209,17 @@ with open(arguments.template_file) as templatefp:
     out_str = out_str.replace(arguments.pamphlet_replace_tag, pamphlet_replacement_str)
     out_str = out_str.replace(arguments.online_replace_tag, online_replacement_str)
 
+## Get and add some metadata 
 
+out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z")
+
+gitty = subprocess.run(["git", "describe", "--always"], stdout=subprocess.PIPE)
+hashy = gitty.stdout.decode().strip()
+out_str = out_str.replace("GIT_HASH", 
+    '<a style="color:lightgray" href=https://github.com/ppau/ppau-graphics/commit/'+hashy+">"+hashy+"</a>")
+
+
+
+## Print ##
 with open(arguments.index_file, 'w') as indexfp:
     print(out_str, file=indexfp)
