@@ -11,7 +11,7 @@ BACKEND = "inkscape"
 SOURCE_DIR = "."                        # default: "."
 RENDER_DIR = "Renders"                  # default: "Renders"
 
-VERBOSE = False
+VERBOSE = True
 
 FORMATS = ["pdf", "png"]
 
@@ -20,17 +20,18 @@ VERSION = "0.2.0a"
 TEMPLATE_FILE = "logo_src.html"
 LOGOS_REPLACE_TAG = "PPAU_LOGOS_HERE"
 INDEX_FILE = "index.html"
-PAGE_ROOT = "."    # you might need to put something here
-# a `./Logos` or `./Logos/` for local testing
-# something more substantial for on-server
-# such as `./ppau-graphics/Logos`
+
+PAGE_ROOT = './ppau-graphics/Logos'     # default: './ppau-graphics/Logos'
+# for local development you might wish to instead put
+# PAGE_ROOT = "."   # but please don't commit this to the repo 
+# Using --page-root "." is also a good move. 
 
 CONVERT = "convert"
 CONVERT_PATH = ""
 
 preconvargs = []
-convargs = ["-background", "#fff", "-flatten", "-resize", "x400", "-quality", "80"]
-# ^^^ give it a white bg if needed, maintain aspect ratio but make it 400px high
+convargs = ["-background", "#fff", "-flatten", "-resize", "800x400>", "-quality", "80"]
+# ^^^ give it a white bg if needed, maintain aspect ratio but shrink to max 800px wide, 400px high
 
 
 ## Alrighty... ###
@@ -39,8 +40,14 @@ import sys
 import os
 import subprocess
 import argparse
+import datetime
 
-# eventual argparsing will go here
+# argparsing goes here
+argparser = argparse.ArgumentParser(description="Generate a static index page from a template, with JPEGs for the thumbnails.")
+argparser.add_argument('--page-root', default=PAGE_ROOT, help="Path for the root of the index page; default is `"+PAGE_ROOT+"`")
+arguments = argparser.parse_args()
+PAGE_ROOT = arguments.page_root
+
 
 # Just a little helper function
 def printv(*args, **kwargs):
@@ -204,7 +211,7 @@ for okey in sorted(outputs.keys(), key=sk):
 
     printv(okey, item)
 
-    printv("lambda test:", sk(okey))
+    #printv("lambda test:", sk(okey))
 
     png = ""
     pdf = ""
@@ -219,8 +226,7 @@ for okey in sorted(outputs.keys(), key=sk):
     r_out = r_in[0:-4] + "_preview" + ".jpg"
 
     dlname = os.path.splitext(os.path.basename(okey))[0]
-    caption = dlname #os.path.split(okey)[-1]
-    #printv("Possible captioning:", os.path.split(okey))
+    caption = os.path.splitext(okey.replace(os.path.commonpath([okey, SOURCE_DIR]), "").lstrip('/'))[0]
 
     # handle 'negative' images correctly
     if 'negative' in okey:
@@ -249,18 +255,26 @@ for okey in sorted(outputs.keys(), key=sk):
 
     replString += '<div>\r\n\t'+\
                   '<img src="'+PAGE_ROOT+r_out_html+'" alt="'+dlname+'">\r\n\t'+\
-                  '<p class="caption">'+dlname+'</p>\r\n\t'+\
+                  '<p class="caption">'+caption+'</p>\r\n\t'+\
                   '<p class="links">Download as:&nbsp;&nbsp;'+\
                   '<a href="'+PAGE_ROOT+svg_html+'">SVG</a>&nbsp;&nbsp;'+\
                   '<a href="'+PAGE_ROOT+pdf_html+'">PDF</a>&nbsp;&nbsp;'+\
                   '<a href="'+PAGE_ROOT+png_html+'">PNG</a>&nbsp;&nbsp;'+\
                   '</p>\r\n</div>\r\n'
     
-printv("\nReplacement String:", replString)
+# printv("\nReplacement String:", replString)
 
 out_str = ""
 with open(TEMPLATE_FILE) as templatefp:
     out_str = templatefp.read().replace(LOGOS_REPLACE_TAG, replString)
+
+# metadata
+out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z")
+
+gitty = subprocess.run(["git", "describe", "--always"], stdout=subprocess.PIPE)
+hashy = gitty.stdout.decode().strip()
+out_str = out_str.replace("GIT_HASH", hashy)
+
 
 with open(INDEX_FILE, 'w') as indexfp:
     print(out_str, file=indexfp)

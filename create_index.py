@@ -215,10 +215,9 @@ out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(m
 
 gitty = subprocess.run(["git", "describe", "--always"], stdout=subprocess.PIPE)
 hashy = gitty.stdout.decode().strip()
-out_str = out_str.replace("GIT_HASH", 
-    '<a style="color:lightgray" href=https://github.com/ppau/ppau-graphics/commit/'+hashy+">"+hashy+"</a>")
+out_str = out_str.replace("GIT_HASH", hashy)
 
-
+out_str = out_str.replace("SITE_ROOT", "" if (arguments.site_root == ".") else arguments.site_root+"/")
 
 ## Print ##
 with open(arguments.index_file, 'w') as indexfp:
