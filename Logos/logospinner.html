@@ -38,60 +38,85 @@
 
 <body>
   <script>
-  var whiteBG = true;
   var path = "https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg";
   
-  function toggleBG(){
-    if(whiteBG){
-        document.body.style.backgroundColor = "black";
-        whiteBG = false;
-    } else {
-        document.body.style.backgroundColor = "white";
-        whiteBG = true;
-    }
+  function updateBG(){
+    var bgc = document.getElementById("bgc")
+    document.body.style.backgroundColor = bgc.value;
   }
   
   function updateImg(){
-    var newpath = "https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-";
-    
-    var subtitle = document.getElementById("subtitle");
-    newpath += subtitle.value;
-    
+    var newpath = "https://pirateparty.org.au/media/identity_style_guide/SVG/";
     var invert = document.getElementById("invert");
-    switch(invert.value){
-        case "negative":
-            newpath += "_negative";
+    var colouring = document.getElementById("colouring");
+    var subtitle = document.getElementById("subtitle");
+    var which = document.getElementById("which");
+    switch (which.value) {
+        case "signet":
+            newpath += "signet_black"
+            colouring.disabled = true;
+            subtitle.disabled = true;
+            switch(invert.value){
+                case "negative":
+                    newpath += "_negative";
+                    break;
+                default:
+                    break;
+            }
             break;
         default:
+            colouring.disabled = false;
+            subtitle.disabled = false;
+
+            newpath += "ppauLogo-";
+            newpath += subtitle.value;
+    
+            switch(invert.value){
+                case "negative":
+                    newpath += "_negative";
+                    break;
+                default:
+                    break;
+            }
+    
+            switch(colouring.value){
+                case "bw":
+                    newpath += "_bw";
+                    break;
+                default:
+                    break;
+            }
             break;
     }
     
-    var colouring = document.getElementById("colouring");
-    switch(colouring.value){
-        case "bw":
-            newpath += "_bw";
-            break;
-        default:
-            break;
-    }
     newpath += ".svg"
     path = newpath;
     document.getElementById("spinny").src = path;  
   }
   
   </script>
-    <button onclick="toggleBG()">Toggle Background</button>
+    <select name="bgc" id="bgc" onchange="updateBG()">
+        <option value="white">White BG</>
+        <option value="black">Black BG</>
+        <option value="#0073ae">Blue BG</>
+    </select>
+
+    <select name="which" id="which" onchange="updateImg()">
+        <option value="full">Full Logo</>
+        <option value="signet">Signet</>
+    </select>    
+    
     <select name="colouring" id="colouring" onchange="updateImg()">
-        <option value="blue">Blue</>
-        <option value="bw">B/W</>
+        <option value="blue">Blue "Pirate"</>
+        <option value="bw">B/W "Pirate"</>
     </select>
     <select name="invert" id="invert"  onchange="updateImg()">
         <option value="positive">Positive</>
         <option value="negative">Negative</>
     </select>
     <select name="subtitle" id="subtitle" onchange="updateImg()">
-        <option value="australia">Australia</>
-        <option value="website">pirateparty.org.au</>
+        <option value="australia">"Australia"</>
+        <option value="website">"pirateparty.org.au"</>
     </select>
 
     <img id="spinny" src="https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg">
