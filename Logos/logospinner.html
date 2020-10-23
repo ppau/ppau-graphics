@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>PPAU Logo Spinner</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <style>
+  
+  #spinny {
+    animation-name: spinner;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+    position: absolute;
+    left: 100px;
+    top: 100px;
+  }
+  
+  @keyframes spinner {
+  0%     {transform: scaleX(1)}
+  10%    {transform: scaleX(0.95)}
+  20%    {transform: scaleX(0.81)}
+  30%    {transform: scaleX(0.59)}
+  40%    {transform: scaleX(0.31)}
+  50%    {transform: scaleX(0)}
+  60%    {transform: scaleX(-0.31)}
+  70%    {transform: scaleX(-0.59)}
+  80%    {transform: scaleX(-0.81)}
+  90%    {transform: scaleX(-0.95)}
+  100%   {transform: scaleX(-1)}
+  }
+  </style>
+  
+</head>
+
+<body>
+  <script>
+  var whiteBG = true;
+  var path = "https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg";
+  
+  function toggleBG(){
+    if(whiteBG){
+        document.body.style.backgroundColor = "black";
+        whiteBG = false;
+    } else {
+        document.body.style.backgroundColor = "white";
+        whiteBG = true;
+    }
+  }
+  
+  function updateImg(){
+    var newpath = "https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-";
+    
+    var subtitle = document.getElementById("subtitle");
+    newpath += subtitle.value;
+    
+    var invert = document.getElementById("invert");
+    switch(invert.value){
+        case "negative":
+            newpath += "_negative";
+            break;
+        default:
+            break;
+    }
+    
+    var colouring = document.getElementById("colouring");
+    switch(colouring.value){
+        case "bw":
+            newpath += "_bw";
+            break;
+        default:
+            break;
+    }
+    newpath += ".svg"
+    path = newpath;
+    document.getElementById("spinny").src = path;  
+  }
+  
+  </script>
+    <button onclick="toggleBG()">Toggle Background</button>
+    <select name="colouring" id="colouring" onchange="updateImg()">
+        <option value="blue">Blue</>
+        <option value="bw">B/W</>
+    </select>
+    <select name="invert" id="invert"  onchange="updateImg()">
+        <option value="positive">Positive</>
+        <option value="negative">Negative</>
+    </select>
+    <select name="subtitle" id="subtitle" onchange="updateImg()">
+        <option value="australia">Australia</>
+        <option value="website">pirateparty.org.au</>
+    </select>
+
+    <img id="spinny" src="https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg">
+</body>
+
+</html>
