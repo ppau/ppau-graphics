@@ -94,6 +94,11 @@
     document.getElementById("spinny").src = path;  
   }
   
+  function updateSpeed(){
+    speedyboi = document.getElementById("speedRange")
+    document.getElementById("spinny").style["animation-duration"] = Math.pow(2, speedyboi.value) + "s";
+  }
+  
   </script>
     <select name="bgc" id="bgc" onchange="updateBG()">
         <option value="white">White BG</>
@@ -118,7 +123,8 @@
         <option value="australia">"Australia"</>
         <option value="website">"pirateparty.org.au"</>
     </select>
-
+    <input type="range" min="-2" max="3" value="2" step="0.1" class="slider" id="speedRange" onchange="updateSpeed()">
+    <label for="speedRange">Rotation Speed</label>
     <img id="spinny" src="https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg">
 </body>
 
