@@ -56,10 +56,10 @@ COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
 SCREEN_FORMATS = ["png"]
 PRINT_FORMATS = ["pdf"]
 
-        #   (name, include auth tag, include print tag, formats)
-VARIANTS = [("auth", True, False, SCREEN_FORMATS),
-            ("both", True, True, PRINT_FORMATS),
-            ("none", False, False, SCREEN_FORMATS+PRINT_FORMATS)]
+        #   (name, include auth tag, include print tag, media formats)
+VARIANTS = [("auth", True, False, SCREEN_FORMATS),                # 'basic'
+            ("both", True, True, PRINT_FORMATS),                  # 'full'
+            ("none", False, False, SCREEN_FORMATS+PRINT_FORMATS)] # 'none'
         # NB: it's absurd to include a print tag but not an auth tag.
 
 
@@ -71,7 +71,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.3" 
+VERSION = "0.5.4" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -213,12 +213,12 @@ else:
 
 # Ensure Inkscape 1.0 
 if 'inkscape' in BACKEND_PATH:
-	vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
-	if b"Inkscape 0." in vtext:
-		print("ERROR: requires Inkscape 1.0 or higher", file=sys.stderr)
-		sys.exit(1)
-	elif b"Inkscape 1." in vtext:
-		print("SUCCESS: Inkscape 1.0 or higher", file=sys.stderr)
+    vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
+    if b"Inkscape 0." in vtext:
+        print("ERROR: requires Inkscape 1.0 or higher", file=sys.stderr)
+        sys.exit(1)
+    elif b"Inkscape 1." in vtext:
+        print("SUCCESS: able to use Inkscape 1.0 or higher", file=sys.stderr)
 
 # Go find COLLATER if we haven't already
 if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
@@ -282,6 +282,58 @@ except FileNotFoundError:
     print_tag_full = PRINT_TAG
 
 
+# Optimise: by caching the auth and print tags
+# update the cachefile only if needed
+# then later, if every cachefile modification is older than sourcefile modification,
+# there's no need to update the sourcefile
+
+atf_path = os.path.normpath(os.path.join(os.path.join(RENDER_DIR, ".auth_tag_full_cache")))
+atb_path = os.path.normpath(os.path.join(os.path.join(RENDER_DIR, ".auth_tag_basic_cache")))
+ptf_path = os.path.normpath(os.path.join(os.path.join(RENDER_DIR, ".print_tag_full_cache")))
+
+# xxx_cacheable iff the cache has the same contents as the current value
+atf_cacheable = False
+atb_cacheable = False
+ptf_cacheable = False
+
+if os.path.exists(atf_path):
+    with open(atf_path) as fp:
+        if auth_tag_full == fp.read().strip():
+            atf_cacheable = True
+        else:
+        	print("ATF wasn't cacheable")
+
+if not atf_cacheable:
+    with open(atf_path, 'w') as fp:
+        print(auth_tag_full, file=fp)
+
+if os.path.exists(atb_path):
+    with open(atb_path) as fp:
+        if auth_tag_basic == fp.read().strip():
+            atb_cacheable = True
+        else:
+        	print("ATB wasn't cacheable")
+
+
+if not atb_cacheable:
+    with open(atb_path, 'w') as fp:
+        print(auth_tag_basic, file=fp)
+
+if os.path.exists(ptf_path):
+    with open(ptf_path) as fp:
+        if print_tag_full == fp.read().strip():
+            ptf_cacheable = True
+        else:
+        	print("PTF wasn't cacheable")
+
+if not ptf_cacheable:
+    with open(ptf_path, 'w') as fp:
+        print(print_tag_full, file=fp)
+
+atf_mod = os.path.getmtime(atf_path)
+atb_mod = os.path.getmtime(atb_path)
+ptf_mod = os.path.getmtime(ptf_path)
+
 # We also want to keep a manifest of what we've done.
 # {file basename, [paths to renders...]}
 # but we don't actually want absolute pathnames for that
@@ -329,9 +381,7 @@ for s in SVGs:
                                              stdout=subprocess.PIPE).stdout) >= 1
     has_print_tag = int(subprocess.run(["grep", "-cF", PRINT_TAG, s],
                                              stdout=subprocess.PIPE).stdout) >= 1
-
     # initialise
-#    manifest[key] = []
     if not newkey in manifest:
         manifest[newkey] = {}
 
@@ -362,15 +412,6 @@ for s in SVGs:
         r_tag = os.path.join(rdir, r_tag_root + "-" + variant[0] + r_tag_ext)
         printv("sdir:", sdir, "sfrag:", sfrag, "rdir:", rdir, "r_tag", r_tag)
         #exit()
-        # On checking file modification dates and skipping if 'no change':
-
-        # Ideally we could not update the tagged SVG if it wouldn't change,
-        # or at least not update its file modification date -- otherwise,
-        # toggling output formats forces a full re-rendering.
-        # Switching to/from alternate tags might also cause issues.
-        # We have to handle this case by just speculatively tagging and
-        # comparing to the existing file (if it exists)
-
 
         # OK. Create temp file and run sed into it for the tags
         # hmm. this runs once per output format right now.
@@ -381,45 +422,22 @@ for s in SVGs:
 
         # We should search the relevant file for the tag and skip
         # if we would normally substitute, but it doesn't exist
+        
+        if variant[1]:
+            if not has_auth_tag:
+                printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
+                notagcount += 1
+                continue
 
-		
-        if variant[1] and not has_auth_tag:
-            printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
-            notagcount += 1
-            continue
-
-        if variant[2] and not has_print_tag:
-            printv("No Print Tag: skipping what would be", r_tag, sep='\t')
-            notagcount += 1
-            continue
-				
+        if variant[2]: 
+            if not has_print_tag:
+                printv("No Print Tag: skipping what would be", r_tag, sep='\t')
+                notagcount += 1
+                continue
+                
         if (not (variant[1] or variant[2])) and (has_auth_tag or has_print_tag):
             printv("No need for 'None' variant: skipping", r_tag, sep='\t')
             continue
-
-        # Now it's sed time
-
-        with tempfile.NamedTemporaryFile() as tmpfp:
-            subprocess.run(["sed",
-                            "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_tag_var) + "/g",
-                            "-e", "s/" + re.escape(PRINT_TAG) + "/" + re.escape(print_tag_var) + "/g",
-                            s],
-                           stdout=tmpfp)
-
-            # Compare speculative and existing tagged SVGs
-            if os.path.exists(r_tag):
-                if filecmp.cmp(r_tag, tmpfp.name): # SVGs identical
-                    printv("No change to", r_tag, sep="\t")
-                else:
-                    # The tagged SVG has changed: copy it over
-                    printv("Updating", r_tag, sep="\t")
-                    shutil.copy2(tmpfp.name, r_tag)
-            else:
-                # The tagged SVG now exists: copy it over
-                printv("Updating", r_tag, sep="\t")
-                shutil.copy2(tmpfp.name, r_tag)
-
-        renderargs = []
 
         # Iterate over output formats...
         for ftype in FORMATS:
@@ -428,6 +446,29 @@ for s in SVGs:
 
             submanifest.append(r_out[(len(RENDER_DIR)+1):])
             printv("2:\t", r_out[(len(RENDER_DIR)+1):])
+
+
+            # We also skip if the modification dates say we can
+        
+            if os.path.exists(r_tag) and atf_cacheable and atb_cacheable and \
+                    ((ptf_cacheable and variant[2]) or not variant[2]) and \
+                    (os.path.getmtime(r_tag) < atf_mod) and (os.path.getmtime(s) < atf_mod):
+                printv("Already done: Skipping what would be", r_tag, sep='\t')
+                skipcount += 1
+                # still have to make sure this goes into the manifest!
+            
+                continue
+            else:
+                printv("Updating", r_tag, sep='\t')     
+                with open(r_tag, 'w') as tagfp:
+                    subprocess.run(["sed",
+                                    "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_tag_var) + "/g",
+                                    "-e", "s/" + re.escape(PRINT_TAG) + "/" + re.escape(print_tag_var) + "/g",
+                                    s],
+                                   stdout=tagfp)
+
+            renderargs = []
+
 
             # Now check to see if output file is newer
             if os.path.exists(r_out):
@@ -458,12 +499,22 @@ inky = subprocess.run([BACKEND_PATH, "--shell"],
                       stdout=subprocess.PIPE,
                       stderr=subprocess.PIPE,
                       universal_newlines=True)  
-	
+    
 # if we don't capture output, it gets printed to CLI
-if inky.returncode != 0:	  
+if inky.returncode != 0:      
     printv(inky.stdout)
     printv(inky.stderr)
 
+
+# Cache auth and print tags... but only if they've changed
+with open(os.path.join(RENDER_DIR, ".auth_tag_full_cache"), 'w') as fp:
+    print(auth_tag_full, file=fp)
+
+with open(os.path.join(RENDER_DIR, ".auth_tag_basic_cache"), 'w') as fp:
+    print(auth_tag_basic, file=fp)
+
+with open(os.path.join(RENDER_DIR, ".print_tag_cache"), 'w') as fp:
+    print(print_tag_full, file=fp)
 
 
 # Here. we collate rendered PDFs.

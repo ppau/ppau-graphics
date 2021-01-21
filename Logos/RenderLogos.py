@@ -11,20 +11,18 @@ BACKEND = "inkscape"
 SOURCE_DIR = "."                        # default: "."
 RENDER_DIR = "Renders"                  # default: "Renders"
 
-VERBOSE = True
+VERBOSE = False
 
 FORMATS = ["pdf", "png"]
 
-VERSION = "0.2.0a"
+VERSION = "0.2.2"
 
 TEMPLATE_FILE = "logo_src.html"
 LOGOS_REPLACE_TAG = "PPAU_LOGOS_HERE"
 INDEX_FILE = "index.html"
 
-PAGE_ROOT = './ppau-graphics/Logos'     # default: './ppau-graphics/Logos'
-# for local development you might wish to instead put
-# PAGE_ROOT = "."   # but please don't commit this to the repo 
-# Using --page-root "." is also a good move. 
+PAGE_ROOT = "."
+# On-server, set --page-root "https://example.tld/ppau-graphics/Logos"
 
 CONVERT = "convert"
 CONVERT_PATH = ""

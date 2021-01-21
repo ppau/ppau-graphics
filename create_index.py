@@ -12,10 +12,9 @@ TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
-SITE_ROOT = './ppau-graphics'           # default: './ppau-graphics'
-# for local development you might wish to instead put
-# SITE_ROOT = "."   # but please don't commit this to the repo 
-# Using --site-root "." is also a good move. 
+SITE_ROOT = '.'
+# because of Alex's nginx setup, site roots on-server need to be absolute
+# So use --site-root "https://example.tld/ppau-graphics"
 
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
 PAMPHLET_REPLACE_TAG = "PPAU_PAMPHLETS_HERE"

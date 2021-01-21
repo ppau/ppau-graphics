@@ -14,7 +14,7 @@ Authorisation and Printing Tags need to be legible! As such, they should be no l
 
 In general, use Open Sans for general text and Open Sans Condensed for tag-text. 
 
-If you use fonts other than those listed in the Identity Style Guide, run `python3 list_fonts.py` in the project root before committing. This will automatically update `FONTLIST.json`. Please only use fonts which are available under permissive licenses.
+If you use fonts other than those listed in the Identity Style Guide, run `python3 list_fonts.py` in the project root before committing. This will automatically update `FONTLIST.json`. Please only use fonts which are available under permissive licenses, and add their download links to the list below...
 
 The Authorisation Tag placeholder is as follows (remove leading/trailing whitespace): 
 
@@ -29,26 +29,39 @@ The Printing Tag placeholder is as follows (remove leading/trailing whitespace):
 
 You will need these fonts at a minimum:
 
-* Gehen Sans: https://github.com/ppau/gehen-fonts
-* Open Sans (including Condensed): Google Fonts
-* Fira Sans (all widths): download that 94MB zip from https://bboxtype.com/typefaces/FiraSans/
-* The various Microsoft Core Fonts (for Arial etc)
-* VIDEO PIRATE: it's on so many free font sites. (The one by "spideray")
-* Jost*: https://github.com/indestructible-type/Jost
-* The various Liberation fonts: https://github.com/liberationfonts/liberation-fonts
-* The various DejaVu fonts: https://dejavu-fonts.github.io/Download.html
+* [Gehen Sans](https://github.com/ppau/gehen-fonts/raw/gh-pages/gehen-sans-otf-0.4.tar.gz)
+* [Open Sans](https://fonts.google.com/download?family=Open%20Sans), including [Condensed](https://fonts.google.com/download?family=Open%20Sans%20Condensed)
+* [Fira Sans, all widths](https://bboxtype.com/downloads/Fira/Download_Folder_FiraSans_4301.zip)
+* The various Microsoft Core Fonts (Arial, Courier New, etc.) Preinstalled on Windows and Mac, try the `ttf-mscorefonts-installer` on Debian-like systems. 
+* [VIDEO PIRATE](https://www.ffonts.net/VIDEO-PIRATE.font.zip)
+* [Jost*](https://indestructibletype.com/Jost.zip)
+* [Liberation fonts](https://github.com/liberationfonts/liberation-fonts/files/4743886/liberation-fonts-ttf-2.1.1.tar.gz)
+* [DejaVu fonts](http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip)
 
-If it's in `__Unauthorised` don't worry about it. 
+And these fonts on occasion:
+
+* [Airstream](https://dl.dafont.com/dl/?f=airstream)
+* [Deftone Stylus](https://dl.dafont.com/dl/?f=deftone_stylus)
+* [Minecraft](https://dl.dafont.com/dl/?f=minecraft)
+* [Roboto Slab](https://fonts.google.com/download?family=Roboto%20Slab)
+* [Showtime](https://dl.dafont.com/dl/?f=showtime)
+* [Source Serif Pro](https://github.com/adobe-fonts/source-serif-pro/releases/download/3.001R/source-serif-pro-3.001R.zip)
+* [Lazer84](https://dl.dafont.com/dl/?f=lazer84)
+
+
+If it's in `__Unauthorised` don't worry about it too much. 
 
 If you're on Linux or Mac, you should be able to run 
     
     python3 list_fonts.py --missing
     
-For a list of font families that are referenced by one or more files, but that you don't have installed on your system. 
+For a list of font families that are referenced by one or more files, but that you don't have installed on your system. This works regardless of how up-to-date the list above is!
 
 You might also find `--invert` to be useful if you're trying to figure out which files use a particular font. 
 
     python3 list_fonts.py --invert
+    
+Further, there's `python3 font_installer.py` which does as much of this automatically as possible. But it has to be manually kept up-to-date with the list above. 
 
 
 
