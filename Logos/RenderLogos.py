@@ -28,8 +28,8 @@ CONVERT = "convert"
 CONVERT_PATH = ""
 
 preconvargs = []
-convargs = ["-background", "#fff", "-flatten", "-resize", "800x400>", "-quality", "80"]
-# ^^^ give it a white bg if needed, maintain aspect ratio but shrink to max 800px wide, 400px high
+convargs = ["-background", "#fff", "-flatten", "-resize", "115000@", "-quality", "80"]
+# ^^^ give it a white bg if needed, then maintaining aspect ratio, scale so that A4 is either 400px high or wide
 
 
 ## Alrighty... ###
