@@ -28,8 +28,9 @@ CONVERT = "convert"
 CONVERT_PATH = ""
 
 preconvargs = []
-convargs = ["-background", "#fff", "-flatten", "-resize", "115000@", "-quality", "80"]
-# ^^^ give it a white bg if needed, then maintaining aspect ratio, scale so that A4 is either 400px high or wide
+convargs = ["-background", "#fff", "-flatten", "-resize", "282^>", "-quality", "80"]
+# ^^^ give it a white bg if needed, then maintaining aspect ratio, scale so that 
+# .... the *smaller* side is reduced to 282px (A-series ratio will have the larger be 400)
 
 
 ## Alrighty... ###

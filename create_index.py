@@ -139,7 +139,7 @@ with open(arguments.manifest_file, 'r') as mani_fp:
                 ourfile = i            
 
         if mkey.startswith("__") or not (authFlagged or printFlagged):
-            printv("Skipping", mkey, "due to being unauthorised.")
+            printv("Skipping", mkey, "due to being unauthorised or obsolete.")
             continue
 
         printv(mkey, authFlagged, printFlagged)
