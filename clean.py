@@ -13,6 +13,7 @@ MANIFEST_FILE = "MANIFEST.json"         # default: "MANIFEST.json"
 ################################################################################
 
 VERSION = "0.0.1"
+VERBOSE = False
 
 import subprocess
 import argparse
@@ -35,11 +36,19 @@ parser.add_argument('-m', '--manifest-file', dest='manifest',
                     
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
+parser.add_argument('--verbose', action='store_true', help="tell me more")
+
 arguments = parser.parse_args()
 
 # we don't remove files, we remove whole subdirectories that aren't in the manifest
 
 # manifest is keyed by e.g. a/b/c where a and b are directories, c is a source file name
+
+VERBOSE |= arguments.verbose
+
+def printv(*args, **kwargs):
+    if VERBOSE:
+        print(*args, **kwargs, file=sys.stderr)
 
 keep_folders = set() 
 
@@ -57,16 +66,13 @@ folders = subprocess.run(["find", RENDER_DIR, "-type", "d"],
 
 
 total_deletions = 0
+total_skips = 0
 
 for f in folders:
     # remove Renders/ or equivalent off the front
     fbit = os.path.relpath(f, start=arguments.render_dir)
 
     if len(fbit) == 0 or fbit == ".":
-        continue
-    
-    if fbit[:2] == "__":
-        print("skipping", f, file=sys.stderr)
         continue
         
     if fbit not in keep_folders:
@@ -81,11 +87,13 @@ for f in folders:
                 break
         
         if subdir_ok:
+            printv("skipping", fbit)
+            total_skips += 1
             continue
         else:
-            print("Deleting:", f, file=sys.stderr)
-            # shutil.rmtree(f)
+            printv("Deleting:", f)
+            shutil.rmtree(f)
             total_deletions += 1
             
-print("Performed", total_deletions, "deletions", file=sys.stderr)
+print("Performed", total_deletions, "deletions", "and skipped", total_skips, file=sys.stderr)
 
