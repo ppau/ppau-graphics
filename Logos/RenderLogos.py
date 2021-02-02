@@ -40,18 +40,39 @@ import os
 import subprocess
 import argparse
 import datetime
+import logging
 
 # argparsing goes here
 argparser = argparse.ArgumentParser(description="Generate a static index page from a template, with JPEGs for the thumbnails.")
 argparser.add_argument('--page-root', default=PAGE_ROOT, help="Path for the root of the index page; default is `"+PAGE_ROOT+"`")
+argparser.add_argument('--verbose', action='count', help="tell me more", default=0)
+argparser.add_argument('--quiet', action='count', help="tell me less", default=0)
+argparser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
+
 arguments = argparser.parse_args()
+
+__loglevel = logging.INFO
+if arguments.quiet > arguments.verbose:
+    __loglevel = logging.WARNING
+elif arguments.quiet < arguments.verbose:
+    __loglevel = logging.DEBUG
+
+logging.basicConfig(stream=arguments.log, level=__loglevel, 
+    format= "%(levelname)s: %(message)s" if arguments.log.name == "<stderr>" else "%(asctime)s %(levelname)s: %(message)s")
+
+def printv(*args, sep=' ', **kwargs):
+    logging.debug(sep.join([str(x) for x in args]), **kwargs)
+
+def printq(*args, sep=' ', **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+
+def failure(*args, sep=' ', code=1, **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    sys.exit(code)
+
 PAGE_ROOT = arguments.page_root
 
 
-# Just a little helper function
-def printv(*args, **kwargs):
-    if VERBOSE:
-        print(*args, **kwargs, file=sys.stderr)
 
 # Absolutise basepaths
 if sys.path[0]:
@@ -81,11 +102,9 @@ else:
             printv("Using "+ BACKEND +" at " + backendtry + " instead.")
             BACKEND_PATH = backendtry
         else:
-            print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
-            sys.exit(1)
+            failure("ERROR: could not find "+ BACKEND +"!")
     else:
-        print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: could not find "+ BACKEND +"!")
 
 # Establish Inkscape version
 inkv = "1.0"
@@ -96,8 +115,7 @@ if 'inkscape' in BACKEND_PATH:
     elif b"Inkscape 1." in vtext:
 	    pass
     else:
-        print("Unknown Inkscape version!")
-        exit(1)
+        failure("Unknown Inkscape version!")
 
 
 
@@ -114,11 +132,9 @@ if not os.path.exists(CONVERT_PATH):
             printv("Using `"+ CONVERT +"` at `" + converttry + "` instead.")
             CONVERT_PATH = converttry
         else:
-            print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
-            sys.exit(1)
+            failure("ERROR: could not find `"+ CONVERT +"`!")
     else:
-        print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: could not find `"+ CONVERT +"`!")
 
 
 
@@ -142,9 +158,6 @@ for s in SVGs:
 
     # Figure out where we're rendering to
 
-
-        
-
     subdir = sdir.replace(os.path.commonpath([sdir, SOURCE_DIR]), "")
 
     rdir = os.path.join(RENDER_DIR, subdir.lstrip(os.path.sep))
@@ -154,8 +167,7 @@ for s in SVGs:
     (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
 
     if not os.path.exists(rdir):
-            # print(rdir)
-            os.makedirs(rdir)
+        os.makedirs(rdir)
 
     results = [] # one result for each format
 

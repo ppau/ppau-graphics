@@ -12,8 +12,7 @@ MANIFEST_FILE = "MANIFEST.json"         # default: "MANIFEST.json"
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.0.1"
-VERBOSE = False
+VERSION = "0.0.2"
 
 import subprocess
 import argparse
@@ -21,6 +20,7 @@ import json
 import os.path
 import shutil
 import sys
+import logging
 
 parser = argparse.ArgumentParser(description="Remove old renders, but keep current ones.", 
                                  prog="PPAU-Graphics Render Cleanup",
@@ -36,19 +36,35 @@ parser.add_argument('-m', '--manifest-file', dest='manifest',
                     
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
-parser.add_argument('--verbose', action='store_true', help="tell me more")
+
+parser.add_argument('--verbose', action='count', help="tell me more", default=0)
+parser.add_argument('--quiet', action='count', help="tell me less", default=0)
+parser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
 
 arguments = parser.parse_args()
+
+__loglevel = logging.INFO
+if arguments.quiet > arguments.verbose:
+    __loglevel = logging.WARNING
+elif arguments.quiet < arguments.verbose:
+    __loglevel = logging.DEBUG
+
+logging.basicConfig(stream=arguments.log, level=__loglevel, 
+    format= "%(levelname)s: %(message)s" if arguments.log.name == "<stderr>" else "%(asctime)s %(levelname)s: %(message)s")
+
+def printv(*args, sep=' ', **kwargs):
+    logging.debug(sep.join([str(x) for x in args]), **kwargs)
+
+def printq(*args, sep=' ', **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+
+def failure(*args, sep=' ', code=1, **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    sys.exit(code)
 
 # we don't remove files, we remove whole subdirectories that aren't in the manifest
 
 # manifest is keyed by e.g. a/b/c where a and b are directories, c is a source file name
-
-VERBOSE |= arguments.verbose
-
-def printv(*args, **kwargs):
-    if VERBOSE:
-        print(*args, **kwargs, file=sys.stderr)
 
 keep_folders = set() 
 
@@ -95,5 +111,5 @@ for f in folders:
             shutil.rmtree(f)
             total_deletions += 1
             
-print("Performed", total_deletions, "deletions", "and skipped", total_skips, file=sys.stderr)
+printq("Performed", total_deletions, "deletions", "and skipped", total_skips)
 

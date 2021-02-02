@@ -38,9 +38,10 @@ import subprocess
 import re
 import argparse
 import datetime
+import logging
 
 
-# Handle our very minimal set of CL Args
+# Handle our no longer especially minimal set of CL Args
 
 argparser = argparse.ArgumentParser(description="Generate a static index page from a template, with JPEGs for the thumbnails.")
 argparser.add_argument('--manifest-file', default=MANIFEST_FILE, help="Path to the manifest JSON file")
@@ -51,15 +52,32 @@ argparser.add_argument('--site-root', default=SITE_ROOT, help="Path for the root
 argparser.add_argument('--poster-replace-tag', default=POSTER_REPLACE_TAG, help="The string in the template to be replaced by the poster content")
 argparser.add_argument('--pamphlet-replace-tag', default=PAMPHLET_REPLACE_TAG, help="The string in the template to be replaced by the pamphlet content")
 argparser.add_argument('--online-replace-tag', default=ONLINE_REPLACE_TAG, help="The string in the template to be replaced by the online-only content")
-argparser.add_argument('--verbose', default=VERBOSE, action='store_true', help="Show ALL the debugging output!")
 argparser.add_argument('--version', action='version', version=VERSION)
+
+argparser.add_argument('--verbose', action='count', help="tell me more", default=0)
+argparser.add_argument('--quiet', action='count', help="tell me less", default=0)
+argparser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
 
 arguments = argparser.parse_args()
 
-# Just a little helper function
-def printv(*args, **kwargs):
-    if arguments.verbose:
-        print(*args, **kwargs, file=sys.stderr)
+__loglevel = logging.INFO
+if arguments.quiet > arguments.verbose:
+    __loglevel = logging.WARNING
+elif arguments.quiet < arguments.verbose:
+    __loglevel = logging.DEBUG
+
+logging.basicConfig(stream=arguments.log, level=__loglevel, 
+    format= "%(levelname)s: %(message)s" if arguments.log.name == "<stderr>" else "%(asctime)s %(levelname)s: %(message)s")
+
+def printv(*args, sep=' ', **kwargs):
+    logging.debug(sep.join([str(x) for x in args]), **kwargs)
+
+def printq(*args, sep=' ', **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+
+def failure(*args, sep=' ', code=1, **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    sys.exit(code)
 
 printv("Command line arguments:", arguments)
 
@@ -76,11 +94,9 @@ if not os.path.exists(CONVERT_PATH):
             printv("Using `"+ CONVERT +"` at `" + converttry + "` instead.")
             CONVERT_PATH = converttry
         else:
-            print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
-            sys.exit(1)
+            failure("ERROR: could not find `"+ CONVERT +"`!")
     else:
-        print("ERROR: could not find `"+ CONVERT +"`!", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: could not find `"+ CONVERT +"`!")
 
 
 

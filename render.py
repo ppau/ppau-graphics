@@ -90,6 +90,7 @@ import filecmp
 import json
 import re
 import io
+import logging
 
 # Parse arguments
 
@@ -137,29 +138,46 @@ parser.add_argument('--no-collate', dest='no_collate',
 parser.add_argument('--collate-fmt', dest='collate_fmt',
                     action='store', default=COLLATE_FMT,
                     help="A regex string that matches your filename numbering pattern.")
-
-parser.add_argument('--verbose', dest='verbose',
-                    action='store_const', default=VERBOSE, const=True,
-                    help="Be more verbose about file processing.")
-
 parser.add_argument('--version', action='version', version='%(prog)s '+VERSION)
 
-args = parser.parse_args()
+parser.add_argument('--verbose', action='count', help="tell me more", default=0)
+parser.add_argument('--quiet', action='count', help="tell me less", default=0)
+parser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
 
+arguments = parser.parse_args()
+
+__loglevel = logging.INFO
+if arguments.quiet > arguments.verbose:
+    __loglevel = logging.WARNING
+elif arguments.quiet < arguments.verbose:
+    __loglevel = logging.DEBUG
+
+logging.basicConfig(stream=arguments.log, level=__loglevel, 
+    format= "%(levelname)s: %(message)s" if arguments.log.name == "<stderr>" else "%(asctime)s %(levelname)s: %(message)s")
+
+def printv(*args, sep=' ', **kwargs):
+    logging.debug(sep.join([str(x) for x in args]), **kwargs)
+
+def printq(*args, sep=' ', **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+
+def failure(*args, sep=' ', code=1, **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    sys.exit(code)
 
 # Update Flags
 
-SOURCE_DIR = args.source_dir
-RENDER_DIR = args.render_dir
-AUTH_TAG_FILE = args.auth_tag_file
-AUTH_TAG_FILE_BASIC = args.auth_tag_file_basic
-PRINT_TAG_FILE = args.print_tag_file
-AUTH_TAG = args.auth_tag
-PRINT_TAG = args.print_tag
-BACKEND_PATH = args.backend_path
-NO_COLLATE = args.no_collate
-COLLATE_FMT = args.collate_fmt
-VERBOSE = args.verbose
+SOURCE_DIR = arguments.source_dir
+RENDER_DIR = arguments.render_dir
+AUTH_TAG_FILE = arguments.auth_tag_file
+AUTH_TAG_FILE_BASIC = arguments.auth_tag_file_basic
+PRINT_TAG_FILE = arguments.print_tag_file
+AUTH_TAG = arguments.auth_tag
+PRINT_TAG = arguments.print_tag
+BACKEND_PATH = arguments.backend_path
+NO_COLLATE = arguments.no_collate
+COLLATE_FMT = arguments.collate_fmt
+VERBOSE = arguments.verbose
 
 # Fix directory issues by using absolute pathnames (if possible).
 # (These come about because the current working directory is not
@@ -183,11 +201,6 @@ if sys.path[0]:
         PRINT_TAG_FILE = os.path.join(sys.path[0], PRINT_TAG_FILE)
 
 
-# Just a little helper function
-def printv(*args, **kwargs):
-    if VERBOSE:
-        print(*args, **kwargs, file=sys.stderr)
-
 printv("ppau-graphics, render script version:", VERSION)
 
 # make BACKEND work (on posix systems, anyway)
@@ -205,20 +218,17 @@ else:
             printv("Using "+ BACKEND +" at " + backendtry + " instead.")
             BACKEND_PATH = backendtry
         else:
-            print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
-            sys.exit(1)
+            failure("ERROR: could not find "+ BACKEND +"!")
     else:
-        print("ERROR: could not find "+ BACKEND +"!", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: could not find "+ BACKEND +"!")
 
 # Ensure Inkscape 1.0 
 if 'inkscape' in BACKEND_PATH:
     vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
     if b"Inkscape 0." in vtext:
-        print("ERROR: requires Inkscape 1.0 or higher", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: requires Inkscape 1.0 or higher")
     elif b"Inkscape 1." in vtext:
-        print("SUCCESS: able to use Inkscape 1.0 or higher", file=sys.stderr)
+        printv("SUCCESS: able to use Inkscape 1.0 or higher")
 
 # Go find COLLATER if we haven't already
 if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
@@ -233,11 +243,9 @@ if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
             printv("Using "+ COLLATER +" at " + collatertry + " instead.")
             COLLATER_PATH = collatertry
         else:
-            print("ERROR: could not find "+ COLLATER +"!", file=sys.stderr)
-            sys.exit(1)
+            failure("ERROR: could not find "+ COLLATER +"!")
     else:
-        print("ERROR: could not find "+ COLLATER +"!", file=sys.stderr)
-        sys.exit(1)
+        failure("ERROR: could not find "+ COLLATER +"!")
 
 # Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
@@ -260,7 +268,7 @@ try:
         auth_tag_full = atfp.read().strip()
         printv("full", auth_tag_full)
 except FileNotFoundError:
-    print("Authorisation tag file not found!",
+    printq("Authorisation tag file not found!",
           "No substitution will be performed.")
     auth_tag_full = AUTH_TAG
 
@@ -268,7 +276,7 @@ try:
     with open(AUTH_TAG_FILE_BASIC) as atfp:
         auth_tag_basic = atfp.read().strip()
 except FileNotFoundError:
-    print("Basic auth tag file not found! Falling back on", 
+    printq("Basic auth tag file not found! Falling back on", 
           AUTH_TAG_FILE)
     auth_tag_basic = auth_tag_full
     
@@ -277,7 +285,7 @@ try:
         print_tag_full = ptfp.read().strip()
         printv(print_tag_full)
 except FileNotFoundError:
-    print("Printing tag file not found!",
+    printq("Printing tag file not found!",
           "No substitution will be performed.")
     print_tag_full = PRINT_TAG
 
@@ -301,7 +309,7 @@ if os.path.exists(atf_path):
         if auth_tag_full == fp.read().strip():
             atf_cacheable = True
         else:
-        	print("ATF wasn't cacheable")
+        	printv("ATF wasn't cacheable")
 
 if not atf_cacheable:
     with open(atf_path, 'w') as fp:
@@ -312,7 +320,7 @@ if os.path.exists(atb_path):
         if auth_tag_basic == fp.read().strip():
             atb_cacheable = True
         else:
-        	print("ATB wasn't cacheable")
+        	printv("ATB wasn't cacheable")
 
 
 if not atb_cacheable:
@@ -324,7 +332,7 @@ if os.path.exists(ptf_path):
         if print_tag_full == fp.read().strip():
             ptf_cacheable = True
         else:
-        	print("PTF wasn't cacheable")
+        	printv("PTF wasn't cacheable")
 
 if not ptf_cacheable:
     with open(ptf_path, 'w') as fp:
@@ -574,8 +582,8 @@ with open(MANIFEST_FILE, 'w') as mf:
     print(json.dumps(manifest), file=mf)
 
 
-print("render.py:\t{} new renders performed.\t{} renders already up-to-date."
-       .format(updatecount, skipcount), file=sys.stderr)
+printq("render.py:\t{} new renders performed.\t{} renders already up-to-date."
+       .format(updatecount, skipcount))
 
 # this would've been a makefile,
 # but `make` really doesn't like filenames with spaces in them
