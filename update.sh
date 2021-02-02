@@ -3,11 +3,12 @@
 # PPAU Graphics Update Script
 # Usage: ./update.sh <site_address> [log_file]
 
+# this has to be first lol
+cd $(dirname "$0")
+
 # pull and render
 git reset --hard --quiet
 git pull --quiet
-
-cd $(dirname "$0")
 
 if [[ $# -eq 1 ]]; then
     python3 clean.py --quiet
