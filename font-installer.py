@@ -44,10 +44,35 @@ import urllib.request
 import cgi
 import shlex
 import argparse
+import logging
 
 parser = argparse.ArgumentParser(description="download and install the fonts")
 parser.add_argument("-k", "--links", help="just output all the download links", action="store_true")
+
+parser.add_argument('--verbose', action='count', help="tell me more", default=0)
+parser.add_argument('--quiet', action='count', help="tell me less", default=0)
+parser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
+
 arguments = parser.parse_args()
+
+__loglevel = logging.INFO
+if arguments.quiet > arguments.verbose:
+    __loglevel = logging.WARNING
+elif arguments.quiet < arguments.verbose:
+    __loglevel = logging.DEBUG
+
+logging.basicConfig(stream=arguments.log, level=__loglevel, 
+    format= "%(levelname)s: %(message)s" if arguments.log.name == "<stderr>" else "%(asctime)s %(levelname)s: %(message)s")
+
+def printv(*args, sep=' ', **kwargs):
+    logging.debug(sep.join([str(x) for x in args]), **kwargs)
+
+def printq(*args, sep=' ', **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+
+def failure(*args, sep=' ', code=1, **kwargs):
+    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    sys.exit(code)
 
 if arguments.links or sys.platform.startswith("windows"):
    if sys.platform.startswith("windows"):
@@ -55,7 +80,7 @@ if arguments.links or sys.platform.startswith("windows"):
    print(*[k for k,v in LINKS.items()], sep="\r\n")
    exit(0)
 
-print("NB: This script requires the use of sudo.")
+printq("NB: This script requires the use of sudo.")
 
 if sys.platform.startswith("darwin"):
    FONTDIR = os.path.join(os.path.expanduser("~"), "Library", "Fonts")
@@ -70,7 +95,7 @@ if not fccachetry:
    FONTDIR = os.path.join(os.getcwd(), "ppau-graphics-fonts")
 
 def prompt(cmd):
-   print(cmd)
+   printq(cmd)
    os.system(cmd)
 
 #### Figure out what's missing
@@ -83,7 +108,7 @@ listicle = set(subprocess.run(["python3", "list_fonts.py", "-m"],
 if "sans-serif" in listicle:
    listicle.remove("sans-serif")
    
-print(len(listicle), "missing fonts...")
+printq(len(listicle), "missing fonts...")
 
 def match(name, listy):
    nl = name.lower()
@@ -142,10 +167,10 @@ def download_and_install(link, font, fontdir):
                           stdout=subprocess.PIPE,
                           universal_newlines=True)\
                           .stdout.strip()
-        #print(magic)
+        printv(magic)
 
         for fmt in shutil.get_unpack_formats():
-            #print(fmt)
+            printv(fmt)
             if fmt[0].lower() in magic.lower():
                # think we'll need to unpack in place and then sudo mv
                with tempfile.TemporaryDirectory() as tmpdir:
@@ -161,8 +186,8 @@ def download_and_install(link, font, fontdir):
             if "font" in magic:
                 prompt("sudo mv " + shlex.quote(tmp_file.name) +" "+ shlex.quote(os.path.join(fontdir, fname)))
             else:
-                print("Could not figure out what to do! Skipping")
-                print(link)
+                printq("Could not figure out what to do! Skipping")
+                printq(link)
 ##### end download_and_install
 
 
@@ -178,7 +203,7 @@ for k, v in LINKS.items():
 # actually do things
 already_installed = []
 for font in listicle:
-   # print(font)
+   printv(font)
    for linky, listy in LINKS.items():
         if match(font, listy) and (font not in already_installed):
             # actually download things
@@ -188,17 +213,17 @@ for font in listicle:
         else:
             continue
    else:
-      print(font, "is missing but could not be downloaded")
+      printq(font, "is missing but could not be downloaded")
 
-print(len(already_installed), "fonts installed (or at least downloaded):")
-print(*already_installed, sep='\n')
+printq(len(already_installed), "fonts installed (or at least downloaded):")
+printq(*already_installed, sep='\n')
 
 # update font cache
 if fccachetry:
    prompt("sudo fc-cache -f")
 else:
-   print("The fonts could not be automatically installed but they have been downloaded to", FONTDIR)
-   print("Please install the downloaded fonts manually.")
+   printq("The fonts could not be automatically installed but they have been downloaded to", FONTDIR)
+   printq("Please install the downloaded fonts manually.")
 
     
 
