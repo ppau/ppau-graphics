@@ -22,8 +22,9 @@ LINKS = {
 "https://dl.dafont.com/dl/?f=lazer84": ["lazer84"]
 }
 
-# All fonts installable as packages
+# Some fonts are installable as Apt packages
 # (except the Microsoft core fonts, which need multiverse and are handled specially)
+# note that sources for these should also be included in LINKS for non-apt systems
 APTS = [
     "fonts-dejavu",
     "fonts-liberation2",
@@ -75,15 +76,15 @@ def failure(*args, sep=' ', code=1, **kwargs):
     sys.exit(code)
 
 if arguments.links or sys.platform.startswith("windows"):
-   if sys.platform.startswith("windows"):
-      print("The rest of this script isn't for Windows users. Sorry about that. Here's all the links:")
-   print(*[k for k,v in LINKS.items()], sep="\r\n")
-   exit(0)
+    if sys.platform.startswith("windows"):
+        print("The rest of this script isn't for Windows users. Sorry about that. Here's all the links:")
+    print(*[k for k,v in LINKS.items()], sep="\r\n")
+    exit(0)
 
-printq("NB: This script requires the use of sudo.")
+printq("Please note that this script requires the use of sudo.")
 
 if sys.platform.startswith("darwin"):
-   FONTDIR = os.path.join(os.path.expanduser("~"), "Library", "Fonts")
+    FONTDIR = os.path.join(os.path.expanduser("~"), "Library", "Fonts")
 
 fccachetry = subprocess.run(["which", "fc-cache"],
         stdout=subprocess.PIPE,
@@ -91,12 +92,12 @@ fccachetry = subprocess.run(["which", "fc-cache"],
         .stdout.strip()
 
 if not fccachetry:
-   # Just dump the files to cwd()/ppau-graphics-fonts
-   FONTDIR = os.path.join(os.getcwd(), "ppau-graphics-fonts")
+    # Just dump the files to cwd()/ppau-graphics-fonts
+    FONTDIR = os.path.join(os.getcwd(), "ppau-graphics-fonts")
 
 def prompt(cmd):
-   printq(cmd)
-   os.system(cmd)
+    print('>>>>>', cmd)
+    os.system(cmd)
 
 #### Figure out what's missing
 
@@ -106,49 +107,49 @@ listicle = set(subprocess.run(["python3", "list_fonts.py", "-m"],
                           .stdout.strip().split('\n'))
 
 if "sans-serif" in listicle:
-   listicle.remove("sans-serif")
+    listicle.remove("sans-serif")
    
 printq(len(listicle), "missing fonts...")
 
 def match(name, listy):
-   nl = name.lower()
-   for ll in listy:
-      lll = ll.lower()
-      if nl in lll:
-         return True
-      elif lll in nl:
-         return True
-   return False
+    nl = name.lower()
+    for ll in listy:
+        lll = ll.lower()
+        if nl in lll:
+            return True
+        elif lll in nl:
+            return True
+    return False
 
-
-   
 #### Do the package installs ####
 # bail if need be
+
 if sys.platform.startswith("linux"):
 
-   apttry = subprocess.run(["which", "apt-get"],
+    apttry = subprocess.run(["which", "apt-get"],
            stdout=subprocess.PIPE,
            universal_newlines=True)\
            .stdout.strip()
 
-   if apttry:
+    if apttry:
+        if not fccachetry:
+            prompt("sudo apt-get -y install fontconfig")
 
-      if not fccachetry:
-          prompt("sudo apt-get -y install fontconfig")
+        # now for the mainline apt install run
+        prompt("sudo apt-get -y install " + " ".join(APTS))
 
-      # now for the mainline apt install run
-      prompt("sudo apt-get -y install " + " ".join(APTS))
+        # and ms core
+        msc = False
+        for font in ["Arial", "Andale Mono", "Courier New", "Georgia", "Impact", "Trebuchet", "Verdana"]:
+            msc |= match(font, listicle)
 
-      # and ms core
-      msc = False
-      for font in ["Arial", "Andale Mono", "Courier New", "Georgia", "Impact", "Trebuchet", "Verdana"]:
-         msc |= match(font, listicle)
-
-      if msc:
-         prompt("sudo add-apt-repository multiverse")
-         prompt("sudo apt-get update")
-         prompt("sudo apt-get -y install ttf-mscorefonts-installer")
-
+        if msc:
+            prompt("sudo add-apt-repository multiverse")
+            prompt("sudo apt-get update")
+            prompt("sudo apt-get -y install ttf-mscorefonts-installer")
+    else:
+        printq("Please install the MS Core Fonts for the Web in whatever way makes sense on your system.")
+        # very long term TODO: support other package managers
 
 #### Do the downloadables: ####
 
@@ -216,7 +217,8 @@ for font in listicle:
       printq(font, "is missing but could not be downloaded")
 
 printq(len(already_installed), "fonts installed (or at least downloaded):")
-printq(*already_installed, sep='\n')
+for k in already_installed:
+    printq('\t'+k)
 
 # update font cache
 if fccachetry:
