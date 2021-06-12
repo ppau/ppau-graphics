@@ -162,7 +162,7 @@ def printq(*args, sep=' ', **kwargs):
     logging.info(sep.join([str(x) for x in args]), **kwargs)
 
 def failure(*args, sep=' ', code=1, **kwargs):
-    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    logging.critical(sep.join([str(x) for x in args]), **kwargs)
     sys.exit(code)
 
 # Update Flags
@@ -218,15 +218,15 @@ else:
             printv("Using "+ BACKEND +" at " + backendtry + " instead.")
             BACKEND_PATH = backendtry
         else:
-            failure("ERROR: could not find "+ BACKEND +"!")
+            failure("could not find "+ BACKEND +"!")
     else:
-        failure("ERROR: could not find "+ BACKEND +"!")
+        failure("could not find "+ BACKEND +"!")
 
 # Ensure Inkscape 1.0 
 if 'inkscape' in BACKEND_PATH:
     vtext = subprocess.run([BACKEND_PATH, "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip()
     if b"Inkscape 0." in vtext:
-        failure("ERROR: requires Inkscape 1.0 or higher")
+        failure("requires Inkscape 1.0 or higher")
     elif b"Inkscape 1." in vtext:
         printv("SUCCESS: able to use Inkscape 1.0 or higher")
 
@@ -243,9 +243,9 @@ if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
             printv("Using "+ COLLATER +" at " + collatertry + " instead.")
             COLLATER_PATH = collatertry
         else:
-            failure("ERROR: could not find "+ COLLATER +"!")
+            failure("could not find "+ COLLATER +"!")
     else:
-        failure("ERROR: could not find "+ COLLATER +"!")
+        failure("could not find "+ COLLATER +"!")
 
 # Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],

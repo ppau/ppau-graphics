@@ -71,7 +71,7 @@ def printq(*args, sep=' ', **kwargs):
     logging.info(sep.join([str(x) for x in args]), **kwargs)
 
 def failure(*args, sep=' ', code=1, **kwargs):
-    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    logging.critical(sep.join([str(x) for x in args]), **kwargs)
     sys.exit(code)
 
 if arguments.links or sys.platform.startswith("windows"):

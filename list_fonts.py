@@ -142,7 +142,7 @@ elif arguments.show_missing:
            universal_newlines=True)\
         .stdout.strip()
     else:
-        print("Could not list system fonts. (Windows is currently not supported.)")
+        print("ERROR: Could not list system fonts. (Windows is currently not supported.)")
         exit(1)
     
     for font in listnames:

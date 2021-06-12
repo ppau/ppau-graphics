@@ -59,7 +59,7 @@ def printq(*args, sep=' ', **kwargs):
     logging.info(sep.join([str(x) for x in args]), **kwargs)
 
 def failure(*args, sep=' ', code=1, **kwargs):
-    logging.info(sep.join([str(x) for x in args]), **kwargs)
+    logging.critical(sep.join([str(x) for x in args]), **kwargs)
     sys.exit(code)
 
 # we don't remove files, we remove whole subdirectories that aren't in the manifest
