@@ -18,12 +18,11 @@
       .caption {font-size : small; font-weight: bolder;}
       #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align: center;flex-wrap: wrap;display: flex;}
       #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw;}
-      hr {color: #0073AE; background-color: #0073AE; border: solid;}
+      hr {color: #0073AE; background-color: #0073AE; border: solid; height: 1vh}
       a {color: #0073AE;}
-      h1 {color: #fff; background-color: #0073AE; border-radius: 1vw;
-            padding: 1vw; text-align:center}
-      h2 {padding: 1vw; text-align:center}
+      h1, h2 {color: #fff; background-color: #0073AE; border-radius: 6px; padding: 1vw; text-align:center}
       .jump {text-align:center}
+      .footer {display: flex; justify-content: space-between; color: #888}
       ::selection {color: #fff; background-color: #0073AE;}
     </style>
   </head>
@@ -40,24 +39,23 @@
     <div id="postersGoHere" onclick="clickHandler(event)">
       PPAU_POSTERS_HERE
     </div>
-    <hr>
     <h2 id="pamphlets">Pamphlets</h2>
     <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <b>Pamphlets</b> &bullet; <a href="#onlines" target="_self">Pictures</a></p>
     <p><em>(And other multi-page documents...)</em></p>
     <div id="pamphletsGoHere" onclick="clickHandler(event)">
         PPAU_PAMPHLETS_HERE
     </div>
-    <hr>
     <h1 id="onlines">The below images are just for online...</h1>
     <p class="jump"><a href="#posters" target="_self">Posters</a> &bullet; <a href="#pamphlets" target="_self">Pamphlets</a> &bullet; <b>Pictures</b></p>
     <p>Click the image (or caption) to download the PNG &mdash; the correct authorisation tag is already in place!</p>
     <div id="onlinesGoHere"> <!--- No onClick for this one --->
         PPAU_ONLINES_HERE
     </div>
-    <hr style="height: 1vh">
-    <div id="footer" style="display: flex; justify-content: space-between">
-    <p ><a href="https://github.com/ppau/ppau-graphics/archive/master.zip">Click here to download the entire repository as a ZIP from GitHub.</a></p>
-    <p style="color:#888;">Generated on META_TIMESTAMP from <a style="color:#888;" href="https://github.com/ppau/ppau-graphics/commit/GIT_HASH">GIT_HASH</a></p>
+    <hr>
+    <div class="footer">
+    <p><a href="https://github.com/ppau/ppau-graphics/archive/master.zip">Click here to download the entire repository as a ZIP from GitHub.</a></p>
+    <p>AUTH_TAG_BASIC</p>
+    <p>Generated on META_TIMESTAMP from <a style="color:#888;" href="https://github.com/ppau/ppau-graphics/commit/GIT_HASH">GIT_HASH</a></p>
     </div>
     <script>
 

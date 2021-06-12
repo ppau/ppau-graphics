@@ -10,6 +10,7 @@
 MANIFEST_FILE = "MANIFEST.json"
 TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
+AUTH_TAG_FILE_BASIC = "auth_tag_basic.txt"    # default: "auth_tag_basic.txt"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = '.'
@@ -19,7 +20,6 @@ SITE_ROOT = '.'
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
 PAMPHLET_REPLACE_TAG = "PPAU_PAMPHLETS_HERE"
 ONLINE_REPLACE_TAG = "PPAU_ONLINES_HERE"
-
 
 CONVERT = "convert"
 CONVERT_PATH = ""
@@ -52,8 +52,8 @@ argparser.add_argument('--site-root', default=SITE_ROOT, help="Path for the root
 argparser.add_argument('--poster-replace-tag', default=POSTER_REPLACE_TAG, help="The string in the template to be replaced by the poster content")
 argparser.add_argument('--pamphlet-replace-tag', default=PAMPHLET_REPLACE_TAG, help="The string in the template to be replaced by the pamphlet content")
 argparser.add_argument('--online-replace-tag', default=ONLINE_REPLACE_TAG, help="The string in the template to be replaced by the online-only content")
+argparser.add_argument('--auth-tag-file-basic', dest='auth_tag_file_basic', action='store', default=AUTH_TAG_FILE_BASIC, help="The file containing the authorisation text specifying only a town/city (for digital material).")
 argparser.add_argument('--version', action='version', version=VERSION)
-
 argparser.add_argument('--verbose', action='count', help="tell me more", default=0)
 argparser.add_argument('--quiet', action='count', help="tell me less", default=0)
 argparser.add_argument('--log', type=argparse.FileType('a'), default=sys.stderr, help="file to log to (default: stderr)")
@@ -225,6 +225,10 @@ with open(arguments.template_file) as templatefp:
     out_str = out_str.replace(arguments.online_replace_tag, online_replacement_str)
 
 ## Get and add some metadata 
+
+with open(arguments.auth_tag_file_basic) as atfbfp:
+    atb = atfbfp.read()
+    out_str = out_str.replace("AUTH_TAG_BASIC", atb)
 
 out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z")
 
