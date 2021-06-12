@@ -78,7 +78,8 @@ def failure(*args, sep=' ', code=1, **kwargs):
 if arguments.links or sys.platform.startswith("windows"):
     if sys.platform.startswith("windows"):
         print("The rest of this script isn't for Windows users. Sorry about that. Here's all the links:")
-    print(*[k for k,v in LINKS.items()], sep="\r\n")
+    for k in LINKS.keys():
+        print(k)
     exit(0)
 
 printq("Please note that this script requires the use of sudo.")
@@ -106,8 +107,9 @@ listicle = set(subprocess.run(["python3", "list_fonts.py", "-m"],
                           text=True)\
                           .stdout.strip().split('\n'))
 
-if "sans-serif" in listicle:
-    listicle.remove("sans-serif")
+# deprecated: list_fonts now excludes sans-serif itself (and maybe others in the future)
+# if "sans-serif" in listicle:
+#     listicle.remove("sans-serif")
    
 printq(len(listicle), "missing fonts...")
 

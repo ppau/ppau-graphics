@@ -2,7 +2,7 @@
 
 ################################################################################
 #### ABOUT:                                                                 ####
-#### remove old renders, while leaving those that are meant to be there
+#### remove old renders, while leaving those that are meant to be there     ####
 ################################################################################
 
 RENDER_DIR = "Renders"                  # default: "Renders"

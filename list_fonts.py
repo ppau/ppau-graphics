@@ -7,13 +7,15 @@
 ################################################################################
 
 SOURCE_DIR = "Artwork"                  # default: "Artwork"
-OUTPUT_FILE = "FONTLIST.json"            # default: "FONTLIST.json"
+OUTPUT_FILE = "FONTLIST.json"           # default: "FONTLIST.json"
+
+EXCLUDE = {"sans-serif"}                # not an actual font
 
 ################################################################################
 #### You shouldn't need to ever edit anything below this comment.           ####
 ################################################################################
 
-VERSION = "0.0.3"
+VERSION = "0.0.4"
 
 import subprocess
 import argparse
@@ -46,7 +48,7 @@ parser.add_argument('-m', '--missing', dest='show_missing',
                      help="list missing font families instead")
 
 parser.add_argument('-u', '--unusual', dest='unusual', 
-                     nargs='?', const=5, type=int, metavar="COUNT",
+                     nargs='?', const=5, type=int, metavar="MAX",
                      help="list font families used by only a few files instead")
 
 
@@ -83,7 +85,7 @@ for s in SVGs:
             match = pattern.search(line)
             if match:
                 stripped = match.group(2).strip().strip('"').strip("'").strip()
-                if stripped:
+                if stripped and stripped not in EXCLUDE:
                     results.add(stripped)
     if len(results):
         combo[s] = results
