@@ -26,7 +26,7 @@ If you do not specify a correct path to `inkscape`, the script will attempt to f
 
 ## Git LFS
 
-**Most files in this repository are tracked using [Git LFS.](https://git-lfs.github.com/)** See the `.gitattributes` file for a detailed list. An example line:
+**Most files (in particular, the SVG artwork source files) in this repository are tracked using [Git LFS.](https://git-lfs.github.com/)** See the `.gitattributes` file for a detailed list. An example line:
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text`
 
@@ -36,38 +36,32 @@ Git LFS isn't usually installed by default. You'll need to run `git lfs install`
 
 You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. You can run `python3 list_fonts.py` to get a JSON of all the fonts used in the project and what files use them. This will be found in `FONTLIST.json`; it is recommended to run `list_fonts` yourself rather than relying on the JSON being up to date.
 
+Run `font_installer.py` to attempt to install fonts automatically, or refer to CONTRIBUTING.md for a a fairly comprehensive list of download links. 
 
 # Usage
 
-To render the SVGs in the source directory, run the script `render.py` from the command line, probably with something like:
+To render the SVGs in the source directory, run the script `render.py` from the command line, perhaps with something like:
 
-`python3 /path/to/render.py`
+    python3 /path/to/render.py
 
 Add the help flag: `python3 /path/to/render.py --help` for a full list of options.
 
-Replacement tags are specified in `auth_tag.txt` (authoriser) and `print_tag.txt` (printer).
+Replacement tags are specified in `auth_tag.txt` and `auth_tag_basic.txt` (authoriser) and `print_tag.txt` (printer).
 
-There will be three variants of each file rendered:
+There will be three possible variants of each file rendered:
 
 1. with authorisation tag only (`*-auth.*`),
 2. with both authorisation and printing tags (`*-both.*`),
-3. with no tags (`*-none.*`)
+3. with no tags (`*-none.*`) if the source file doesn't provide for them.
 
-Each variant will be rendered as a PNG and as a PDF. An SVG with text replacement corresponding to each type is also placed alongside.
+Each variant will be rendered as a PNG for digital use and as a PDF for printing. An SVG with text replacement corresponding to each type is also placed alongside.
 
-So the single source `Artwork/marriage/cmon-aussie.svg` will result in the following files being generated:
+So the single source `Artwork/youtube/youtube.svg` will result in the following files being generated:
 
-- `Renders/marriage/cmon-aussie-auth.pdf`
-- `Renders/marriage/cmon-aussie-auth.png`
-- `Renders/marriage/cmon-aussie-auth.svg`
-- `Renders/marriage/cmon-aussie-both.pdf`
-- `Renders/marriage/cmon-aussie-both.png`
-- `Renders/marriage/cmon-aussie-both.svg`
-- `Renders/marriage/cmon-aussie-none.pdf`
-- `Renders/marriage/cmon-aussie-none.png`
-- `Renders/marriage/cmon-aussie-none.svg`
-
-(If a print tag or an authorisation tag is omitted in a source file, corresponding files will not be rendered.)
+- `Renders/youtube/youtube-auth.png`
+- `Renders/youtube/youtube-auth.svg`
+- `Renders/youtube/youtube-both.pdf`
+- `Renders/youtube/youtube-both.svg`
 
 ## Kinds of tags
 
@@ -78,7 +72,7 @@ Both kinds of authorisation tags require:
 * the name of the "disclosure entity" (e.g. "Pirate Party Australia")
 * the name of the person authorising it (generally the current Secretary; first initial and last name suffice)
 
-"Basic" requirements for PPAU comms apply generally to non-printed material such as :
+"Basic" requirements for PPAU communications apply generally to non-printed material such as :
 
 * the *town or city* of the disclosure entity, or else the town or city of the authorising person
 
@@ -91,9 +85,7 @@ There's only one kind of printer tag:
 * The name of the printer (or more likely, company name)
 * The full street address of the printer (it might be necessary in some cases to use head-office location)
 
-
 The render script will by default output the basic auth tag in auth-only files, and the full auth tag in files that also contain a print tag. 
-
 
 ## Examples
 
@@ -109,14 +101,19 @@ To specify an alternate file containing the authorisation tag:
 
 ## Multi-page documents
 
-SVG doesn't support multi-page documents, but it is now possible to collate SVGs into a PDF.  
+SVG doesn't support multi-page documents, but it is now possible to collate SVGs into a PDF (this is why `pdfunite` is needed). 
 
-## WSGI
+This is done by a file naming convention: `foo/bar_p1.svg`, `foo/bar_p2.svg`, `foo/bar_p3.svg` will all be collated as `foo/bar.pdf`. Numbers are handled correctly (`11` comes after `2`) and missing pages are simply skipped.
+
+The exact format used is the regex `(.*)(_[pP])(\d+)(-\w*)?$` where the first group is the name, the second group marks a page number, the third group is the digits of the page number, and the fourth group is an optional variant descriptor, e.g. "light" or "dark". Any file extension is stripped before the regex is matched. You may pass in a different regex with `--collate-fmt` but the groups will of course be interpreted the same way, so the only change advised is to group 2. 
+
+## WSGI and servers
 
 There's a semi-experimental WSGI implementation in the subdirectory of that name.
 
-Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs.
+Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs, using ImageMagick's `convert`.
 
+`update.sh` is designed to be run automatically on machines that don't edit the repository, e.g. with `cron`. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. It takes two arguments: the "site root" (e.g. `https://example.com/ppau-graphics`) and optionally, the path to a log file. 
 
 # License
 

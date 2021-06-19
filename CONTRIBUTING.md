@@ -57,7 +57,7 @@ If you're on Linux or Mac, you should be able to run
     
 For a list of font families that are referenced by one or more files, but that you don't have installed on your system. This works regardless of how up-to-date the list above is!
 
-You might also find `--invert` to be useful if you're trying to figure out which files use a particular font. 
+You might also find `--invert` to be useful if you're trying to figure out which files use a particular font, e.g. if you're trying to replace said font. 
 
     python3 list_fonts.py --invert
     

@@ -3,7 +3,7 @@
 ################################################################################
 #### ABOUT:                                                                 ####
 #### Render script for the SVGs in the SOURCE_DIR directory.                ####
-#### The renders will be placed in RENDER_DIR.                         ####
+#### The renders will be placed in RENDER_DIR.                              ####
 #### If possible, SVGs containing AUTH_TAG or PRINT_TAG will have           ####
 #### the full tags inserted.                                                ####
 ####                                                                        ####
@@ -39,8 +39,6 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
 #### Other settings                                                         ####
 
-VERBOSE = False
-
 NO_COLLATE = False
 COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
 # Collation format regex spec: four groups, consisting of...
@@ -71,7 +69,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.4" 
+VERSION = "0.5.5" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -177,7 +175,6 @@ PRINT_TAG = arguments.print_tag
 BACKEND_PATH = arguments.backend_path
 NO_COLLATE = arguments.no_collate
 COLLATE_FMT = arguments.collate_fmt
-VERBOSE = arguments.verbose
 
 # Fix directory issues by using absolute pathnames (if possible).
 # (These come about because the current working directory is not
@@ -266,7 +263,6 @@ print_tag_full = ""
 try:
     with open(AUTH_TAG_FILE) as atfp:
         auth_tag_full = atfp.read().strip()
-        printv("full", auth_tag_full)
 except FileNotFoundError:
     printq("Authorisation tag file not found!",
           "No substitution will be performed.")
@@ -283,12 +279,14 @@ except FileNotFoundError:
 try:
     with open(PRINT_TAG_FILE) as ptfp:
         print_tag_full = ptfp.read().strip()
-        printv(print_tag_full)
 except FileNotFoundError:
     printq("Printing tag file not found!",
           "No substitution will be performed.")
     print_tag_full = PRINT_TAG
 
+printv(auth_tag_full)
+printv(auth_tag_basic)
+printv(print_tag_full)
 
 # Optimise: by caching the auth and print tags
 # update the cachefile only if needed
@@ -369,7 +367,7 @@ for s in SVGs:
     # actually use relative path
     key = os.path.splitext(s[(len(SOURCE_DIR)+1):])[0]
 
-    printv('1:\t', key)
+    #printv('1:\t', key)
 
     # figure out here if we're actually in a multi-pager
     page_num = 1
@@ -418,7 +416,7 @@ for s in SVGs:
         (r_tag_root, r_tag_ext) = os.path.splitext(sbase)
         # Pathnames of tagged SVGs
         r_tag = os.path.join(rdir, r_tag_root + "-" + variant[0] + r_tag_ext)
-        printv("sdir:", sdir, "sfrag:", sfrag, "rdir:", rdir, "r_tag", r_tag)
+        #printv("sdir:", sdir, "sfrag:", sfrag, "rdir:", rdir, "r_tag", r_tag)
         #exit()
 
         # OK. Create temp file and run sed into it for the tags
@@ -453,7 +451,7 @@ for s in SVGs:
             r_out = os.path.join(rdir, r_tag_root + "-" + variant[0])  + "." + ftype
 
             submanifest.append(r_out[(len(RENDER_DIR)+1):])
-            printv("2:\t", r_out[(len(RENDER_DIR)+1):])
+            #printv("2:\t", r_out[(len(RENDER_DIR)+1):])
 
 
             # We also skip if the modification dates say we can
@@ -526,13 +524,13 @@ with open(os.path.join(RENDER_DIR, ".print_tag_cache"), 'w') as fp:
 
 
 # Here. we collate rendered PDFs.
-
-printv(multipagers)
+printv("Collating any multi-page documents...")
+#printv(multipagers)
 
 for mpkey in multipagers:
     # list of filenames to collate
 
-    printv(mpkey)
+    printv("collating", mpkey, sep='\t')
 
     (mpkeyroot, mpkeyname) = os.path.split(mpkey)
 
@@ -570,7 +568,7 @@ for mpkey in multipagers:
         # doubly tricky because they're normally strings (i.e. '11' before '2')
         # and because they're the second item in the tuples...
         paths = [''.join([t[0], i[0], i[1], t[1], ".pdf"]) for i in tagset[t]]
-        printv(t, tagset[t], paths)
+        #printv(t, tagset[t], paths)
 
         res = subprocess.run([COLLATER, *paths, ''.join([*t, ".pdf"])])
 
