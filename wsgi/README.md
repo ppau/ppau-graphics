@@ -3,14 +3,16 @@
 This folder contains a WSGI application intended for use with uWSGI (`ppaugraphics.py`), and corresponding configuration files. 
 
 The script assumes the presence of a copy of this repository in the static website serve path `/var/www/SITE_NAME.tld/html/FOO`, such that 
-- `https://SITE_NAME.tld/FOO/index.html` is where the requests come from
+- `https://SITE_NAME.tld/FOO/index.html` is where the requests come from 
+  - (i.e. `create-index.py`'s `--site-root` is `https://SITE_NAME.tld/FOO`)
 - `/var/www/SITE_NAME.tld/html/FOO/Artwork` is the artwork source directory, 
 - `/var/www/SITE_NAME.tld/html/FOO/MANIFEST.json` is the manifest, and 
 - `/var/www/SITE_NAME.tld/html/FOO/auth_tag.txt` is the auth tag 
 
 ## Setup (for recent Debian/Ubuntu)
 
-Ensure the existence of all needed packages (note that PyPDF2 is used here, rather than pdfunite as in the main script):
+Install the server-specific packages (or perhaps ensure they're installed):
+(note that PyPDF2 is used here, rather than pdfunite as in the main script):
 
     sudo apt-get install nginx uwsgi python3-pypdf2
 
@@ -24,17 +26,6 @@ Copy the WSGI-related files from this subdirectory of the repository to the serv
 
     sudo cp -r /PATH/TO/ppau-graphics/wsgi/* /etc/ppaugraphics
     
-In your NGINX config you'll need the following:
-
-	location /FOO/wsgi {
-		include uwsgi_params;
-		uwsgi_pass unix:///run/uwsgi/ppaugraphics.sock;
-	}
-
-[`/FOO` should be as above. It also might not exist, in which case you'd just have `https://SITE_NAME.tld/index.html` and `location /wsgi {`, etc.]
-
-Don't forget to test your configuration with `sudo nginx -t`
-
 Copy the `ppaugraphics.service.conf` where it needs to be, then edit if required:
 
     sudo cp /etc/ppaugraphics/ppaugraphics.service.conf /etc/systemd/system/ppaugraphics.service
@@ -43,5 +34,21 @@ Copy the `ppaugraphics.service.conf` where it needs to be, then edit if required
 Enable and activate:
     
     sudo systemctl enable --now ppaugraphics
+
+Test if it all started OK with `systemctl status ppaugraphics`. 
+
+Meanwhile, in your NGINX config you'll need the following:
+
+	location /FOO/wsgi {
+		include uwsgi_params;
+		uwsgi_pass unix:///run/uwsgi/ppaugraphics.sock;
+	}
+
+N.B: `/FOO` should be as above. It also might not exist, in which case you'd just have `https://SITE_NAME.tld/index.html` and `location /wsgi {`, etc.
+
+Test your configuration with `sudo nginx -t` and then reload to activate:
+ 
     sudo systemctl reload nginx
-    
+
+You should now be able to use the site. (If not, the log file location is specified in the `.ini`)
+

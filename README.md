@@ -34,6 +34,8 @@ If you do not specify a correct path to `inkscape`, the script will attempt to f
     nano print_tag.txt
     ./render.py
 
+If running on a server with WSGI you can leave `print_tag.txt` as is.
+
 ## Git LFS
 
 **Most files (in particular, the SVG artwork source files) in this repository are tracked using [Git LFS.](https://git-lfs.github.com/)** See the `.gitattributes` file for a detailed list. An example line:

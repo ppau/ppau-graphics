@@ -60,7 +60,8 @@ def application(env, start_response):
 
     if "printer" in qkeys:
         if query_dict["printer"]:
-            qprint_tag = "Printed by " + query_dict["printer"][0]
+            qprint_tag = "Printed by " + re.sub('[^0-9a-zA-Z\.\,\-]+', '', 
+                                                query_dict["printer"][0])
 
     if not "name" in qkeys:
         head = ['400 Bad Query', [('Content-Type','text/html')]]
@@ -79,7 +80,7 @@ def application(env, start_response):
         inkv = subprocess.Popen([inky, "-V", "--no-gui"],
                                  stdout=subprocess.PIPE
                                  ).stdout
-        inkscape_version = "1.0"
+        inkscape_version = "1"
         if "Inkscape 0.9" in inkv:
             inkscape_version = "0.9"
 
@@ -115,7 +116,7 @@ def application(env, start_response):
                                     stdout=subprocess.PIPE)
             # inkscape
             inkscape_args = []
-            if inkscape_version == "1.0":
+            if inkscape_version == "1":
                 inkscape_args = [inky, "--export-dpi=300",
                                  qformat, "--pipe", "-o", "-"]
             elif inkscape_version == "0.9":
@@ -129,7 +130,8 @@ def application(env, start_response):
                              stdin=sed.stdout)
             sed.stdout.close() # as per docs for SIGPIPE
             this_page = io.BytesIO(inkscape.communicate()[0])
-
+            inkscape.kill() # anti zombie measures?
+            
             merger.append(this_page, pages=page_range)
 
         # end of that for loop

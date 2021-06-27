@@ -14,7 +14,7 @@ AUTH_TAG_FILE_BASIC = "auth_tag_basic.txt"    # default: "auth_tag_basic.txt"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = '.'
-# because of Alex's nginx setup, site roots on-server need to be absolute
+# Your nginx setup may require site roots on-server to be absolute
 # So use --site-root "https://example.tld/ppau-graphics"
 
 POSTER_REPLACE_TAG = "PPAU_POSTERS_HERE"
@@ -236,7 +236,8 @@ gitty = subprocess.run(["git", "describe", "--always"], stdout=subprocess.PIPE)
 hashy = gitty.stdout.decode().strip()
 out_str = out_str.replace("GIT_HASH", hashy)
 
-out_str = out_str.replace("SITE_ROOT", "" if (arguments.site_root == ".") else arguments.site_root+"/")
+site_root = "" if (arguments.site_root == ".") else (arguments.site_root.rstrip('/') + '/')
+out_str = out_str.replace("SITE_ROOT", site_root)
 
 ## Print ##
 with open(arguments.index_file, 'w') as indexfp:
