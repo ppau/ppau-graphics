@@ -39,6 +39,7 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
 #### Other settings                                                         ####
 
+NO_PRINT = False
 NO_COLLATE = False
 COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
 # Collation format regex spec: four groups, consisting of...
@@ -69,7 +70,7 @@ MANIFEST_FILE = "MANIFEST.json"
 #### End users shouldn't need to ever edit anything below this comment.     ####
 ################################################################################
 
-VERSION = "0.5.5" 
+VERSION = "0.6" 
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
@@ -129,6 +130,10 @@ parser.add_argument('--backend_path', dest='backend_path',
                     help="The path to the backend renderer, " +
                             "by default your "+ BACKEND + " install.")
 
+parser.add_argument('--no-print', dest='no_print', 
+                    action='store_const', default=NO_PRINT, const=True,
+                    help="Don't output anything that would require a print tag.")
+
 parser.add_argument('--no-collate', dest='no_collate',
                     action='store_const', default=NO_COLLATE, const=True,
                     help="Don't collate multi-page files.")
@@ -173,8 +178,11 @@ PRINT_TAG_FILE = arguments.print_tag_file
 AUTH_TAG = arguments.auth_tag
 PRINT_TAG = arguments.print_tag
 BACKEND_PATH = arguments.backend_path
+NO_PRINT = arguments.no_print
 NO_COLLATE = arguments.no_collate
 COLLATE_FMT = arguments.collate_fmt
+
+printv(arguments)
 
 # Fix directory issues by using absolute pathnames (if possible).
 # (These come about because the current working directory is not
@@ -250,9 +258,7 @@ SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
                        universal_newlines=True)\
         .stdout.strip().split(sep="\n")
 
-
 # Load authorisation and printing tags
-
 
 auth_tag_full = ""
 auth_tag_basic = ""
@@ -301,6 +307,9 @@ ptf_path = os.path.normpath(os.path.join(os.path.join(RENDER_DIR, ".print_tag_fu
 atf_cacheable = False
 atb_cacheable = False
 ptf_cacheable = False
+
+if not os.path.exists(RENDER_DIR):
+	os.makedirs(RENDER_DIR)
 
 if os.path.exists(atf_path):
     with open(atf_path) as fp:
@@ -405,7 +414,7 @@ for s in SVGs:
         if variant[2]: # if we need a print tag, we need a full auth tag
             print_tag_var = print_tag_full
             auth_tag_var = auth_tag_full # override
-
+				
         # We shall first output the auth'd SVGs to RENDER_DIR
 
         #rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, "")) 
@@ -431,22 +440,29 @@ for s in SVGs:
         
         if variant[1]:
             if not has_auth_tag:
-                printv("No Auth Tag: skipping what would be", r_tag, sep='\t')
+                printv("No Auth Tag: skipping", r_tag, sep='\t')
                 notagcount += 1
                 continue
 
         if variant[2]: 
             if not has_print_tag:
-                printv("No Print Tag: skipping what would be", r_tag, sep='\t')
+                printv("No Print Tag: skipping", r_tag, sep='\t')
                 notagcount += 1
                 continue
-                
+                                
         if (not (variant[1] or variant[2])) and (has_auth_tag or has_print_tag):
             printv("No need for 'None' variant: skipping", r_tag, sep='\t')
             continue
 
+
         # Iterate over output formats...
         for ftype in FORMATS:
+        
+        	# deal with --no-print
+            if NO_PRINT and (ftype in PRINT_FORMATS):
+        	    printv("No Print Output: skipping", r_tag, sep='\t')
+        	    continue
+            
             # Pathname of output file
             r_out = os.path.join(rdir, r_tag_root + "-" + variant[0])  + "." + ftype
 
@@ -499,7 +515,7 @@ for s in SVGs:
 
 # Actually render things!
 print('quit', file=commands)
-printv("Rendering everything...")
+printv("Rendering", updatecount, "items...")
 inky = subprocess.run([BACKEND_PATH, "--shell"],
                       input=commands.getvalue(),
                       stdout=subprocess.PIPE,

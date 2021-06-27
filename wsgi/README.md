@@ -1,32 +1,47 @@
-# README
+# README - WSGI
 
-# About/Setup
+This folder contains a WSGI application intended for use with uWSGI (`ppaugraphics.py`), and corresponding configuration files. 
 
-This folder contains a WSGI application intended for use with uWSGI (`ppaugraphics.py`), and the corresponding `ppaugraphics.ini` file.
+The script assumes the presence of a copy of this repository in the static website serve path `/var/www/SITE_NAME.tld/html/FOO`, such that 
+- `https://SITE_NAME.tld/FOO/index.html` is where the requests come from
+- `/var/www/SITE_NAME.tld/html/FOO/Artwork` is the artwork source directory, 
+- `/var/www/SITE_NAME.tld/html/FOO/MANIFEST.json` is the manifest, and 
+- `/var/www/SITE_NAME.tld/html/FOO/auth_tag.txt` is the auth tag 
 
-You'll want to put these in a folder somewhere, `virtualenv` that folder (or even this one, provided it's not a horrendous security flaw), then install uWSGI in the virtualenv.
-Then set up NGINX or whatever to look for uWSGI to respond to requests at your chosen URL, and make uWSGI run as a service. 
+## Setup (for recent Debian/Ubuntu)
 
-In NGINX you'll need something like the following block:
+Ensure the existence of all needed packages (note that PyPDF2 is used here, rather than pdfunite as in the main script):
 
-	location /wsgi {
+    sudo apt-get install nginx uwsgi python3-pypdf2
+
+(N.B.: I tried using a `virtualenv` and it was a bit of a mess, so everything is system-installed.)
+
+Create a service directory:
+
+    sudo mkdir /etc/ppaugraphics
+
+Copy the WSGI-related files from this subdirectory of the repository to the service directory:
+
+    sudo cp -r /PATH/TO/ppau-graphics/wsgi/* /etc/ppaugraphics
+    
+In your NGINX config you'll need the following:
+
+	location /FOO/wsgi {
 		include uwsgi_params;
-		uwsgi_pass unix:///path/to/ppaugraphics/ppaugraphics.sock;
+		uwsgi_pass unix:///run/uwsgi/ppaugraphics.sock;
 	}
 
+[`/FOO` should be as above. It also might not exist, in which case you'd just have `https://SITE_NAME.tld/index.html` and `location /wsgi {`, etc.]
 
-# Requirements
+Don't forget to test your configuration with `sudo nginx -t`
 
-Mostly as per the main script. The main additional requirements are uWSGI and NGINX.
+Copy the `ppaugraphics.service.conf` where it needs to be, then edit if required:
 
-If you're starting from scratch on a reasonably modern Ubuntu/Debian system, try `apt-get install build-essential python3-dev python3-pip python3-venv`
-
-
-Additionally, PDF merging is done with [PyPDF2](https://pythonhosted.org/PyPDF2/index.html) rather than `pdfunite`.
-You can get that with `pip3 install pypdf2` inside the `virtualenv`.
-
-# Notes:
-
-As of 24th Feb 2018, PNG on-the-fly export is broken and I don't know why. PDF works fine and that was the main use-case anyway.
-
-You probably need your virtualenv active when going `systemctl start ppaugraphics.service`...
+    sudo cp /etc/ppaugraphics/ppaugraphics.service.conf /etc/systemd/system/ppaugraphics.service
+    sudo nano /etc/systemd/system/ppaugraphics.service
+    
+Enable and activate:
+    
+    sudo systemctl enable --now ppaugraphics
+    sudo systemctl reload nginx
+    

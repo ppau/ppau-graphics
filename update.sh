@@ -12,7 +12,7 @@ git pull --quiet
 
 if [[ $# -eq 1 ]]; then
     python3 clean.py --quiet
-    python3 render.py --quiet
+    python3 render.py --no-print --quiet
     python3 create_index.py --site-root "$1" --quiet
     cd Logos
     if [[ "$1" != "." ]]; then
@@ -22,7 +22,7 @@ if [[ $# -eq 1 ]]; then
     fi
 elif [[ $# -eq 2 ]]; then
     python3 clean.py --log "$2"
-    python3 render.py --log "$2"
+    python3 render.py --no-print --log "$2"
     python3 create_index.py --site-root "$1" --log "$2"
     cd Logos
     if [[ "$1" != "." ]]; then

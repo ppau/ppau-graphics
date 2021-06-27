@@ -22,7 +22,17 @@ The following programs are required by the render script.
 
 If you do not specify a correct path to `inkscape`, the script will attempt to find it with `which(1)`.
 
-`pdfunite` is usually installed as part of `poppler-tools`.
+`pdfunite` is usually installed as part of `poppler-utils` or `poppler-tools`.
+
+`find`, `sed` and `grep` should be installed by default on any POSIX system, but may be missing on Windows. 
+
+## Ubuntu/Debian quickstart (recent releases)
+
+    sudo apt-get install python3 poppler-utils git-lfs inkscape
+    git clone https://github.com/ppau/ppau-graphics.git && cd ppau-graphics
+    ./font-installer.py
+    nano print_tag.txt
+    ./render.py
 
 ## Git LFS
 
@@ -30,7 +40,7 @@ If you do not specify a correct path to `inkscape`, the script will attempt to f
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text`
 
-Git LFS isn't usually installed by default. You'll need to run `git lfs install` *before* cloning. Otherwise most of the files will be broken.
+Git LFS isn't usually installed by default. You'll likely need to run `git lfs install` *before* cloning. Otherwise most of the files will be broken.
 
 ## Fonts
 
