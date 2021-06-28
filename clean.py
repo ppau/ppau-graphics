@@ -108,7 +108,10 @@ for f in folders:
             continue
         else:
             printv("Deleting:", f)
-            shutil.rmtree(f)
+            try:
+                shutil.rmtree(f)
+            except Exception as e:
+                printv(e.message, e.args)
             total_deletions += 1
             
 printq("Performed", total_deletions, "deletions", "and skipped", total_skips)
