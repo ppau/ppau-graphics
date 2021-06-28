@@ -9,6 +9,16 @@ There are several purposes for this repository:
 
 The system works by having the artist insert placeholder text, such as `PPAU_AUTH_TAG`, in the artworks instead of something like `Authorised by Name, Address`. The script will perform a textual find-and-replace and then render the artwork to a format more suitable for distribution, currently PNG and PDF.
 
+## Ubuntu/Debian quickstart (recent releases)
+
+    sudo apt-get install python3 git-lfs inkscape imagemagick poppler-utils fontconfig
+    git clone https://github.com/ppau/ppau-graphics.git && cd ppau-graphics
+    ./font-installer.py
+    nano print_tag.txt
+    ./render.py
+
+If running on a server with WSGI you can leave `print_tag.txt` as is.
+
 # Requirements
 
 The following programs are required by the render script.
@@ -26,23 +36,13 @@ If you do not specify a correct path to `inkscape`, the script will attempt to f
 
 `find`, `sed` and `grep` should be installed by default on any POSIX system, but may be missing on Windows. 
 
-## Ubuntu/Debian quickstart (recent releases)
-
-    sudo apt-get install python3 poppler-utils git-lfs inkscape
-    git clone https://github.com/ppau/ppau-graphics.git && cd ppau-graphics
-    ./font-installer.py
-    nano print_tag.txt
-    ./render.py
-
-If running on a server with WSGI you can leave `print_tag.txt` as is.
-
 ## Git LFS
 
 **Most files (in particular, the SVG artwork source files) in this repository are tracked using [Git LFS.](https://git-lfs.github.com/)** See the `.gitattributes` file for a detailed list. An example line:
 
 `*.jpg filter=lfs diff=lfs merge=lfs -text`
 
-Git LFS isn't usually installed by default. You'll likely need to run `git lfs install` *before* cloning. Otherwise most of the files will be broken.
+Git LFS isn't usually installed by default. You'll likely need to run `git lfs install` *before* cloning - consider doing it even if your package manager has it installed. Otherwise most of the files will be broken.
 
 ## Fonts
 

@@ -15,6 +15,9 @@
       img {max-height:400px; max-width: 400px;
               border: 2px solid #ddd; border-radius: 6px;
           }
+      @media (max-width: 500px) { /* smaller screen support */
+        img {max-height: 80vh; max-width: 80vw;}
+      }
       .caption {font-size : small; font-weight: bolder;}
       #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align:center; flex-wrap:wrap; display:flex;}
       #postersGoHere > div, #pamphletsGoHere > div, #onlinesGoHere > div {margin-bottom: 5vw; margin-right: 2vw;}
