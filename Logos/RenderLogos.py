@@ -279,6 +279,10 @@ out_str = ""
 with open(TEMPLATE_FILE) as templatefp:
     out_str = templatefp.read().replace(LOGOS_REPLACE_TAG, replString)
 
+# links
+site_root = '../' if (PAGE_ROOT == '.') else PAGE_ROOT.rstrip("Logos")
+out_str = out_str.replace("SITE_ROOT", site_root)
+
 # metadata
 out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z")
 
