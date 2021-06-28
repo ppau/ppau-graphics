@@ -6,6 +6,7 @@ There are several purposes for this repository:
 
 1. Version control and general ability for collaboration with source documents.
 2. Build an infrastructure that allows us to seamlessly update authorisation tags and, if necessary, printing tags.
+3. ... and in turn, permit self-serve poster generation with appropriate tags. 
 
 The system works by having the artist insert placeholder text, such as `PPAU_AUTH_TAG`, in the artworks instead of something like `Authorised by Name, Address`. The script will perform a textual find-and-replace and then render the artwork to a format more suitable for distribution, currently PNG and PDF.
 
@@ -121,11 +122,11 @@ The exact format used is the regex `(.*)(_[pP])(\d+)(-\w*)?$` where the first gr
 
 ## WSGI and servers
 
-There's a semi-experimental WSGI implementation in the subdirectory of that name.
+There's a semi-experimental WSGI implementation in the subdirectory of that name powering self-serve PDF generation. 
 
 Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs, using ImageMagick's `convert`.
 
-`update.sh` is designed to be run automatically on machines that don't edit the repository, e.g. with `cron`. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. It takes two arguments: the "site root" (e.g. `https://example.com/ppau-graphics`) and optionally, the path to a log file. 
+`update.sh` is designed to be run automatically on machines that don't edit the repository. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. It takes two arguments: the "site root" (e.g. `https://example.com/ppau-graphics`) and optionally, the path to a log file. 
 
 # License
 
