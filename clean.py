@@ -111,7 +111,7 @@ for f in folders:
             try:
                 shutil.rmtree(f)
             except Exception as e:
-                printv(e.message, e.args)
+                printv(e)
             total_deletions += 1
             
 printq("Performed", total_deletions, "deletions", "and skipped", total_skips)
