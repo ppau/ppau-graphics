@@ -1,36 +1,58 @@
 #!/bin/bash
 
 # PPAU Graphics Update Script
-# Usage: ./update.sh <site_address> [log_file]
+USAGE="update.sh [--crush] [--log log_file] <site_address>"
 
-# this has to be first lol
+# Handle arguments
+CRUSH=""
+LOGGING="--quiet"
+ROOT="."
+OTHERS=()
+
+# gotta be at least one argument
+if [[ $# -eq 0 ]]; then
+    echo "Usage: $USAGE"
+    exit
+fi
+
+for arg in "$@"
+do
+    case $arg in
+        -h|--help)
+        echo "Usage: $USAGE"
+        exit
+        ;;
+        --crush)
+        CRUSH="--crush"
+        shift
+        ;;
+        --log)
+        LOGGING="--log $2"
+        shift
+        shift
+        ;;
+        *)
+        OTHERS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+ROOT="$OTHERS" # by default, the first?
+
+# gotta do this
 cd $(dirname "$0")
 
 # pull and render
 git reset --hard --quiet
 git pull --quiet
 
-if [[ $# -eq 1 ]]; then
-    python3 clean.py --quiet
-    python3 render.py --quiet
-    python3 create_index.py --site-root "$1" --quiet
-    cd Logos
-    if [[ "$1" != "." ]]; then
-        python3 RenderLogos.py --page-root "$1/Logos" --quiet
-    else
-        python3 RenderLogos.py --page-root "." --quiet
-    fi
-elif [[ $# -eq 2 ]]; then
-    python3 clean.py --log "$2"
-    python3 render.py --log "$2"
-    python3 create_index.py --site-root "$1" --log "$2"
-    cd Logos
-    if [[ "$1" != "." ]]; then
-        python3 RenderLogos.py --page-root "$1/Logos" --log "$2"
-    else
-        python3 RenderLogos.py --page-root "." --log "$2"
-    fi
-else 
-    echo "Missing argument: <site_address>"
+python3 clean.py $LOGGING
+python3 render.py $LOGGING $CRUSH
+python3 create_index.py --site-root $ROOT $LOGGING
+cd Logos
+if [[ "$ROOT" != "." ]]; then
+    python3 RenderLogos.py --page-root "$ROOT/Logos" $LOGGING
+else
+    python3 RenderLogos.py --page-root "." $LOGGING
 fi
-

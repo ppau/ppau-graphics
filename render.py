@@ -17,7 +17,8 @@
 
 # You will almost definitely want to update this yourself
 BACKEND_PATHS = ["/Applications/Inkscape.app/Contents/Resources/bin/inkscape", "/Applications/Inkscape.app/Contents/MacOS/inkscape", "/usr/bin/inkscape"]
-COLLATER_PATH = "/usr/bin/pdfunite"
+COLLATER_PATHS = ["/usr/bin/pdfunite"]
+CRUSHER_PATHS = ["/usr/local/bin/pngcrush", "/usr/bin/pngcrush"]
 
 # If the paths below are relative, this file is assumed to be in the
 # project's root directory.
@@ -40,6 +41,7 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 #### Other settings                                                         ####
 
 NO_PRINT = False
+CRUSH = False
 NO_COLLATE = False
 COLLATE_FMT = r'(.*)(_[pP])(\d+)(-\w*)?$'
 # Collation format regex spec: four groups, consisting of...
@@ -74,6 +76,7 @@ VERSION = "0.6"
 
 BACKEND = "inkscape"
 COLLATER = "pdfunite"
+CRUSHER = "pngcrush"
 BACKEND_PATH = ""
 
 # import all the things
@@ -134,6 +137,10 @@ parser.add_argument('--no-print', dest='no_print',
                     action='store_const', default=NO_PRINT, const=True,
                     help="Don't output anything that would require a print tag.")
 
+parser.add_argument('--crush', dest='crush', 
+                    action='store_const', default=CRUSH, const=True,
+                    help="Run pngcrush on PNG files after rendering.")
+
 parser.add_argument('--no-collate', dest='no_collate',
                     action='store_const', default=NO_COLLATE, const=True,
                     help="Don't collate multi-page files.")
@@ -179,6 +186,7 @@ AUTH_TAG = arguments.auth_tag
 PRINT_TAG = arguments.print_tag
 BACKEND_PATH = arguments.backend_path
 NO_PRINT = arguments.no_print
+CRUSH = arguments.crush
 NO_COLLATE = arguments.no_collate
 COLLATE_FMT = arguments.collate_fmt
 
@@ -208,24 +216,25 @@ if sys.path[0]:
 
 printv("ppau-graphics, render script version:", VERSION)
 
-# make BACKEND work (on posix systems, anyway)
-for bp in BACKEND_PATHS:
-    if os.path.exists(bp):
-        BACKEND_PATH = bp
-        break
-else:
-    if os.name == "posix":
-        backendtry = subprocess.run(["which", BACKEND],
+def get_tool(tool, paths):
+	"""Get {tool}, potentially at {path}, or die trying"""
+	
+	for tp in paths:
+		if os.path.exists(tp):
+			return tp
+	else:
+		if os.name == "posix":
+			attempt = subprocess.run(["which", tool],
                 stdout=subprocess.PIPE,
                 universal_newlines=True)\
                 .stdout.strip()
-        if backendtry:
-            printv("Using "+ BACKEND +" at " + backendtry + " instead.")
-            BACKEND_PATH = backendtry
-        else:
-            failure("could not find "+ BACKEND +"!")
-    else:
-        failure("could not find "+ BACKEND +"!")
+			if attempt:
+				printv("Using", tool, "at", attempt, " instead.")
+				return attempt
+		failure("Could not find", tool)
+
+# Ensure Inkscape exists
+BACKEND_PATH = get_tool(BACKEND, BACKEND_PATHS)
 
 # Ensure Inkscape 1.0 
 if 'inkscape' in BACKEND_PATH:
@@ -235,22 +244,12 @@ if 'inkscape' in BACKEND_PATH:
     elif b"Inkscape 1." in vtext:
         printv("SUCCESS: able to use Inkscape 1.0 or higher")
 
-# Go find COLLATER if we haven't already
-if not os.path.exists(COLLATER_PATH) and not NO_COLLATE:
-    printv("{} not found at specified path {}".format(COLLATER, COLLATER_PATH))
+# Ensure pdfunite exists
+COLLATER_PATH = "" if NO_COLLATE else get_tool(COLLATER, COLLATER_PATHS)	
 
-    if os.name == "posix":
-        collatertry = subprocess.run(["which", COLLATER],
-                stdout=subprocess.PIPE,
-                universal_newlines=True)\
-                .stdout.strip()
-        if collatertry:
-            printv("Using "+ COLLATER +" at " + collatertry + " instead.")
-            COLLATER_PATH = collatertry
-        else:
-            failure("could not find "+ COLLATER +"!")
-    else:
-        failure("could not find "+ COLLATER +"!")
+# See about pngcrush
+CRUSHER_PATH = "" if (not CRUSH) else get_tool(CRUSHER, CRUSHER_PATHS)
+
 
 # Recursively find all SVGs in SOURCE_DIR
 SVGs = subprocess.run(["find", SOURCE_DIR, "-type", "f", "-name", "*.svg"],
@@ -309,14 +308,14 @@ atb_cacheable = False
 ptf_cacheable = False
 
 if not os.path.exists(RENDER_DIR):
-	os.makedirs(RENDER_DIR)
+    os.makedirs(RENDER_DIR)
 
 if os.path.exists(atf_path):
     with open(atf_path) as fp:
         if auth_tag_full == fp.read().strip():
             atf_cacheable = True
         else:
-        	printv("ATF wasn't cacheable")
+            printv("ATF wasn't cacheable")
 
 if not atf_cacheable:
     with open(atf_path, 'w') as fp:
@@ -327,7 +326,7 @@ if os.path.exists(atb_path):
         if auth_tag_basic == fp.read().strip():
             atb_cacheable = True
         else:
-        	printv("ATB wasn't cacheable")
+            printv("ATB wasn't cacheable")
 
 
 if not atb_cacheable:
@@ -339,7 +338,7 @@ if os.path.exists(ptf_path):
         if print_tag_full == fp.read().strip():
             ptf_cacheable = True
         else:
-        	printv("PTF wasn't cacheable")
+            printv("PTF wasn't cacheable")
 
 if not ptf_cacheable:
     with open(ptf_path, 'w') as fp:
@@ -355,7 +354,10 @@ ptf_mod = os.path.getmtime(ptf_path)
 # we want them relative to the Source and Render dirs
 manifest = {}
 
+# multi-page PDFs
 multipagers = {}
+# all PNGs for crushing
+pngs = set()
 
 skipcount = 0
 updatecount = 0
@@ -364,7 +366,6 @@ notagcount = 0
 # Small amount of Inkscape funzies. 
 # Make shell mode work, part 1
 commands = io.StringIO()
-
 
 # Iterate over SVGs...
 
@@ -414,7 +415,7 @@ for s in SVGs:
         if variant[2]: # if we need a print tag, we need a full auth tag
             print_tag_var = print_tag_full
             auth_tag_var = auth_tag_full # override
-				
+                
         # We shall first output the auth'd SVGs to RENDER_DIR
 
         #rdir = os.path.join(RENDER_DIR, sdir.replace(SOURCE_DIR + os.path.sep, "")) 
@@ -458,10 +459,10 @@ for s in SVGs:
         # Iterate over output formats...
         for ftype in FORMATS:
         
-        	# deal with --no-print
+            # deal with --no-print
             if NO_PRINT and (ftype in PRINT_FORMATS):
-        	    printv("No Print Output: skipping", r_tag, sep='\t')
-        	    continue
+                printv("No Print Output: skipping", r_tag, sep='\t')
+                continue
             
             # Pathname of output file
             r_out = os.path.join(rdir, r_tag_root + "-" + variant[0])  + "." + ftype
@@ -504,6 +505,7 @@ for s in SVGs:
 
             if ftype == "png":
                 renderargs.append("export-type:png; export-background-opacity:255;")
+                pngs.add(r_out)
             if ftype == "pdf":
                 renderargs.append("export-dpi:300; export-text-to-path:true; export-type:pdf;")
             
@@ -586,10 +588,25 @@ for mpkey in multipagers:
         paths = [''.join([t[0], i[0], i[1], t[1], ".pdf"]) for i in tagset[t]]
         #printv(t, tagset[t], paths)
 
-        res = subprocess.run([COLLATER, *paths, ''.join([*t, ".pdf"])])
+        res = subprocess.run([COLLATER_PATH, *paths, ''.join([*t, ".pdf"])])
 
+# Crush PNGs
+if CRUSHER_PATH:
+	# store start and end of crushing time in case it's not always done
+	import time
+	
+	cts_path = os.path.normpath(os.path.join(os.path.join(RENDER_DIR, ".crush_timestamps.tsv")))
+	cts_start = time.time_ns()
 
-
+	for k in pngs:
+		e = subprocess.run([CRUSHER_PATH, "-q", "-ow", k], 
+				stderr=subprocess.PIPE, universal_newlines=True)\
+				.stderr
+		printv(e)
+	
+	cts_end = time.time_ns()
+	with open(cts_path, 'a') as ctsf:
+		print(cts_start, cts_end, sep="\t", file=ctsf)
 
 with open(MANIFEST_FILE, 'w') as mf:
 #    keys = sorted(manifest.keys())

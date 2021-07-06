@@ -30,8 +30,9 @@ The following programs are required by the render script.
 - `sed(1)`
 - `grep(1)`
 - `pdfunite`
+- `pngcrush` (optional)
 
-If you do not specify a correct path to `inkscape`, the script will attempt to find it with `which(1)`.
+If you do not specify a correct path to `inkscape`, `pdunite` or `pngcrush`, the script will attempt to find it with `which(1)`.
 
 `pdfunite` is usually installed as part of `poppler-utils` or `poppler-tools`.
 
@@ -120,13 +121,26 @@ This is done by a file naming convention: `foo/bar_p1.svg`, `foo/bar_p2.svg`, `f
 
 The exact format used is the regex `(.*)(_[pP])(\d+)(-\w*)?$` where the first group is the name, the second group marks a page number, the third group is the digits of the page number, and the fourth group is an optional variant descriptor, e.g. "light" or "dark". Any file extension is stripped before the regex is matched. You may pass in a different regex with `--collate-fmt` but the groups will of course be interpreted the same way, so the only change advised is to group 2. 
 
+## Crushing PNGs
+
+`pngcrush` is optional with `--crush`; crushing PNGs at time of writing shows an average saving of 15% size, and (on author's machine) takes about 5 seconds per image updated. Disk space is pretty cheap and plentiful these days, so crushing is off by default. 
+
+A log of timestamps between which rendered files have been crushed is kept in `Renders/.crush_timestamps.tsv`. If you only sometimes crush PNGs you may be able to use this information 
+
 ## WSGI and servers
 
 There's a semi-experimental WSGI implementation in the subdirectory of that name powering self-serve PDF generation. 
 
 Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs, using ImageMagick's `convert`.
 
-`update.sh` is designed to be run automatically on machines that don't edit the repository. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. It takes two arguments: the "site root" (e.g. `https://example.com/ppau-graphics`) and optionally, the path to a log file. 
+`update.sh` is designed to be run automatically on machines that don't edit the repository. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. 
+
+It takes several arguments: 
+- the "site root" (e.g. `https://example.com/ppau-graphics`) is required; 
+- whether to crush PNGs (`--crush`)
+- the path to a log file (`--log /path/to/file`). 
+
+N.B. this is changed from the previous behaviour as of 2021-07-06.
 
 # License
 
