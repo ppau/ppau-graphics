@@ -232,7 +232,10 @@ with open(arguments.auth_tag_file_basic) as atfbfp:
 
 out_str = out_str.replace("META_TIMESTAMP", datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z")
 
-gitty = subprocess.run(["git", "describe", "--always"], stdout=subprocess.PIPE)
+gitty = subprocess.run(["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE)
+# N.B. --short will actually use more than [n = 7] characters if there's a collision
+#   these are expected to be kept up to date, and GitHub handles prefixes sensibly too
+#   so it should all Just Work (TM).
 hashy = gitty.stdout.decode().strip()
 out_str = out_str.replace("GIT_HASH", hashy)
 
