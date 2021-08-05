@@ -10,7 +10,7 @@ If you must upload artwork that has not yet been authorised, ensure it goes to t
 
 Artwork intended to be printed should avoid the use of partial transparency. 
 
-Authorisation and Printing Tags need to be legible! As such, they should be no less than half the height of the next smallest piece of text in the artwork (typically the lower line in the party logo). Further, there needs to be sufficient contrast between the tag-text and the background. Setting the tag-text to be the same colour as the background, and then adjusting the brightness by 128 is a simple way to achieve this. 
+Authorisation and Printing Tags need to be legible! (The law is that they must have a font size that can be read by someone with 20/20 vision.) As such, tags should be no less than half the height of the next smallest piece of text in the artwork (typically the lower line in the party logo). Further, there needs to be sufficient contrast between the tag-text and the background. Setting the tag-text to be the same colour as the background, and then adjusting the brightness by 128 is a simple way to achieve this. 
 
 In general, use Open Sans for general text and Open Sans Condensed for tag-text. 
 
