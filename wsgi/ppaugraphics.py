@@ -60,7 +60,7 @@ def application(env, start_response):
 
     if "printer" in qkeys:
         if query_dict["printer"]:
-            qprint_tag = "Printed by " + re.sub('[^0-9a-zA-Z\.\,\-]+', '', 
+            qprint_tag = "Printed by " + re.sub('[^\w\.\,\- ]+', '', 
                                                 query_dict["printer"][0])
 
     if not "name" in qkeys:
