@@ -37,7 +37,7 @@ Enable and activate:
 
 Test if it all started OK with `systemctl status ppaugraphics`. 
 
-Meanwhile, in your NGINX config you'll need the following:
+Meanwhile, in your NGINX config you'll need at least the following:
 
 	location /FOO/wsgi {
 		include uwsgi_params;
@@ -46,9 +46,12 @@ Meanwhile, in your NGINX config you'll need the following:
 
 N.B: `/FOO` should be as above. It also might not exist, in which case you'd just have `https://SITE_NAME.tld/index.html` and `location /wsgi {`, etc.
 
+See also the sample configuration in `nginx.conf`
+
 Test your configuration with `sudo nginx -t` and then reload to activate:
  
     sudo systemctl reload nginx
 
 You should now be able to use the site. (If not, the log file location is specified in the `.ini`)
 
+*N.B. don't forget to run the main setup as per the quickstart in the root readme, and to automatically run `update.sh` (and occasionally `font-installer.py`)!*

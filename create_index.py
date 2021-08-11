@@ -49,6 +49,7 @@ argparser.add_argument('--template-file', default=TEMPLATE_FILE, help="Path to t
 argparser.add_argument('--index-file', default=INDEX_FILE, help="Path to put the generated index HTML file")
 argparser.add_argument('--render-dir', default=RENDER_DIR, help="Path to the render directory")
 argparser.add_argument('--site-root', default=SITE_ROOT, help="Path for the root of the index page; default is `"+SITE_ROOT+"`")
+argparser.add_argument('--wsgi-url', default=None, help="Path for WSGI request handler; default is `{site root}/wsgi`")
 argparser.add_argument('--poster-replace-tag', default=POSTER_REPLACE_TAG, help="The string in the template to be replaced by the poster content")
 argparser.add_argument('--pamphlet-replace-tag', default=PAMPHLET_REPLACE_TAG, help="The string in the template to be replaced by the pamphlet content")
 argparser.add_argument('--online-replace-tag', default=ONLINE_REPLACE_TAG, help="The string in the template to be replaced by the online-only content")
@@ -241,6 +242,9 @@ out_str = out_str.replace("GIT_HASH", hashy)
 
 site_root = "" if (arguments.site_root == ".") else (arguments.site_root.rstrip('/') + '/')
 out_str = out_str.replace("SITE_ROOT", site_root)
+
+wsgi_url = (site_root + 'wsgi') if (arguments.wsgi_url is None) else arguments.wsgi_url
+out_str = out_str.replace("WSGI_URL", wsgi_url)
 
 ## Print ##
 with open(arguments.index_file, 'w') as indexfp:
