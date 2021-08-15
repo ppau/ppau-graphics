@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # PPAU Graphics Update Script
-USAGE="update.sh [--crush] [--log log_file] <site_address>"
+USAGE="update.sh [--crush] [--fonts] [--log log_file] <site_address>"
 
 # Handle arguments
 CRUSH=""
+INSTALLFONTS="N"
 LOGGING="--quiet"
 ROOT="."
 OTHERS=()
@@ -26,6 +27,10 @@ do
         CRUSH="--crush"
         shift
         ;;
+        --fonts)
+        INSTALLFONTS="Y"
+        shift
+        ;;
         --log)
         LOGGING="--log $2"
         shift
@@ -44,8 +49,13 @@ ROOT="$OTHERS" # by default, the first?
 cd $(dirname "$0")
 
 # pull and render
-git reset --hard --quiet
-git pull --quiet
+#git reset --hard --quiet
+#git pull --quiet
+
+if [ "$INSTALLFONTS" == "Y" ]
+then
+    python3 font-installer.py $LOGGING
+fi
 
 python3 clean.py $LOGGING
 python3 render.py $LOGGING $CRUSH
