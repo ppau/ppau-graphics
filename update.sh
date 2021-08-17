@@ -49,8 +49,8 @@ ROOT="$OTHERS" # by default, the first?
 cd $(dirname "$0")
 
 # pull and render
-#git reset --hard --quiet
-#git pull --quiet
+git reset --hard --quiet
+git pull --quiet
 
 if [ "$INSTALLFONTS" == "Y" ]
 then
