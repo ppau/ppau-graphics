@@ -99,6 +99,10 @@ def application(env, start_response):
                 qformat = "-A"
         # only support PDF export now
 
+        # support bleeds in Inkscape 1+ with --export-margin=MARGIN
+        # right now inkscape only supports integer millimetre margins for PDFs
+        bleed = "--export-margin=" + str(int(float(query_dict.get("bleed", ["0"])[0])))
+        
         # This is the un-fun part where we need multiple things rendered
 
         item = manifest[query_dict["name"][0]]
@@ -130,7 +134,7 @@ def application(env, start_response):
             inkscape_args = []
             if inkscape_version == "1":
                 inkscape_args = [inky, "--export-dpi=300",
-                                 qformat, "--pipe", "-o", "-"]
+                                 qformat, bleed, "--pipe", "-o", "-"]
             elif inkscape_version == "0.9":
                 inkscape_args = [inky, "-z", "--export-dpi=300",
                                  qformat, "/dev/stdout",

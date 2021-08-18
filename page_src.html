@@ -27,6 +27,13 @@
       .jump {text-align:center}
       .footer {display: flex; justify-content: space-between; color: #888}
       ::selection {color: #fff; background-color: #0073AE;}
+      .form-popup {display: none; position: fixed; margin: 0 35vw; width: 30vw; top: 10vh;
+                      color: #000; background-color:#fff; padding: 1vw; border-radius: 6px;}
+      .modal {display:none; position:fixed; top: 0; left: 0; z-index: 1; 
+                  width:100vw; height:100vw; background-color: rgba(0,0,0,0.5); }
+      .btn {font-size: 1em; border: none; border-radius: 6px; margin-right: 6px; padding: 6px 12px; background-color: #eee;}
+      input {font-size: 0.9em;}
+                  
     </style>
   </head>
   <body>
@@ -60,28 +67,43 @@
     <p>AUTH_TAG_BASIC</p>
     <p>Generated on META_TIMESTAMP from <a style="color:#888;" href="https://github.com/ppau/ppau-graphics/commit/GIT_HASH">GIT_HASH</a></p>
     </div>
+    
+    <div id="myModal" class="modal">
+    <div class="form-popup" id="myForm">
+    <form method="get" target="_blank" action="WSGI_URL">
+        <label for="address">Printer's legal name and street address:</label><br/>
+        <input type="text" placeholder="P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003" name="printer" required style="width:100%;">
+        <br/> <br/>
+        <label for="bleed">Bleed (optional):</label>
+        <input type="number" min="0" max="10" step="1" placeholder="0" name="bleed" optional> mm
+        <br/> <br/>
+        <input type="hidden" name="name" value="" id=dlname> <input type="hidden" name="format" value="pdf">
+        <div style="display:flex; align-items: flex-end; width:100%">
+            <button type="button" class="btn cancel" style="margin-left: auto" onclick="closeForm()">Cancel</button>
+            <button type="submit" class="btn" style="color: #fff; background-color: #0073AE; margin-left:0">Download PDF</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    
     <script>
-
-      let dlsource = "WSGI_URL";
-
       function clickHandler(event){
-        var name = event.target.alt;
-
-        //console.log(event)
-
-        if(event.target.tagName != "IMG"){
+         name = event.target.alt;
+         console.log(event)
+         if(event.target.tagName != "IMG"){
           return;
         }
-
         if(name==""){
           return;
         }
+        document.getElementById("dlname").setAttribute("value", name);
+        document.getElementById("myForm").style.display = "block";
+        document.getElementById("myModal").style.display = "block";
+      }
 
-      	var printer = window.prompt("Insert printer's legal name and street address:", "");
-      	if ((printer == null) || (printer == "null")){
-      		return;
-      	}
-      	window.open(dlsource + "?name=" + encodeURIComponent(name) + "&printer=" + encodeURIComponent(printer) + "&format=pdf");
+    function closeForm() {
+         document.getElementById("myForm").style.display = "none";
+         document.getElementById("myModal").style.display = "none";
       }
     </script>
   </body>
