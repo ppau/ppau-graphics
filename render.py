@@ -93,6 +93,8 @@ import json
 import re
 import io
 import logging
+from xml.sax.saxutils import escape
+
 
 # Parse arguments
 
@@ -267,7 +269,7 @@ print_tag_full = ""
 
 try:
     with open(AUTH_TAG_FILE) as atfp:
-        auth_tag_full = atfp.read().strip()
+        auth_tag_full = escape(atfp.read().strip())
 except FileNotFoundError:
     printq("Authorisation tag file not found!",
           "No substitution will be performed.")
@@ -275,7 +277,7 @@ except FileNotFoundError:
 
 try:
     with open(AUTH_TAG_FILE_BASIC) as atfp:
-        auth_tag_basic = atfp.read().strip()
+        auth_tag_basic = escape(atfp.read().strip())
 except FileNotFoundError:
     printq("Basic auth tag file not found! Falling back on", 
           AUTH_TAG_FILE)
@@ -283,7 +285,7 @@ except FileNotFoundError:
     
 try:
     with open(PRINT_TAG_FILE) as ptfp:
-        print_tag_full = ptfp.read().strip()
+        print_tag_full = escape(ptfp.read().strip())
 except FileNotFoundError:
     printq("Printing tag file not found!",
           "No substitution will be performed.")

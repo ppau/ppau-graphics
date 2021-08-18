@@ -6,6 +6,7 @@ import re
 import io
 import PyPDF2
 import json
+from xml.sax.saxutils import escape
 
 AUTH_TAG = "PPAU_AUTH_TAG"
 PRINT_TAG = "PPAU_PRINT_TAG"
@@ -30,7 +31,7 @@ def application(env, start_response):
     auth_repl = ""
     try:
         with open(auth_path, 'r') as af:
-            auth_repl = af.read().replace('\n', " ")
+            auth_repl = escape(af.read(), {'\n': ' ', '\t': ' ', '\b': ' ', '\r': ' ', '\c': ' '})
     except Exception:
         print("Error reading authorisation tag file at", auth_path)
         head = ['500 Internal Server Error', [('Content-Type','text/html')]]
@@ -60,8 +61,8 @@ def application(env, start_response):
 
     if "printer" in qkeys:
         if query_dict["printer"]:
-            qprint_tag = "Printed by " + re.sub('[^\w\.\,\- ]+', '', 
-                                                query_dict["printer"][0])
+            qprint_tag = "Printed by " + escape(query_dict["printer"][0], 
+                {'\n': ' ', '\t': ' ', '\b': ' ', '\r': ' ', '\c': ' '})
 
     if not "name" in qkeys:
         head = ['400 Bad Query', [('Content-Type','text/html')]]
