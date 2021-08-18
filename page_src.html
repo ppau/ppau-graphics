@@ -15,8 +15,19 @@
       img {max-height:400px; max-width: 400px;
               border: 2px solid #ddd; border-radius: 6px;
           }
+     .form-popup {position:relative; margin: 0 auto; min-width: 500px; max-width: 50vw; top: 10vh;}
+     #dlpreview {width: 15vw; object-fit: scale-down; order:1; margin-right:2vw;}
+     #actualForm {order: 2; float:right; width:calc(100% - 20vw);}
+     #dlprinter {width: 100%;}
+     #buttons {position:absolute; right: 6px; bottom:6px; justify-content:right;}
+     
       @media (max-width: 500px) { /* smaller screen support */
         img {max-height: 80vh; max-width: 80vw;}
+        .form-popup {width: 100vw; margin: 10vh 0;}
+        #dlpreview {width: 80vw; object-fit: scale-down; order:2; margin: 1vh 5vw;}
+        #dlprinter {width: 90vw;}
+        #actualForm {order: 1; width:100vw;}
+        #buttons {position:relative; display:flex; justify-content:center;}
       }
       .caption {font-size : small; font-weight: bolder;}
       #postersGoHere, #pamphletsGoHere, #onlinesGoHere {text-align:center; flex-wrap:wrap; display:flex;}
@@ -27,10 +38,9 @@
       .jump {text-align:center}
       .footer {display: flex; justify-content: space-between; color: #888}
       ::selection {color: #fff; background-color: #0073AE;}
-      .form-popup {display: none; position: fixed; margin: 0 30vw; width: 40vw; top: 10vh;
-                      color: #000; background-color:#fff; padding: 1vw; border-radius: 6px;}
       .modal {display:none; position:fixed; top: 0; left: 0; z-index: 1; 
-                  width:100vw; height:100vw; background-color: rgba(0,0,0,0.5); }
+                  width:100vw; height:100vh; background-color: rgba(0,0,0,0.5); }
+      .form-popup {display: none; color: #000; background-color:#fff; padding: 1vw; border-radius: 6px; flex-wrap:wrap;}
       .btn {font-size: 1em; border: none; border-radius: 6px; margin-right: 6px; padding: 6px 12px; background-color: #eee;}
       input {font-size: 0.9em;}
                   
@@ -69,23 +79,23 @@
     </div>
     
     <div id="myModal" class="modal">
-    <div class="form-popup" id="myForm" style="display:table;">
-    <img id="dlpreview" style="max-height:100%; width: 10vw; margin-right: 1vw; float:left" src=""></img>
-    <div style="float:right; width:28vw; height:100%;">
+    <div class="form-popup" id="myForm">
+    <img id="dlpreview" src=""/>
+    <div id="actualForm">
     <form method="get" target="_blank" action="WSGI_URL">
         <label for="address">Printer's legal name and street address:</label><br/>
-        <input type="text" placeholder="P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003" name="printer" required style="width:100%;">
+        <input id="dlprinter" type="text" placeholder="P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003" name="printer" required">
         <br/> <br/>
         <label for="bleed">Bleed (optional):</label>
         <input type="number" min="0" max="10" step="1" placeholder="0" name="bleed" optional> mm
         <br/> <br/> <br/> 
         <input type="hidden" name="name" value="" id=dlname> <input type="hidden" name="format" value="pdf">
-        <div style="display:flex; align-items: flex-end; width:100%; position: absolute; right: 6px; bottom:6px;">
-            <button type="button" class="btn cancel" style="margin-left: auto" onclick="closeForm()">Cancel</button>
-            <button type="submit" class="btn" style="color: #fff; background-color: #0073AE; margin-left:0">Download PDF</button>
+        <div id="buttons" width="100%;">
+            <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+            <button type="submit" class="btn" style="color: #fff; background-color: #0073AE;">Download PDF</button>
         </div>
     </form>
-    <div>
+    </div>
     </div>
     </div>
     
@@ -101,7 +111,7 @@
         }
         document.getElementById("dlpreview").setAttribute("src", event.target.src);
         document.getElementById("dlname").setAttribute("value", name);
-        document.getElementById("myForm").style.display = "block";
+        document.getElementById("myForm").style.display = "flex";
         document.getElementById("myModal").style.display = "block";
       }
 
