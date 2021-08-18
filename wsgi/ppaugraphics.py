@@ -6,7 +6,7 @@ import re
 import io
 import PyPDF2
 import json
-from xml.sax.saxutils import escape
+import sys
 
 AUTH_TAG = "PPAU_AUTH_TAG"
 PRINT_TAG = "PPAU_PRINT_TAG"
@@ -16,6 +16,12 @@ manifest_file = "MANIFEST.json"
 
 seddy = "/bin/sed"
 inky = "/usr/bin/inkscape"
+
+def esc(str):
+    '''XML escape, but forward slashes are also converted to entity references
+       and whitespace control characters are converted to spaces'''
+    from xml.sax.saxutils import escape
+    return escape(str,  {'\n': ' ', '\t': ' ', '\b': ' ', '\r': ' ', '\c': ' ', '/': '&#47;'})
 
 def application(env, start_response):
     head = ['200 OK', [('Content-Type','text/html')]]
@@ -31,7 +37,7 @@ def application(env, start_response):
     auth_repl = ""
     try:
         with open(auth_path, 'r') as af:
-            auth_repl = escape(af.read(), {'\n': ' ', '\t': ' ', '\b': ' ', '\r': ' ', '\c': ' '})
+            auth_repl = esc(af.read())
     except Exception:
         print("Error reading authorisation tag file at", auth_path)
         head = ['500 Internal Server Error', [('Content-Type','text/html')]]
@@ -61,8 +67,7 @@ def application(env, start_response):
 
     if "printer" in qkeys:
         if query_dict["printer"]:
-            qprint_tag = "Printed by " + escape(query_dict["printer"][0], 
-                {'\n': ' ', '\t': ' ', '\b': ' ', '\r': ' ', '\c': ' '})
+            qprint_tag = "Printed by " + esc(query_dict["printer"][0])
 
     if not "name" in qkeys:
         head = ['400 Bad Query', [('Content-Type','text/html')]]
@@ -88,7 +93,7 @@ def application(env, start_response):
         if query_dict["format"][0].upper() == "PDF":
             # handle PDF
             head = ['200 OK', [('Content-Type', 'application/pdf')]]
-            if inkscape_version == "1.0":
+            if inkscape_version == "1":
                 qformat = "--export-type=pdf"
             else:
                 qformat = "-A"
@@ -110,9 +115,15 @@ def application(env, start_response):
             qfile = os.path.join(doc_root, page_root, SOURCE_DIR, item[str(pn)][0][:-9] + ".svg")
             print(qfile, pn)
             # sed
+            # the specific problem here is we also need to escape forward slashes
+            authsub = "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_repl) + "/g"
+            printsub = "s/" + re.escape(PRINT_TAG) + "/" + re.escape(qprint_tag) +"/g"
+#            print(authsub)
+#            print(printsub)
+
             sed = subprocess.Popen([seddy,
-                                    "-e", "s/" + re.escape(AUTH_TAG) + "/" + re.escape(auth_repl) + "/g",
-                                    "-e", "s/" + re.escape(PRINT_TAG) + "/" + re.escape(qprint_tag) +"/g",
+                                    "-e", authsub,
+                                    "-e", printsub,
                                     qfile],
                                     stdout=subprocess.PIPE)
             # inkscape
@@ -128,11 +139,15 @@ def application(env, start_response):
 
             inkscape = subprocess.Popen(inkscape_args,
                              stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE,
                              stdin=sed.stdout)
             sed.stdout.close() # as per docs for SIGPIPE
-            this_page = io.BytesIO(inkscape.communicate()[0])
+            outs, errs = inkscape.communicate()
+            this_page = io.BytesIO(outs)
+#            print('page', pn, 'is', len(outs), 'bytes')
+#            print(errs)
             inkscape.kill() # anti zombie measures?
-            
+
             merger.append(this_page, pages=page_range)
 
         # end of that for loop
