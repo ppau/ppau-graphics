@@ -46,7 +46,13 @@ Meanwhile, in your NGINX config you'll need at least the following:
 
 N.B: `/FOO` should be as above. It also might not exist, in which case you'd just have `https://SITE_NAME.tld/index.html` and `location /wsgi {`, etc.
 
-See also the sample configuration in `nginx.conf`
+A full sample configuration is in `nginx.conf`. 
+
+If you're running this on its own subdomain then you can *probably* just go:
+
+    sudo cp nginx.conf /etc/nginx/sites-available/SITE_NAME.TLD
+    sudo nano /etc/nginx/sites-available/SITE_NAME.TLD
+    sudo ln -s /etc/nginx/sites-available/SITE_NAME.TLD /etc/nginx/sites-enabled/SITE_NAME.TLD
 
 Test your configuration with `sudo nginx -t` and then reload to activate:
  

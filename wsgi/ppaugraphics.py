@@ -160,10 +160,13 @@ def application(env, start_response):
         merger.write(bodyIO)
         body = bodyIO.getvalue()
 
+        # Name the file we return
         head[1].append(('Content-Disposition', ('inline; filename="' + re.sub('[^0-9a-zA-Z-_.]+',
                         '-',
                         query_dict["name"][0] + '.' + query_dict["format"][0].lower() ) + '"'
                         )))
+        # cache it for a day, but only in the browser
+        head[1].append('Cache-Control', ('private; max-age=86400')
 
     # check head status again rather than an else, just in case something went wrong
     if not head[0] == '200 OK':

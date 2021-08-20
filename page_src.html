@@ -42,6 +42,8 @@
                   width:100vw; height:100vh; background-color: rgba(0,0,0,0.5); }
       .form-popup {display: none; color: #000; background-color:#fff; padding: 1vw; border-radius: 6px; flex-wrap:wrap;}
       .btn {font-size: 1em; border: none; border-radius: 6px; margin-right: 6px; padding: 6px 12px; background-color: #eee;}
+      .btn-primary {color: #fff; background-color: #0073AE;}
+      .btn:active {background-color:#005683;}
       input {font-size: 0.9em;}
                   
     </style>
@@ -82,17 +84,17 @@
     <div class="form-popup" id="myForm">
     <img id="dlpreview" src=""/>
     <div id="actualForm">
-    <form method="get" target="_blank" action="WSGI_URL">
-        <label for="address">Printer's legal name and street address:</label><br/>
+    <form method="get" target="_blank" action="WSGI_URL" id="dlForm" onsubmit="return validateForm()">
+        <label for="address">Printer's legal name and street address: <span style="color:#f00;">*</span></label><br/>
         <input id="dlprinter" type="text" placeholder="P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003" name="printer" required">
         <br/> <br/>
-        <label for="bleed">Bleed (optional):</label>
+        <label for="bleed"><a href="https://en.wikipedia.org/wiki/Bleed_(printing)">Bleed</a> (optional):</label>
         <input type="number" min="0" max="10" step="1" placeholder="0" name="bleed" optional> mm
         <br/> <br/> <br/> 
         <input type="hidden" name="name" value="" id=dlname> <input type="hidden" name="format" value="pdf">
         <div id="buttons" width="100%;">
-            <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
-            <button type="submit" class="btn" style="color: #fff; background-color: #0073AE;">Download PDF</button>
+            <button type="button" class="btn" onclick="closeForm()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Download PDF</button>
         </div>
     </form>
     </div>
@@ -114,6 +116,19 @@
         document.getElementById("myForm").style.display = "flex";
         document.getElementById("myModal").style.display = "block";
       }
+
+    function validateForm(){
+        let printer = document.forms["dlForm"]["dlprinter"];
+        if (printer.value == ""){
+            console.log(printer);
+            printer.focus();
+            return false;
+        }
+        else {
+            closeForm();
+            return true;
+        }
+    }
 
     function closeForm() {
          document.getElementById("myForm").style.display = "none";
