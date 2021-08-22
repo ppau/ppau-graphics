@@ -11,6 +11,7 @@ MANIFEST_FILE = "MANIFEST.json"
 TEMPLATE_FILE = "page_src.html"
 INDEX_FILE = "index.html"
 AUTH_TAG_FILE_BASIC = "auth_tag_basic.txt"    # default: "auth_tag_basic.txt"
+SKIP_PREFIX = "__"
 
 RENDER_DIR = "Renders"                  # default: "Renders"
 SITE_ROOT = '.'
@@ -29,7 +30,7 @@ convargs = ["-background", "white", "-flatten", "-resize", "x400", "-quality", "
 # ^^^ give it a white bg if needed, maintain aspect ratio but make it 400px high
 
 VERBOSE = False
-VERSION = '0.5.3'
+VERSION = '0.5.5'
 
 import json
 import os.path
@@ -54,6 +55,7 @@ argparser.add_argument('--poster-replace-tag', default=POSTER_REPLACE_TAG, help=
 argparser.add_argument('--pamphlet-replace-tag', default=PAMPHLET_REPLACE_TAG, help="The string in the template to be replaced by the pamphlet content")
 argparser.add_argument('--online-replace-tag', default=ONLINE_REPLACE_TAG, help="The string in the template to be replaced by the online-only content")
 argparser.add_argument('--auth-tag-file-basic', dest='auth_tag_file_basic', action='store', default=AUTH_TAG_FILE_BASIC, help="The file containing the authorisation text specifying only a town/city (for digital material).")
+argparser.add_argument('--skip-prefix', default=SKIP_PREFIX, help="Skip items starting with this prefix; default is '"+SKIP_PREFIX+"'; pass an empty string for no skipping")
 argparser.add_argument('--version', action='version', version=VERSION)
 argparser.add_argument('--verbose', action='count', help="tell me more", default=0)
 argparser.add_argument('--quiet', action='count', help="tell me less", default=0)
@@ -80,7 +82,7 @@ def failure(*args, sep=' ', code=1, **kwargs):
     logging.critical(sep.join([str(x) for x in args]), **kwargs)
     sys.exit(code)
 
-printv("Command line arguments:", arguments)
+print("Command line arguments:", arguments)
 
 # make `convert` work (on posix systems)
 if not os.path.exists(CONVERT_PATH):
@@ -155,8 +157,18 @@ with open(arguments.manifest_file, 'r') as mani_fp:
             if authFlagged and not ourfile: # special sauce
                 ourfile = i            
 
-        if mkey.startswith("__") or not (authFlagged or printFlagged):
-            printv("Skipping", mkey, "due to being unauthorised or obsolete.")
+        if arguments.skip_prefix:
+            skipme = False
+            for k in mkey.split('/'):
+                if k.startswith(arguments.skip_prefix):
+                    print("Skipping", mkey, "for filename including the skip prefix", arguments.skip_prefix)
+                    skipme = True
+                    break
+            if skipme:
+                continue
+
+        if not (authFlagged or printFlagged):
+            printv("Skipping", mkey, "as no tags are included")
             continue
 
         printv(mkey, authFlagged, printFlagged)
