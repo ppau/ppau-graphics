@@ -82,7 +82,7 @@ def failure(*args, sep=' ', code=1, **kwargs):
     logging.critical(sep.join([str(x) for x in args]), **kwargs)
     sys.exit(code)
 
-print("Command line arguments:", arguments)
+printv("Command line arguments:", arguments)
 
 # make `convert` work (on posix systems)
 if not os.path.exists(CONVERT_PATH):
