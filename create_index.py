@@ -161,7 +161,7 @@ with open(arguments.manifest_file, 'r') as mani_fp:
             skipme = False
             for k in mkey.split('/'):
                 if k.startswith(arguments.skip_prefix):
-                    print("Skipping", mkey, "for filename including the skip prefix", arguments.skip_prefix)
+                    printv("Skipping", mkey, "for filename including the skip prefix", arguments.skip_prefix)
                     skipme = True
                     break
             if skipme:
