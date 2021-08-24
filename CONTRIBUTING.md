@@ -63,5 +63,12 @@ You might also find `--invert` to be useful if you're trying to figure out which
     
 Further, there's `python3 font_installer.py` which does as much of this automatically as possible. But it has to be manually kept up-to-date with the list above. 
 
+# Images and Icons
 
+Check out: 
+
+* [Pexels](https://www.pexels.com) for quality photos that are very nearly public domain - free to download, no attribution
+* [Creative Commons](https://search.creativecommons.org/) image search
+* [The Noun Project](https://thenounproject.com/) for quality vector icons that are usable by attribution
+  * attribution should be in the form of `'Item Name' by Creator from thenounproject.com`
 
