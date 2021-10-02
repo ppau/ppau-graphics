@@ -11,7 +11,7 @@ ROOT="."
 OTHERS=()
 
 # gotta be at least one argument
-if [[ $# -eq 0 ]]; then
+if [[ $# -ne 2 ]]; then
     echo "Usage: $USAGE"
     exit
 fi
