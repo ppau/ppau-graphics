@@ -40,6 +40,7 @@ PRINT_TAG = "PPAU_PRINT_TAG"            # default: "PPAU_PRINT_TAG"
 
 #### Other settings                                                         ####
 
+BLEED = 0
 NO_PRINT = False
 CRUSH = False
 NO_COLLATE = False
@@ -133,6 +134,10 @@ parser.add_argument('--backend_path', dest='backend_path',
                     help="The path to the backend renderer, " +
                             "by default your "+ BACKEND + " install.")
 
+parser.add_argument('--bleed', dest='bleed', 
+                    action='store', default=BLEED, type=int,
+                    help="Set a bleed (integer mm) for the print files")
+
 parser.add_argument('--no-print', dest='no_print', 
                     action='store_const', default=NO_PRINT, const=True,
                     help="Don't output anything that would require a print tag.")
@@ -189,6 +194,7 @@ NO_PRINT = arguments.no_print
 CRUSH = arguments.crush
 NO_COLLATE = arguments.no_collate
 COLLATE_FMT = arguments.collate_fmt
+BLEED = arguments.bleed
 
 printv(arguments)
 
@@ -513,6 +519,7 @@ for s in SVGs:
                 renderargs.append("export-type:png; export-background-opacity:255;")
                 pngs.add(r_out)
             if ftype == "pdf":
+                renderargs.append("export-margin:{}; ".format(BLEED))
                 renderargs.append("export-dpi:300; export-text-to-path:true; export-type:pdf;")
             
             print("file-open:"+r_tag+"; "+" ".join(renderargs)+" export-do; file-close;", file=commands)
