@@ -193,7 +193,7 @@ def application(env, start_response):
             )
         )
         # cache it for a day, but only in the browser
-        head[1].append("Cache-Control", ("private; max-age=86400"))
+        head[1].append(("Cache-Control", "private; max-age=86400"))
 
     # check head status again rather than an else, just in case something went wrong
     if not head[0] == "200 OK":
