@@ -2,9 +2,9 @@
 
 Aspect: Either A4 or square.
 
-Colours: 
+Colours:
 
-- Background: 
+- Background:
 	- light: 	#ebf8ff [H142/360, S255/255, L245/255]
 	- dark:		#001f30 [H143/360, S255/255, L24/255]
 - Pete:
@@ -12,11 +12,11 @@ Colours:
 	- dark-bg: 	#005480 with white stroke (8px for 1200x1200)
 
 
-Font: 
+Font:
 
 - Title:	Open Sans
 - Slogan:	Open Sans Italic (possibly bolded)
-- all: aligned centre and centred on page 
+- all: aligned centre and centred on page
 
 
 Proportions (ideal):

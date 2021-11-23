@@ -6,7 +6,7 @@ There are several purposes for this repository:
 
 1. Version control and general ability for collaboration with source documents.
 2. Build an infrastructure that allows us to seamlessly update authorisation tags and, if necessary, printing tags.
-3. ... and in turn, permit self-serve poster generation with appropriate tags. 
+3. ... and in turn, permit self-serve poster generation with appropriate tags.
 
 The system works by having the artist insert placeholder text, such as `PPAU_AUTH_TAG`, in the artworks instead of something like `Authorised by Name, Address`. The script will perform a textual find-and-replace and then render the artwork to a format more suitable for distribution, currently PNG and PDF.
 
@@ -36,7 +36,7 @@ If you do not specify a correct path to `inkscape`, `pdunite` or `pngcrush`, the
 
 `pdfunite` is usually installed as part of `poppler-utils` or `poppler-tools`.
 
-`find`, `sed` and `grep` should be installed by default on any POSIX system, but may be missing on Windows. 
+`find`, `sed` and `grep` should be installed by default on any POSIX system, but may be missing on Windows.
 
 ## Git LFS
 
@@ -50,7 +50,7 @@ Git LFS isn't usually installed by default. You'll likely need to run `git lfs i
 
 You'll need the various fonts, too; at a minimum Open Sans (including Condensed) and Gehen Sans, although others might have been used. You can run `python3 list_fonts.py` to get a JSON of all the fonts used in the project and what files use them. This will be found in `FONTLIST.json`; it is recommended to run `list_fonts` yourself rather than relying on the JSON being up to date.
 
-Run `font_installer.py` to attempt to install fonts automatically, or refer to CONTRIBUTING.md for a a fairly comprehensive list of download links. 
+Run `font_installer.py` to attempt to install fonts automatically, or refer to CONTRIBUTING.md for a a fairly comprehensive list of download links.
 
 # Usage
 
@@ -79,9 +79,9 @@ So the single source `Artwork/youtube/youtube.svg` will result in the following 
 
 ## Kinds of tags
 
-As of 2020, there are two levels of *authorisation* requirements, as well as *printer* identification requirements. 
+As of 2020, there are two levels of *authorisation* requirements, as well as *printer* identification requirements.
 
-Both kinds of authorisation tags require: 
+Both kinds of authorisation tags require:
 
 * the name of the "disclosure entity" (e.g. "Pirate Party Australia")
 * the name of the person authorising it (generally the current Secretary; first initial and last name suffice)
@@ -90,7 +90,7 @@ Both kinds of authorisation tags require:
 
 * the *town or city* of the disclosure entity, or else the town or city of the authorising person
 
-"Full" requirements generally apply to physical material such as posters, stickers or how-to-vote cards: 
+"Full" requirements generally apply to physical material such as posters, stickers or how-to-vote cards:
 
 * the *full street address* or the disclosure entity, or else one where the authorising person can be contacted
 
@@ -99,7 +99,7 @@ There's only one kind of printer tag:
 * The name of the printer (or more likely, company name)
 * The full street address of the printer (it might be necessary in some cases to use head-office location)
 
-The render script will by default output the basic auth tag in auth-only files, and the full auth tag in files that also contain a print tag. 
+The render script will by default output the basic auth tag in auth-only files, and the full auth tag in files that also contain a print tag.
 
 ## Examples
 
@@ -115,30 +115,30 @@ To specify an alternate file containing the authorisation tag:
 
 ## Multi-page documents
 
-SVG doesn't support multi-page documents, but it is now possible to collate SVGs into a PDF (this is why `pdfunite` is needed). 
+SVG doesn't support multi-page documents, but it is now possible to collate SVGs into a PDF (this is why `pdfunite` is needed).
 
 This is done by a file naming convention: `foo/bar_p1.svg`, `foo/bar_p2.svg`, `foo/bar_p3.svg` will all be collated as `foo/bar.pdf`. Numbers are handled correctly (`11` comes after `2`) and missing pages are simply skipped.
 
-The exact format used is the regex `(.*)(_[pP])(\d+)(-\w*)?$` where the first group is the name, the second group marks a page number, the third group is the digits of the page number, and the fourth group is an optional variant descriptor, e.g. "light" or "dark". Any file extension is stripped before the regex is matched. You may pass in a different regex with `--collate-fmt` but the groups will of course be interpreted the same way, so the only change advised is to group 2. 
+The exact format used is the regex `(.*)(_[pP])(\d+)(-\w*)?$` where the first group is the name, the second group marks a page number, the third group is the digits of the page number, and the fourth group is an optional variant descriptor, e.g. "light" or "dark". Any file extension is stripped before the regex is matched. You may pass in a different regex with `--collate-fmt` but the groups will of course be interpreted the same way, so the only change advised is to group 2.
 
 ## Crushing PNGs
 
-`pngcrush` is optional with `--crush`; crushing PNGs at time of writing shows an average saving of 15% size, and (on author's machine) takes about 5 seconds per image updated. Disk space is pretty cheap and plentiful these days, so crushing is off by default. 
+`pngcrush` is optional with `--crush`; crushing PNGs at time of writing shows an average saving of 15% size, and (on author's machine) takes about 5 seconds per image updated. Disk space is pretty cheap and plentiful these days, so crushing is off by default.
 
-A log of timestamps between which rendered files have been crushed is kept in `Renders/.crush_timestamps.tsv`. If you only sometimes crush PNGs you may be able to use this information 
+A log of timestamps between which rendered files have been crushed is kept in `Renders/.crush_timestamps.tsv`. If you only sometimes crush PNGs you may be able to use this information
 
 ## WSGI and servers
 
-There's a semi-experimental WSGI implementation in the subdirectory of that name powering self-serve PDF generation. 
+There's a semi-experimental WSGI implementation in the subdirectory of that name powering self-serve PDF generation.
 
 Running `create_index.py` will generate you an `index.html` (which expects to be in the project root). It will also generate preview JPEGs which are much smaller than the PNGs, using ImageMagick's `convert`.
 
-`update.sh` is designed to be run automatically on machines that don't edit the repository. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`. 
+`update.sh` is designed to be run automatically on machines that don't edit the repository. It will perform a `git pull`, remove any deleted artwork's renders, render new/changed artwork and create `index.html`.
 
-It takes several arguments: 
-- the "site root" (e.g. `https://example.com/ppau-graphics`) is required; 
+It takes several arguments:
+- the "site root" (e.g. `https://example.com/ppau-graphics`) is required;
 - whether to crush PNGs (`--crush`)
-- the path to a log file (`--log /path/to/file`). 
+- the path to a log file (`--log /path/to/file`).
 
 N.B. this is changed from the previous behaviour as of 2021-07-06.
 
@@ -147,4 +147,3 @@ N.B. this is changed from the previous behaviour as of 2021-07-06.
 Artwork and text created by members of Pirate Party Australia is released under the Creative Commons [Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license (CC-BY 4.0), unless otherwise specified.
 
 Code created by members of Pirate Party Australia is released under the [Free Software Foundation General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html), unless otherwise specified.
-

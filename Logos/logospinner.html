@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <style>
-  
+
   #spinny {
     animation-name: spinner;
     animation-duration: 4s;
@@ -18,7 +18,7 @@
     left: 100px;
     top: 100px;
   }
-  
+
   @keyframes spinner {
   0%     {transform: scaleX(1)}
   10%    {transform: scaleX(0.95)}
@@ -33,18 +33,18 @@
   100%   {transform: scaleX(-1)}
   }
   </style>
-  
+
 </head>
 
 <body>
   <script>
   var path = "https://pirateparty.org.au/media/identity_style_guide/SVG/ppauLogo-australia.svg";
-  
+
   function updateBG(){
     var bgc = document.getElementById("bgc")
     document.body.style.backgroundColor = bgc.value;
   }
-  
+
   function updateImg(){
     var newpath = "https://pirateparty.org.au/media/identity_style_guide/SVG/";
     var invert = document.getElementById("invert");
@@ -70,7 +70,7 @@
 
             newpath += "ppauLogo-";
             newpath += subtitle.value;
-    
+
             switch(invert.value){
                 case "negative":
                     newpath += "_negative";
@@ -78,7 +78,7 @@
                 default:
                     break;
             }
-    
+
             switch(colouring.value){
                 case "bw":
                     newpath += "_bw";
@@ -88,17 +88,17 @@
             }
             break;
     }
-    
+
     newpath += ".svg"
     path = newpath;
-    document.getElementById("spinny").src = path;  
+    document.getElementById("spinny").src = path;
   }
-  
+
   function updateSpeed(){
     speedyboi = document.getElementById("speedRange")
     document.getElementById("spinny").style["animation-duration"] = Math.pow(2, -speedyboi.value) + "s";
   }
-  
+
   </script>
     <select name="bgc" id="bgc" onchange="updateBG()">
         <option value="white">White BG</>
@@ -109,8 +109,8 @@
     <select name="which" id="which" onchange="updateImg()">
         <option value="full">Full Logo</>
         <option value="signet">Signet</>
-    </select>    
-    
+    </select>
+
     <select name="colouring" id="colouring" onchange="updateImg()">
         <option value="blue">Blue "Pirate"</>
         <option value="bw">B/W "Pirate"</>

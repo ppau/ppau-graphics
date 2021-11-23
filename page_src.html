@@ -21,7 +21,7 @@
      #actualForm {order: 2; float:right; width:calc(100% - 20vw);}
      #dlprinter {width: 100%;}
      #buttons {position:absolute; right: 6px; bottom:6px; justify-content:right;}
-     
+
       @media (max-width: 500px) { /* smaller screen support */
         img {max-height: 80vh; max-width: 80vw;}
         .form-popup {width: 100vw; margin: 10vh 0;}
@@ -39,14 +39,14 @@
       .jump {text-align:center}
       .footer {display: flex; justify-content: space-between; color: #888}
       ::selection {color: #fff; background-color: #0073AE;}
-      .modal {display:none; position:fixed; top: 0; left: 0; z-index: 1; 
+      .modal {display:none; position:fixed; top: 0; left: 0; z-index: 1;
                   width:100vw; height:100vh; background-color: rgba(0,0,0,0.5); }
       .form-popup {display: none; color: #000; background-color:#fff; padding: 1vw; border-radius: 6px; flex-wrap:wrap;}
       .btn {font-size: 1em; border: none; border-radius: 6px; margin-right: 6px; padding: 6px 12px; background-color: #eee;}
       .btn-primary {color: #fff; background-color: #0073AE;}
       .btn:active {color: #fff; background-color:#005683;}
       input {font-size: 0.9em;}
-                  
+
     </style>
   </head>
   <body>
@@ -57,7 +57,7 @@
     <p>Example: <em>P. Sherman Printing, 42 Wallaby Way, Sydney NSW 2003</em></p>
     <p>If you want an image to share online, just click the caption to save it as a PNG from this page &mdash; the correct authorisation tag is already in place!</p>
     <p><a href="SITE_ROOTLogos/index.html">There are logos too!</a></p>
-    
+
     <h2 id="posters">Posters</h2>
     <div id="postersGoHere" onclick="clickHandler(event)">
       PPAU_POSTERS_HERE
@@ -83,7 +83,7 @@
     <div class="footer">
     <p>Artwork and text created by members of Pirate Party Australia is released under the <a style="color:#888;" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International license (CC-BY 4.0),</a> unless otherwise specified.</p>
     </div>
-    
+
     <div id="myModal" class="modal">
     <div class="form-popup" id="myForm">
     <img id="dlpreview" src=""/>
@@ -94,7 +94,7 @@
         <br/> <br/>
         <label for="bleed"><a href="https://en.wikipedia.org/wiki/Bleed_(printing)">Bleed</a> (optional):</label>
         <input type="number" min="0" max="10" step="1" placeholder="0" name="bleed" optional> mm
-        <br/> <br/> <br/> 
+        <br/> <br/> <br/>
         <input type="hidden" name="name" value="" id=dlname> <input type="hidden" name="format" value="pdf">
         <div id="buttons" width="100%;">
             <button type="button" class="btn" onclick="closeForm()">Cancel</button>
@@ -104,7 +104,7 @@
     </div>
     </div>
     </div>
-    
+
     <script>
       function clickHandler(event){
          name = event.target.alt;
