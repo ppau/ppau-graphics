@@ -13,9 +13,9 @@ The script assumes the presence of a copy of this repository in the static websi
 
 Install the system-level packages (or perhaps ensure they're installed):
 
-    sudo apt-get install nginx python3 inkscape
-
-You'll presumably want to run `font-installer.py` by this point.
+    sudo apt-get install python3 git-lfs inkscape imagemagick poppler-utils fontconfig
+    git clone https://github.com/ppau/ppau-graphics.git && cd ppau-graphics
+    ./font-installer.py
 
 Create a service directory and initialise a python3 virtualenv inside of it:
 
