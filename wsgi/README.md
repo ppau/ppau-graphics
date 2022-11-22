@@ -16,6 +16,9 @@ Install the system-level packages (or perhaps ensure they're installed):
     sudo apt-get install python3 git-lfs inkscape imagemagick poppler-utils fontconfig
     git clone https://github.com/ppau/ppau-graphics.git && cd ppau-graphics
     ./font-installer.py
+    ./render.py
+
+And then either copy/move into `/var/www/...` or just have cloned there in the first place. 
 
 Create a service directory and initialise a python3 virtualenv inside of it:
 
