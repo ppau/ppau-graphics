@@ -11,24 +11,28 @@ The script assumes the presence of a copy of this repository in the static websi
 
 ## Setup (for recent Debian/Ubuntu)
 
-Install the server-specific packages (or perhaps ensure they're installed):
-(note that PyPDF2 is used here, rather than pdfunite as in the main script):
+Install the system-level packages (or perhaps ensure they're installed):
 
-    sudo apt-get install nginx uwsgi python3-pypdf2
+    sudo apt-get install nginx python3 inkscape
 
-(N.B.: I tried using a `virtualenv` and it was a bit of a mess, so everything is system-installed.)
+You'll presumably want to run `font-installer.py` by this point.
 
-Create a service directory:
+Create a service directory and initialise a python3 virtualenv inside of it:
 
-    sudo mkdir /etc/ppaugraphics
+    sudo mkdir /opt/ppaugraphics
+    sudo python3 -m venv /opt/ppaugraphics/env
 
-Copy the WSGI-related files from this subdirectory of the repository to the service directory:
+Copy the WSGI-related files from this subdirectory of the repository to the service directory, then set up the virtual environment:  
+(N.B.: `uwsgi` is installed as part of the virtualenv, as on 22.04 the packaged version is out-of-date with system Python. Server-side we use `PyPDF2` rather than the `pdfunite` tool)
 
-    sudo cp -r /PATH/TO/ppau-graphics/wsgi/* /etc/ppaugraphics
+    sudo cp -r /PATH/TO/ppau-graphics/wsgi/* /opt/ppaugraphics
+    cd /opt/ppaugraphics
+    source ./env/bin/activate
+    sudo ./env/bin/pip install -r requirements.txt
 
-Copy the `ppaugraphics.service.conf` where it needs to be, then edit if required:
+Copy `ppaugraphics.service.conf` where it needs to be, then edit if required:
 
-    sudo cp /etc/ppaugraphics/ppaugraphics.service.conf /etc/systemd/system/ppaugraphics.service
+    sudo cp /opt/ppaugraphics/ppaugraphics.service.conf /etc/systemd/system/ppaugraphics.service
     sudo nano /etc/systemd/system/ppaugraphics.service
 
 Enable and activate:
